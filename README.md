@@ -15,8 +15,13 @@ Poderá extender o evento ou a respectiva lista de convidados
 
 -> Share - Minimum priority
 
+##Sábado - 21/11/2015
+
 ##PEDRO
+Login/Registo
 
 ##FILIPE
+Search
 
 ##RUI
+PHP Queries de ordenacao + Javascript de Tabs
