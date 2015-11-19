@@ -14,3 +14,9 @@ Poderá extender o evento ou a respectiva lista de convidados
 -> Private events not shown in searches - Max priority
 
 -> Share - Minimum priority
+
+##PEDRO
+
+##FILIPE
+
+##RUI
