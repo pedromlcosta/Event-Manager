@@ -1,5 +1,5 @@
  <?php
 
- $db = new PDO('sqlite:database/manager.db');
+ $db = new PDO('sqlite:database/event_manager.db');
 
  ?>

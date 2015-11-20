@@ -1,1 +1,2 @@
-<?php echo"HIIIIIIIIIIIIIIIIIIII"; ?>
+<p>
+<?php echo"Main Page Example"; ?>
