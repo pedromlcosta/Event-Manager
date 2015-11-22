@@ -1,0 +1,16 @@
+body{
+	margin: 0 0 ;
+}
+
+#logo img{
+	width: 30%;
+	height: 250px;
+}
+
+#header{
+	background-color: gray;
+}
+
+#login{
+	padding-bottom: 10px;
+}

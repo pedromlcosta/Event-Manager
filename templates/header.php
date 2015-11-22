@@ -2,10 +2,10 @@
   <div id="main">
     <div id="header">
       <div id="logo">
-        LOGO EXAMPLE HERE
+       <img src="images/logo.png">
         <p>
       </div>
-    </div>
+    
     <?php if(!isset($_SESSION['username'])){ ?>
       <div id="register">
         <form action="action_register.php" method="post" enctype="multipart/form-data"> 
@@ -55,6 +55,7 @@
         </form>
       </div>
       <?php } ?>
+      </div>
         <div id="content">
         </div>
   </div>

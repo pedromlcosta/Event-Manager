@@ -6,7 +6,7 @@ function loginCorrect($username, $password){
 	try{
 	$query = "SELECT * FROM USERS WHERE username = ? COLLATE NOCASE AND password = ?";
 	$stmt = $db->prepare($query);
-	$stmt->execute(array($username, $password));
+	$stmt->execute(array($username, sha1($password)));
 	$result = $stmt->fetch();
 
 	// $result !== false means it found the user with the password
@@ -46,7 +46,7 @@ function registerUser($username, $password, $fullname){
 	
 	$query = "INSERT INTO USERS (username, password, fullname) VALUES(?, ?, ?)";
 	$stmt = $db->prepare($query);
-	$stmt->execute(array($username, $password, $fullname));
+	$stmt->execute(array($username, sha1($password), $fullname));
 	
 	//TODO: Change hardcoded returns to numbers. Map numbers to each string
 	return "REGISTERED SUCCESSFULLY.";
