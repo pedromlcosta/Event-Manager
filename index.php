@@ -10,7 +10,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Event Manager</title>
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href="CSS/style.css">
+		<link rel="stylesheet" href="styles/index.css">
 		<style type="text/css"></style>
 	</head>
 
