@@ -2,7 +2,6 @@
 	session_start();
 
 	include_once('database/connection.php'); // connects to the database
-	include_once('tag.php');
 ?>
 	<!DOCTYPE html>
 	<html>
@@ -11,7 +10,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Event Manager</title>
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="CSS/style.css">
 		<style type="text/css"></style>
 	</head>
 
