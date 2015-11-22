@@ -5,9 +5,7 @@ session_start();
 include_once("database/connection.php");
 include_once("database/users.php");
 
-if(loginCorrect($_POST['username'], $_POST['password'])){
-	$_SESSION['username'] = $_POST['username'];
-}else{
+if(!loginCorrect($_POST['username'], $_POST['password'])){
 	$_SESSION['loginFailed'] = true;
 }
 

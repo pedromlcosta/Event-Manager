@@ -29,7 +29,8 @@ CREATE TABLE imageEvent(
 );
 
 CREATE TABLE tag (
-	description VARCHAR PRIMARY KEY
+	 id INTEGER PRIMARY KEY AUTOINCREMENT,
+	 description VARCHAR UNIQUE
 );
 
 CREATE TABLE tagEvent(

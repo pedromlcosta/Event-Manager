@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>Event Manager</title>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="style.css">
-  <style type="text/css"></style>
-</head>
-
 <body>
   <div id="main">
     <div id="header">
@@ -19,11 +8,14 @@
     </div>
     <?php if(!isset($_SESSION['username'])){ ?>
       <div id="register">
-        <form action="action_register.php" method="post"> REGISTER
+        <form action="action_register.php" method="post" enctype="multipart/form-data"> 
+        REGISTER
           <br>
           <input type="text" name="username" value="username" />
           <input type="text" name="password" value="password" />
-          <input type="submit" value="Register">
+          <input type="text" name="fullname" value="name"/>
+          <input type="file" name="fileToUpload" id="fileToUpload">
+          <input type="submit" name="submit" value="Register">
           <p>
         </form>
       </div>
@@ -44,13 +36,20 @@
             echo $_SESSION['registerStatus'];
             unset($_SESSION['registerStatus']);
           }
+
+           if(isset($_SESSION['registerUpload'])){
+            echo " ". $_SESSION['registerUpload'];
+            unset($_SESSION['registerUpload']);
+          }
       }else{ ?>
       </div>
       <div id="logout">
         <form action="action_logout.php" method="post">
           <p3>
-            <?php $username = $_SESSION['username'];
-              echo "Hi $username "  ?>
+            <?php 
+                $username = $_SESSION['fullname'];
+             	echo "Hi $username "  
+             	?>
           </p3>
           <input type="submit" value="Logout">
         </form>
