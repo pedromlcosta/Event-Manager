@@ -4,7 +4,6 @@ CREATE TABLE events (
 	title VARCHAR,
 	fulltext VARCHAR,
 	private Boolean,
-	data Date,
 	user VARCHAR REFERENCES users(username)
 	ON UPDATE CASCADE
 	ON DELETE CASCADE 
@@ -73,14 +72,14 @@ INSERT INTO users VALUES ('admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3'); 
 
 INSERT INTO users VALUES('Filipe','2e6f9b0d5885b6010f9167787445617f553a735f');
 
-INSERT INTO tag VALUES (NULL,'concerto');
-INSERT INTO tag VALUES (NULL,'live');
-INSERT INTO tag VALUES (NULL,'música ao vivo');
-INSERT INTO tag VALUES (NULL,'cinema');
-INSERT INTO tag VALUES (NULL,'Ao ar livre');
-INSERT INTO tag VALUES (NULL,'Coliseu');
-INSERT INTO tag VALUES (NULL,'free');
-INSERT INTO tag VALUES (NULL,'grátis');
+INSERT INTO tag (description) VALUES ('concerto');
+INSERT INTO tag (description) VALUES ('live');
+INSERT INTO tag (description) VALUES ('música ao vivo');
+INSERT INTO tag (description) VALUES ('cinema');
+INSERT INTO tag (description) VALUES ('Ao ar livre');
+INSERT INTO tag (description) VALUES ('Coliseu');
+INSERT INTO tag (description) VALUES ('free');
+INSERT INTO tag (description) VALUES ('grátis');
 
 INSERT INTO tagEvent VALUES(0,0);
 INSERT INTO tagEvent VALUES(1,2);
