@@ -61,5 +61,12 @@ function registerUser($username, $password, $fullname){
 		return "ERROR REGISTERING.";
 	}
 }
+function getUser($username){
+
+   global $db;
+  $stmt = $db->prepare('SELECT * FROM users WHERE username= ?');
+  $stmt->execute(array($username));  
+  return $stmt->fetch();
+}
 
 ?>

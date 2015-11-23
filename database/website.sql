@@ -42,8 +42,9 @@ CREATE TABLE tagEvent(
 	ON DELETE CASCADE 
 );
 
+-- have an id for users or keep using the user name 1+query for less memory which one is better
  CREATE TABLE eventsUsers (
-	attending INTEGER REFERENCES users(username)
+	attending VARCHAR REFERENCES users(username)
 	ON UPDATE CASCADE
 	ON DELETE CASCADE 
 	,

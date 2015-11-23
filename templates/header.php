@@ -1,6 +1,7 @@
 <body>
   <div id="main">
     <div id="header">
+ 
       <div id="logo">
        <img src="images/logo.png">
         <p>
@@ -55,7 +56,35 @@
         </form>
       </div>
       <?php } ?>
+      <form action="action_search.php" method="post">
+            <div>
+            <label for="tagsToSearch">Tags:</label>
+                <textarea   name="tagsToSearch" id="tagsToSearch" /></textarea>
+            </div>
+            
+            <div>
+            <label for="dateTag">Date:</label>
+             <input type="date"  name="dateTag" id="dateTag">  
+            </div>
+
+            <?php 
+            $loggedIn=0;
+            if (isset($_SESSION) && isset($_SESSION['username'])) {
+                $loggedIn=1;?>
+                <input type=hidden name="userName" id="userName" value=<?php echo $_SESSION['username'] ?>>
+                <?php 
+            }
+            ?>
+            <div>
+              <input type=hidden name="loggedIn" id="loggedIn" value=<?php echo $loggedIn ?> >
+             </div>
+            <div class="button">
+                <button type="submit">Search</button>
+            </div>
+      </form>
+
       </div>
         <div id="content">
         </div>
   </div>
+
