@@ -1,4 +1,3 @@
-
 <?php
  
 function getTag($desc)
@@ -7,6 +6,14 @@ function getTag($desc)
   $stmt = $db->prepare('SELECT  * FROM tag WHERE description= ?');
   $stmt->execute(array($desc));  
   return $stmt->fetch();
+}
+function getTagId($desc){
+
+  $tempTag=getTag($desc);
+  if($tempTag)
+    return $tempTag['id'];
+  else
+    return false;
 }
 function insertTag ($description)
 {
@@ -17,11 +24,11 @@ function insertTag ($description)
    $stmt->execute();  
 }
  
-function deleteTag($description)
+function deleteTag($id)
 {
   global $db;
-  $stmt = $db->prepare('DELETE FROM tag WHERE id=:desc') ;
-  $stmt->bindParam(':desc', $description); 
+  $stmt = $db->prepare('DELETE FROM tag WHERE id=:id') ;
+  $stmt->bindParam(':id', $id); 
   $stmt->execute();
 }
   ?>

@@ -55,7 +55,35 @@
       </div>
     </div>
   </div>
+      <form action="action_search.php" method="post">
+            <div>
+            <label for="tagsToSearch">Tags:</label>
+                <textarea   name="tagsToSearch" id="tagsToSearch" /></textarea>
+            </div>
+            
+            <div>
+            <label for="dateTag">Date:</label>
+             <input type="date"  name="dateTag" id="dateTag">  
+            </div>
 
+            <?php 
+            $loggedIn=0;
+            $username='';  
+            if (isset($_SESSION) && isset($_SESSION['username'])) {
+                $loggedIn=1; 
+               $username=$_SESSION['username'];
+                 
+            } 
+            ?>
+            <div>
+             <input type=hidden name="username" id="username" value=<?php echo  $username ?>>
+              <input type=hidden name="loggedIn" id="loggedIn" value=<?php echo $loggedIn ?> >
+             </div>
+            <div class="button">
+                <button type="submit">Search</button>
+            </div>
+      </form>
+      
   <?php if(isset($_SESSION['username'])){ ?>
     <script type="text/javascript">
     //If logged in, hide login and register tabs

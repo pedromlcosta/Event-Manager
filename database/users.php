@@ -71,5 +71,4 @@ function getUser($username){
   $stmt->execute(array($username));  
   return $stmt->fetch();
 }
-
 ?>
