@@ -8,21 +8,28 @@
   $searchResults= array();
   $tags=preg_split( "/".$delimiters."+/",$_POST["tagsToSearch"] ); 
   $tagsToSearch=array();
+  $searchByTitle=getEventByTitle($_POST["tagsToSearch"]);
 
   print_r($_POST);
- foreach( $tags as $toSearch){
-  $tempTag=getTagId($toSearch);
-    if($tempTag)
-      array_push($tagsToSearch,$tempTag);
-  }
-  
-    $searchResults=getEventsWithAnd($tagsToSearch);
-    $searchResultsOR=getEventsWithOr($tagsToSearch);
 
-    if($searchResultsOR){
-      $searchResults= array_uintersect($searchResults, $searchResultsOR,'compareEvents');
-    } 
+    if($searchByTitle)
+    {
+      array_push ($searchResults,$searchByTitle);
+    }
+    else{
+     foreach( $tags as $toSearch){
+      $tempTag=getTagId($toSearch);
+        if($tempTag)
+          array_push($tagsToSearch,$tempTag);
+      }
+      
+        $searchResults=getEventsWithAnd($tagsToSearch);
+        $searchResultsOR=getEventsWithOr($tagsToSearch);
 
+        if($searchResultsOR){
+          $searchResults= array_uintersect($searchResults, $searchResultsOR,'compareEvents');
+        } 
+    }
     print_r($searchResults);
     echo "<br>";
 

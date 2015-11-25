@@ -16,7 +16,13 @@ function getEventByDate($date)
   $stmt->execute(array($date));  
   return $stmt->fetchAll();
 }
-
+function getEventByTitle($title)
+{
+   global $db;
+  $stmt = $db->prepare('SELECT  * FROM events WHERE title=?');
+  $stmt->execute(array($title));  
+  return $stmt->fetchAll();
+}
  function eventGetImage($id)
 {
    global $db;
