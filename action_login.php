@@ -1,13 +1,17 @@
 <?php
 
-session_start();
+	session_start();
 
-include_once("database/connection.php");
-include_once("database/users.php");
+	include_once("database/connection.php");
+	include_once("database/users.php");
 
-if(!loginCorrect($_POST['username'], $_POST['password'])){
-	$_SESSION['loginFailed'] = true;
-}
+	if(!isset($_POST['username'])){
+		die();
+	}
 
-header("Location: ".$_SERVER['HTTP_REFERER']);
+	if(loginAccount($_POST['username'], $_POST['password'])){
+		echo "true";
+	}else{
+		echo "false";
+	}
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-function loginCorrect($username, $password){
+function loginAccount($username, $password){
 	global $db;
 
 	try{
@@ -15,6 +15,9 @@ function loginCorrect($username, $password){
 		$_SESSION['fullname'] = $result['fullname'];
 		//$_SESSION['userimage'] = "database/user_images".$result['username'];
 		$_SESSION['userimage'] = "database/user_images/username2.jpg";
+		return true;
+	}else{
+		return false;
 	}
 
 	}catch(PDOException $e){

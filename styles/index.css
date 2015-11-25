@@ -2,13 +2,20 @@ body{
 	margin: 0 0 ;
 }
 
+#logo{
+	width: 250px;
+	height: 150px;
+	
+	
+}
+
 #logo img{
-	width: 30%;
-	height: 250px;
+	width: 250px;
+	height: 150px;
 }
 
 #header{
-	background-color: gray;
+	display: inline-block;
 }
 
 #login{
@@ -16,4 +23,7 @@ body{
 }
 textarea {
     vertical-align: top;
+}
+
+#user_fields{
 }
