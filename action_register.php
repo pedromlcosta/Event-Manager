@@ -1,7 +1,5 @@
 <?php
-	session_start();
-
-	include_once("database/connection.php");
+	include_once('init.php'); //session_start + include(connection.php)
 	include_once('database/users.php');
 
 	//TODO: Make safer

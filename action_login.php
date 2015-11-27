@@ -1,8 +1,6 @@
 <?php
 
-	session_start();
-
-	include_once("database/connection.php");
+	include_once('init.php');
 	include_once("database/users.php");
 
 	if(!isset($_POST['username'])){

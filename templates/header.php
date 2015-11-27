@@ -1,3 +1,10 @@
+<?php
+  function isLogged(){
+    return isset($_SESSION['username']);
+  }
+?>
+
+
 <body>
   <div id="main">
     <div id="header">
@@ -13,7 +20,7 @@
               emptyStatus();
             </script>
 
-        <?php if(!isset($_SESSION['username'])){ ?>
+        <?php if(!isLogged()){ ?>
           <div id="register">
             <form action="action_register.php" method="post" enctype="multipart/form-data">
               REGISTER
@@ -39,7 +46,9 @@
           
           <div id="messageStatus">
           </div>
+
         <?php }else{ ?>
+
             <div id="logout">
               <form action="action_logout.php" method="post">
                 <h3>
@@ -51,25 +60,24 @@
                 <input type="submit" value="Logout">
               </form>
             </div>
+
           <?php } ?>
-      </div>
-    </div>
-  </div>
+      </div> <!-- user_fields end div -->
+      <div id="search">
       <form action="action_search.php" method="post">
             <div>
-            <label for="tagsToSearch">Tags:</label>
-                <textarea   name="tagsToSearch" id="tagsToSearch" /></textarea>
+                <textarea   name="tagsToSearch" id="tagsToSearch" placeholder="Tags"/></textarea>
             </div>
             
             <div>
             <label for="dateTag">Date:</label>
-             <input type="date"  name="dateTag" id="dateTag">  
+             <input type="date"  name="dateTag" id="dateTag" >  
             </div>
 
             <?php 
             $loggedIn=0;
             $username='';  
-            if (isset($_SESSION) && isset($_SESSION['username'])) {
+            if (isLogged()) {
                 $loggedIn=1; 
                $username=$_SESSION['username'];
                  
@@ -83,21 +91,13 @@
                 <button type="submit">Search</button>
             </div>
       </form>
+      </div> <!-- search end div -->
+    </div>   <!-- header end div -->
+  </div>     <!-- end div -->
       
-  <?php if(isset($_SESSION['username'])){ ?>
-    <script type="text/javascript">
-    //If logged in, hide login and register tabs
       
-      //hideLogin();
-     // hideRegister();
-     // showLogout();
-    </script>
-  <?php }else{ ?>
+  <?php if(!isLogged()){ ?>
     <script type="text/javascript">
-    //If not logged in, hide logout
-      //showLogin();
-      //showRegister();
-      //hideLogout();
       emptyStatus();
     </script>
     <?php } ?>

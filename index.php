@@ -1,7 +1,5 @@
 <?php 
-	session_start();
-
-	include_once('database/connection.php'); // connects to the database
+	include_once('init.php'); // connects to the database
 ?>
 	<!DOCTYPE html>
 	<html>
@@ -21,7 +19,3 @@
  	include('templates/mainpage.php');      
   	include('templates/footer.php');
  ?>
-  	<script>
-	//hideLogin();
-	</script>
-
