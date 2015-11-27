@@ -16,12 +16,11 @@ DROP TABLE IF EXISTS events_users;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-    id VARCHAR,
-	username	VARCHAR,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+	username	VARCHAR UNIQUE,
 	password	VARCHAR,
 	fullname	TEXT,
-	visible	Boolean,
-	PRIMARY KEY(username)
+	visible	Boolean
 );
 
 CREATE TABLE events (

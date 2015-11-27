@@ -10,10 +10,9 @@
   $tagsToSearch=array();
   $searchByTitle=getEventByTitle($_POST["tagsToSearch"]);
 
-  print_r($_POST);
+  //print_r($_POST);
 
-    if($searchByTitle)
-    {
+    if($searchByTitle) {
       array_push ($searchResults,$searchByTitle);
     }
     else{
@@ -27,12 +26,13 @@
         $searchResultsOR=getEventsWithOr($tagsToSearch);
 
         if($searchResultsOR){
-          $searchResults= array_uintersect($searchResults, $searchResultsOR,'compareEvents');
+          if(!empty($searchResults))
+          $searchResults= array_unique(array_merge($searchResults,$searchResultsOR), SORT_REGULAR);
+        else
+          $searchResults=$searchResultsOR;
         } 
     }
-    print_r($searchResults);
-    echo "<br>";
-
+ 
   if(!empty($searchResults)){
        if(!empty($_POST['dateTag'])){
             $eventsWithDate=getEventByDate($_POST['dateTag']);
@@ -44,7 +44,9 @@
        
       include_once("templates/list_search_results.php");
     }
+
      function compareEvents($tagEvent,$tagEvent1){
+      
         return ($tagEvent['id']==$tagEvent1['id']);
    }
 ?>

@@ -1,62 +1,54 @@
 <?php
-  
-function getEventWithTag($id)
-{
-   global $db;
-   $stmt = $db->prepare('SELECT  event FROM tagEvent WHERE tag= :id');
-   $stmt->bindValue(':id', $id);
-   $stmt->execute();  
-   return $stmt->fetchAll();
-} 
+function createTagEvent($tagId, $eventId){
+  global $db;
+  $stmt = $db->prepare('INSERT INTO tags_events (event_id,tag_id,visible) VALUES(? ,?,?)');
+  $stmt->execute(array($tagId,$eventId,1));
+}
+
+function getEventWithTag($id){
+  global $db;
+  $stmt = $db->prepare('SELECT  event_id FROM tags_events WHERE  visible=1 AND  tag_id= :id');
+  $stmt->bindValue(':id', $id);
+  $stmt->execute();
+  return $stmt->fetchAll();
+}
+
 function getEventsWithAnd($tags){
-   global $db;
-   $queryPart='SELECT DISTINCT id FROM events WHERE id NOT IN (SELECT events.id as event1 FROM events,tag WHERE tag.id IN (';
-   $queryPart2=') AND NOT ( tag.id IN    (SELECT tag FROM tagEvent WHERE event=event1)))';
+  global $db;
+  $queryPart = 'SELECT DISTINCT id FROM events WHERE  visible=1 AND id NOT IN (SELECT events.id as event1 FROM events,tags WHERE tags.id IN (';
+  $queryPart2 = ') AND NOT ( tags.id IN    (SELECT tag_id FROM tags_events WHERE event_id=event1 AND visible=1)))';
+  $queryPart1 = '';
+  for ($i = 0; $i < count($tags); $i++) {
+    if ($i == 0) $queryPart1 = $queryPart1 . '?';
+    else $queryPart1 = $queryPart1 . ',?';
+  }
 
-         $queryPart1='';
-         for($i=0;$i<count($tags);$i++){
-
-               if($i==0)
-                  $queryPart1=$queryPart1.'?';
-             else
-                  $queryPart1=$queryPart1.',?';
-   }
-   $query=$queryPart.$queryPart1.$queryPart2;
-  
-   $stmt = $db->prepare($query);
-   $stmt->execute($tags);  
-   return $stmt->fetchAll();
+  $query = $queryPart . $queryPart1 . $queryPart2;
+  $stmt = $db->prepare($query);
+  $stmt->execute($tags);
+  return $stmt->fetchAll();
 }
 
 function getEventsWithOr($tags){
-    global $db;
-   $queryPart='SELECT id FROM events WHERE id IN (SELECT DISTINCT event FROM tagEvent WHERE tag IN (';
-   $queryPart1='';
-        
-         for($i=0;$i<count($tags);$i++){
+  global $db;
+  $queryPart = 'SELECT id FROM events WHERE visible=1 AND  id IN (SELECT DISTINCT event_id FROM tags_events WHERE  visible=1 AND tag_id IN (';
+  $queryPart1 = '';
+  for ($i = 0; $i < count($tags); $i++) {
+    if ($i == 0) $queryPart1 = $queryPart1 . '?';
+    else $queryPart1 = $queryPart1 . ',?';
+  }
 
-               if($i==0)
-                  $queryPart1=$queryPart1.'?';
-             else
-                  $queryPart1=$queryPart1.',?';
-
-         }
-
-   $query=$queryPart.$queryPart1.'))';
-  
-   $stmt = $db->prepare($query);
-   $stmt->execute($tags);  
-   return $stmt->fetchAll();
-
+  $query = $queryPart . $queryPart1 . '))';
+  $stmt = $db->prepare($query);
+  $stmt->execute($tags);
+  return $stmt->fetchAll();
 }
 
-function getTagWithEvent($id)
-{
-   global $db;
-   $stmt = $db->prepare('SELECT * FROM tagEvent WHERE event= :id');
-   $stmt->bindValue(':id', $id);
-   $stmt->execute();  
-   return $stmt->fetchAll();
+function getTagWithEvent($id){
+  global $db;
+  $stmt = $db->prepare('SELECT * FROM tags_events WHERE visible=1 AND event_id= :?');
+  $stmt->execute(array($id));
+  return $stmt->fetchAll();
 }
- 
-  ?>
+
+?>

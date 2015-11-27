@@ -71,4 +71,12 @@ function getUser($username){
   $stmt->execute(array($username));  
   return $stmt->fetch();
 }
+function getUserId($username){
+	$user=getUser($username);
+
+	if($user)
+		return $user['id'];
+	else
+		return false;
+}
 ?>

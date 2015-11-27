@@ -1,7 +1,7 @@
 <?php
   function createTag($args){
     global $db;
-    $stmt = $db->prepare('INSERT INTO tags (description) VALUES(?)');
+    $stmt = $db->prepare('INSERT INTO tag (description) VALUES(?)');
     $stmt->execute(array($args)); 
     return getTagId($args);
   }
@@ -9,7 +9,7 @@
 function getTag($desc)
 {
    global $db;
-  $stmt = $db->prepare('SELECT  * FROM tags WHERE description= ?');
+  $stmt = $db->prepare('SELECT  * FROM tag WHERE description= ?');
   $stmt->execute(array($desc));  
   return $stmt->fetch();
 }
@@ -24,7 +24,7 @@ function getTagId($desc){
 function insertTag ($description)
 {
    global $db;
-   $stmt = $db->prepare('INSERT INTO tags (description) 
+   $stmt = $db->prepare('INSERT INTO tag (description) 
                VALUES(:desc)');
    $stmt->bindValue(':desc', $description);
    $stmt->execute();  
@@ -33,7 +33,7 @@ function insertTag ($description)
 function deleteTag($id)
 {
   global $db;
-  $stmt = $db->prepare('DELETE FROM tags WHERE id=:id') ;
+  $stmt = $db->prepare('DELETE FROM tag WHERE id=:id') ;
   $stmt->bindParam(':id', $id); 
   $stmt->execute();
 }
