@@ -9,7 +9,7 @@
   <div id="main">
     <div id="header">
       <div id="logo">
-        <img src="images/logo.png">
+        <img src="images/logo.png" alt="Logo">
         <p>
       </div>
       <div id="user_fields">
@@ -66,7 +66,8 @@
       <div id="search">
       <form action="action_search.php" method="post">
             <div>
-                <textarea   name="tagsToSearch" id="tagsToSearch" placeholder="Tags"/></textarea>
+                <textarea   name="tagsToSearch" id="tagsToSearch" placeholder="Tags">
+                </textarea>
             </div>
             
             <div>
@@ -92,9 +93,7 @@
             </div>
       </form>
       </div> <!-- search end div -->
-    </div>   <!-- header end div -->
-  </div>     <!-- end div -->
-      
+    </div>   <!-- header end div -->      
       
   <?php if(!isLogged()){ ?>
     <script type="text/javascript">
