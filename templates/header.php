@@ -15,15 +15,13 @@
       <div id="user_fields">
           
           <script type='text/javascript'>
-              submitRegisterAJAX();
-              submitLoginAJAX();
-              emptyStatus();
+              onReadyAddHandlers();
             </script>
 
         <?php if(!isLogged()){ ?>
           <div id="register">
+          <button id="registerbutton" type="button" > REGISTER </button>
             <form action="action_register.php" method="post" enctype="multipart/form-data">
-              REGISTER
               <br>
               <input type="text" name="username" placeholder="Username" />
               <input type="text" name="password" placeholder="Password" />
@@ -35,7 +33,8 @@
           </div>
 
           <div id="login">
-            <form action="action_login.php" method="post"> LOGIN
+            <button type="button" onclick="clickedLogin()" onmouseover="mouseOverLogin()" > LOGIN </button>
+            <form action="action_login.php" method="post">
               <br>
               <input type="text" name="username" placeholder="Username" />
               <input type="password" name="password" placeholder="Password" />
