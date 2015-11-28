@@ -25,11 +25,11 @@
           <div id="register">          
             <form action="action_register.php" method="post" enctype="multipart/form-data">
               <br>
-              <input type="text" name="username" placeholder="Username" />
-              <input type="text" name="password" placeholder="Password" />
-              <input type="text" name="fullname" placeholder="Name" />
-              <input type="file" name="fileToUpload" >
-              <input type="submit" name="submit" value="Register" >
+              <input type="text" id="username" name="username" placeholder="Username" />
+              <input type="password" id="password" name="password" placeholder="Password" />
+              <input type="text" name="fullname" id="fullname" placeholder="Name" />
+              <input type="file" name="fileToUpload" />
+              <input type="submit" name="submit" value="Register" />
               <p>
             </form>
           </div>
@@ -37,9 +37,9 @@
           <div id="login">          
             <form action="action_login.php" method="post">
               <br>
-              <input type="text" name="username" placeholder="Username" />
-              <input type="password" name="password" placeholder="Password" />
-              <input type="submit" value="Login">
+              <input type="text" name="username" id="username" placeholder="Username" />
+              <input type="password" name="password" id="password" placeholder="Password" />
+              <input type="submit" value="Login"/>
               <p>
             </form>
           </div>
@@ -59,6 +59,10 @@
                 </h3>
                 <input type="submit" value="Logout">
               </form>
+            </div>
+
+            <div id="userpage_button">
+              <button type="button"> My Page </button>
             </div>
 
           <?php } ?>

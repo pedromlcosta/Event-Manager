@@ -1,5 +1,7 @@
 function hideLogin() {
 	$("#login").hide();
+	$("#login #username").val('');
+	$("#login #password").val('');
 }
 
 function hideLogout() {
@@ -8,6 +10,9 @@ function hideLogout() {
 
 function hideRegister() {
 	$("#register").hide();
+	$("#register #username").val('');
+	$("#register #password").val('');
+	$("#register #fullname").val('');
 }
 
 function emptyStatus() {
@@ -82,7 +87,6 @@ function loginHandler(event) {
 		contentType: false,
 		success: function(data, textStatus, jqXHR) {
 			if (typeof data.error === 'undefined') {
-
 				var loggedIn = JSON.parse(data);
 				if (loggedIn) {
 					location.reload();
@@ -90,7 +94,6 @@ function loginHandler(event) {
 					emptyStatus();
 					$("#messageStatus").prepend("Username/Password combination not found.");
 				}
-				console.log(loggedIn);
 
 			} else {
 				// Handle errors here
@@ -104,6 +107,10 @@ function loginHandler(event) {
 		}
 	});
 
+}
+
+function mypageHandler(){
+	window.location.replace('mypage.php');
 }
 
 // BUTTON FUNCTIONS AND HANDLERS
@@ -136,6 +143,7 @@ function clickedRegister(event) {
 		setButtonColor('#register_button');
 		hideLogin();
 		showRegister();
+		emptyStatus();
 	} else {
 		resetButtonColor('#register_button');
 		hideRegister();
@@ -154,6 +162,7 @@ function clickedLogin(event) {
 		setButtonColor('#login_button');
 		hideRegister();
 		showLogin();
+		emptyStatus();
 	} else {
 		resetButtonColor('#login_button');
 		hideLogin();
@@ -186,6 +195,8 @@ function onReadyAddHandlers() {
 	//On doc ready, add handlers
 	$(document).ready(function() {
 
+		console.log("hey");
+
 		//Keeping CSS default colors for buttons
 		buttonDefaultColors = [$('#login_button').css("background-color"), $('#login_button').css("color")];
 
@@ -206,6 +217,9 @@ function onReadyAddHandlers() {
 
 		//LOGIN BUTTON HOVER HANDLER
 		$('#login_button').hover(hoveredLogin, unhoveredLogin);
+
+		//MYPAGE BUTTON CLICK HANDLER
+		$('#userpage_button').click(mypageHandler);
 
 	});
 }

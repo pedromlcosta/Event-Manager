@@ -27,6 +27,9 @@ textarea {
 	height: 150px;
 }
 
+#search{
+	display: none;
+}
 
 #login{
 	padding-bottom: 10px;
@@ -38,14 +41,11 @@ textarea {
 }
 
 #register_button, #login_button{
-  margin: 0;
-  padding-left: 0px;
-  padding-right: 0px;
+  width: 200px;
   color: #006bb3;
   background: #ffff80;
   font-weight: bold;
-  font-size: 25px;
-  border-size: 5px;
+  font-size: 30px;
 }
 
 #register_button{
@@ -55,3 +55,6 @@ textarea {
 #login_button{
 	float: right;
 }
+
+
+
