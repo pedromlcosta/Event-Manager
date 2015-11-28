@@ -7,8 +7,6 @@ include_once('database/users.php');
 include_once('database/usersEvent.php');
 
 //if (isset($_SESSION) && isset($_SESSION['username'])) {
-		if(isset($_POST['submit'])) 
-		{
 			//print_r($_POST);
 			$privateValue;
 			if(!isset($_POST['private']))
@@ -25,16 +23,23 @@ include_once('database/usersEvent.php');
 						 addUserToEvent($eventCreatedId['id'], $userId);
 						  $tags=preg_split( "/".$delimiters."+/",$_POST["eventTags"] ); 
 						  foreach ($tags as $tagDesc) {
-						  	//print_r($tagDesc);
-						  	//print_r($eventCreatedId );
+					 
 						   	$tagId=createTag($tagDesc);
 						   	if($eventCreatedId)
 						  	createTagEvent($eventCreatedId['id'],$tagId);
 
 						}
 			  } 
-		}
-		 
+			  //falta acrescentar as tretas do path e isso
+			  $image=getImageByPath($_POST['image']);
+				if(!$image){
+					createImage($_POST['image']);
+					$imageId=getLastimageId();
+				} 
+				else{
+					$imageId=$image['id'];
+				}
+				createImageEvent($eventCreatedId['id'],$imageId);
 		//}
 
 		   function parseCheckBox($value){
