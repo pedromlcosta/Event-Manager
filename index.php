@@ -1,5 +1,6 @@
 <?php 
 	include_once('init.php'); // connects to the database
+	include_once('database/users.php');
 ?>
 	<!DOCTYPE html>
 	<html>

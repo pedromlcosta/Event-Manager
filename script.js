@@ -110,7 +110,7 @@ function loginHandler(event) {
 }
 
 function mypageHandler(){
-	window.location.replace('mypage.php');
+	window.location.replace('user_page.php');
 }
 
 // BUTTON FUNCTIONS AND HANDLERS

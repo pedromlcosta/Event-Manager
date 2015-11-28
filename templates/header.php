@@ -1,5 +1,3 @@
-
-
 <body>
   <div id="main">
     <div id="header">
@@ -44,9 +42,9 @@
             <div id="logout">
               <form action="action_logout.php" method="post">
                 <h3>
-                  <?php 
-                    $username = $_SESSION['fullname'];
-                    echo "Hi $username ";  
+                  <?php
+                    $name = getUserFullname($_SESSION['userID']);
+                    echo "Hi $name ";  
                   ?>
                 </h3>
                 <input type="submit" value="Logout">
@@ -76,7 +74,7 @@
             $username='';  
             if (isLogged()) {
                 $loggedIn=1; 
-               $username=$_SESSION['username'];
+               $username=$_SESSION['userID'];
                  
             } 
             ?>

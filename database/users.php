@@ -11,10 +11,7 @@ function loginAccount($username, $password){
 
 	// $result !== false means it found the user with the password
 	if($result !== false){
-		$_SESSION['username'] = $result['username'];
-		$_SESSION['fullname'] = $result['fullname'];
-		//$_SESSION['userimage'] = "database/user_images".$result['username'];
-		$_SESSION['userimage'] = "database/user_images/username2.jpg";
+		$_SESSION['userID'] = $result['id'];
 		return true;
 	}else{
 		return false;
@@ -64,6 +61,8 @@ function registerUser($username, $password, $fullname){
 		return "ERROR REGISTERING.";
 	}
 }
+
+//TODO: Mudar as 2 funcoes seguintes para usarem ID em vez de username
 function getUser($username){
 
    global $db;
@@ -71,6 +70,16 @@ function getUser($username){
   $stmt->execute(array($username));  
   return $stmt->fetch();
 }
+
+function getUserFullname($userID){
+	global $db;
+
+  $stmt = $db->prepare('SELECT fullname FROM users WHERE id= ?');
+  $stmt->execute(array($userID));
+
+  return $stmt->fetch()['fullname'];
+}
+
 function getUserId($username){
 	$user=getUser($username);
 
@@ -79,4 +88,16 @@ function getUserId($username){
 	else
 		return false;
 }
+
+// Returns image URL for the user specified
+// If user does not have an image, returns NULL
+function getUserImageURL($userID){
+	global $db;
+
+	$stmt = $db->prepare('SELECT DISTINCT images.url FROM users, images, users_images WHERE users_images.user_id = ? AND users_images.image_id = images.id');
+	$stmt->execute(array($userID));
+ 	
+ 	return $stmt->fetch()['url'];
+}
+
 ?>

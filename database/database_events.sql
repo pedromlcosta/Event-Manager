@@ -7,20 +7,22 @@
 --> Chaves estrangeiras devem ser sempre do género: user_id e não "user"
 --> O nome da tabela principal deve ser sempre escrito primeiro (ex: events_images e não images_events)
 
+DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS images;
-DROP TABLE IF EXISTS events_images;
 DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS tags_events;
+DROP TABLE IF EXISTS users_images;
 DROP TABLE IF EXISTS events_users;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS events_images;
 
+-- TODO - por os UNIQUE necessarios e/ou os NOT NULL
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 	username	VARCHAR UNIQUE,
 	password	VARCHAR,
 	fullname	TEXT,
-	visible	Boolean
+	visible	Boolean DEFAULT 1
 );
 
 CREATE TABLE events (
@@ -30,7 +32,7 @@ CREATE TABLE events (
 	private	Boolean,
 	data	Date,
 	user_id	VARCHAR,
-	visible	Boolean,
+	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(user_id) REFERENCES users ( username ) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -38,20 +40,28 @@ CREATE TABLE images (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
 	title	VARCHAR,
 	description	VARCHAR,
-	image	VARCHAR,
-	visible	Boolean
+	url	VARCHAR,
+	visible	Boolean DEFAULT 1
 );
 
 CREATE TABLE tags (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
 	description	VARCHAR UNIQUE,
-	visible	Boolean
+	visible	Boolean DEFAULT 1
+);
+
+CREATE TABLE users_images (
+	user_id	INTEGER,
+	image_id	INTEGER,
+	visible	Boolean DEFAULT 1,
+	FOREIGN KEY(user_id) REFERENCES users ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(image_id) REFERENCES images ( id ) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE events_users (
 	user_id	INTEGER,
 	event_id	INTEGER,
-	visible	Boolean,
+	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(user_id) REFERENCES users ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(event_id) REFERENCES events ( id ) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -59,7 +69,7 @@ CREATE TABLE events_users (
 CREATE TABLE events_images (
 	event_id	INTEGER,
 	image_id	INTEGER,
-	visible	Boolean,
+	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(event_id) REFERENCES events ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(image_id) REFERENCES image ( id ) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -67,7 +77,7 @@ CREATE TABLE events_images (
 CREATE TABLE tags_events (
 	event_id	INTEGER,
 	tag_id	INTEGER,
-	visible	Boolean,
+	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(event_id) REFERENCES events ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(tag_id) REFERENCES tag ( id ) ON UPDATE CASCADE ON DELETE CASCADE
 );
