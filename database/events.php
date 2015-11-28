@@ -7,21 +7,28 @@ $maxDistance=2;
 function getEvent($id,$memberOfEvent)
 {
    global $db;
-  $stmt = $db->prepare('SELECT  * FROM events WHERE id= ? AND ( private=? OR private=0 )');
+  $stmt = $db->prepare('SELECT  * FROM events WHERE id= ? AND visible=1 AND ( private=? OR private=0 )');
   $stmt->execute(array($id,$memberOfEvent));  
+  return $stmt->fetch();
+}
+function getEventByID($id )
+{
+   global $db;
+  $stmt = $db->prepare('SELECT  * FROM events WHERE id= ? AND visible=1');
+  $stmt->execute(array($id));  
   return $stmt->fetch();
 }
 function getEventByDate($date)
 {
    global $db;
-  $stmt = $db->prepare('SELECT  * FROM events WHERE data=?');
+  $stmt = $db->prepare('SELECT  * FROM events WHERE visible=1 AND data=?');
   $stmt->execute(array($date));  
   return $stmt->fetchAll();
 }
 function getEventByTitle($title)
 {
    global $db;
-  $stmt = $db->prepare('SELECT  * FROM events WHERE title=?');
+  $stmt = $db->prepare('SELECT  * FROM events WHERE visible=1 AND title=?');
   $stmt->execute(array($title));  
   return $stmt->fetchAll();
 }
@@ -35,13 +42,13 @@ function getEventByTitle($title)
 function isOwner($username){
   
   global $db;
-  $stmt = $db->prepare('SELECT  * FROM events WHERE user_id= ? ');
+  $stmt = $db->prepare('SELECT  * FROM events WHERE visible=1 AND user_id= ? ');
   $stmt->execute(array($username));  
   return $stmt->fetch();
 }
 function getLastEventId(){
   global $db;
-  $stmt = $db->prepare('SELECT MAX(id) as id FROM events');
+  $stmt = $db->prepare('SELECT MAX(id) as id FROM  events WHERE visible=1');
   $stmt->execute();  
   return $stmt->fetch();
 
@@ -97,5 +104,17 @@ function validateInput($input){
         return true;
     }
     return false;
+}
+
+function updateEvents($field,$id,$changes){
+  
+  $queryPart1='UPDATE events SET ' ;
+  $queryPart2='=? WHERE visible =1 AND id=?';
+  $query=$queryPart1.$field.$queryPart2;
+  
+  global $db;
+  $stmt = $db->prepare($query);
+  $stmt->execute(array($changes,$id));
+
 }
 ?>

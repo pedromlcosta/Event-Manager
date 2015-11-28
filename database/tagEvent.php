@@ -46,9 +46,22 @@ function getEventsWithOr($tags){
 
 function getTagWithEvent($id){
   global $db;
-  $stmt = $db->prepare('SELECT * FROM tags_events WHERE visible=1 AND event_id= :?');
+  $stmt = $db->prepare('SELECT tag_id  FROM tags_events WHERE visible=1 AND event_id= ?');
   $stmt->execute(array($id));
   return $stmt->fetchAll();
 }
+function updateTagEvents($field,$idField,$id,$changes){
+  
+  $queryPart1='UPDATE tags_events SET ' ;
+  $queryPart2='=? WHERE visible =1 AND ';
+  $queryPart3= $idField.'=?';
+  $query=$queryPart1.$field.$queryPart2.$queryPart3;
+  
+  echo "<br>";
+  print_r($query);
+  global $db;
+  $stmt = $db->prepare($query);
+  $stmt->execute(array($changes,$id));
 
+}
 ?>

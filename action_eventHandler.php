@@ -1,21 +1,54 @@
 	<?php
 	//include('templates/header.php');
-
+	  include_once('database/connection.php');
+	  include_once('database/events.php');
+	  include_once('database/image.php');
+	  include_once('database/tagEvent.php');
+	  include_once('database/tag.php');
+	  
 	//print_r($_POST['action']);
 
-/*	if($_POST['action']=="edit"){
+		 
+	//	if ($_POST['action'] == "edit") {
+			$path = "action_editEvents.php";
+			$button = "Edit";
+			$eventID = 1;//$_POST['id'];
+			$required="";
+			$event = getEventByID($eventID);
+			$title = $event['title'];
+			$fullText = $event['fulltext'];
+			$data = $event['data'];
+			$eventTags = "";
+			$tagIDs = getTagWithEvent($eventID);
+			print_r($tagIDs);
+			echo "<br>";
+			$sizeOfArray=count($tagIDs);
+			for($i=0;$i<$sizeOfArray;$i++) {
+				$tagId=$tagIDs[$i];
+				
+				if($i<$sizeOfArray-1)
+					$eventTags = $eventTags.getTagDesc($tagId['tag_id']). " ";
+				else
+					$eventTags = $eventTags.getTagDesc($tagId['tag_id']);
+			}
+			echo "<br>";
+			print_r($eventTags);
+			echo "<br>";
+			echo "<br>";
+			echo "<br>";
+	//	}
 
-	}
-	*/
-	//	if($_POST['action']=="create"){
-			$path="action_createEvents.php";
-			$button="Create";
-			$title="";
-			$fullText="";
-			$checked="value";
-			$data="";
-			$eventTags="";
-	//}
+	//	if ($_POST['action'] == "create") {
+			/**$path = "action_createEvents.php";
+			$button = "Create";
+			$title = "";
+			$fullText = "";
+			$data = "";
+			$eventTags = "";
+			$required="required";
+			$eventID = "";*/
+	//	}
+
 
  ?>
 <form action="<?php echo $path ?>"  method="post">
@@ -25,17 +58,17 @@
 			      Title <input type="text" name="title" id="title" value="<?php echo $title ?>" required>
 			   </div>
 			   <div>
-			      Private <input type="checkbox" name="private" id="private" checked=""  > 
+			      Private <input type="checkbox" name="private" id="private"   > 
 			   </div>
 
 			   <div>
 			      <label for="fullText">Text:</label>
-			      <textarea   name="fullText" id="fullText"  value="<?php echo $fullText?>" required></textarea>
+			      <textarea   name="fullText" id="fullText"   required><?php echo $fullText?></textarea>
 			   </div>
 
 			   <div>
 			      <label for="eventTags">Tags:</label>
-			      <textarea   name="eventTags" id="eventTags"  value="<?php echo $eventTags?>" required></textarea>
+			      <textarea   name="eventTags" id="eventTags" required><?php echo $eventTags?></textarea>
 			   </div>
 
 			   <div>
@@ -44,11 +77,11 @@
 			   </div>
 				<br>
 			   <div>
-			      <input type="file" name="eventImg" id="eventImg"required>
+			      <input type="file" name="eventImg" id="eventImg" <?php echo $required?> >
 			   </div>
 				
 				<div>
-			   		<input type=hidden  name="submit" id="submit" value='1'> 
+				<input type=hidden  name="eventID" id="eventID" value="<?php echo $eventID?>"> 
 				</div>
 				<br>
 			   <div class="button">
