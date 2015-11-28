@@ -15,7 +15,6 @@ DROP TABLE IF EXISTS tags_events;
 DROP TABLE IF EXISTS users_images;
 DROP TABLE IF EXISTS events_users;
 DROP TABLE IF EXISTS events_images;
-DROP TABLE IF EXISTS users_images;
 
 -- TODO - por os UNIQUE necessarios e/ou os NOT NULL
 CREATE TABLE users (
