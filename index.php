@@ -16,6 +16,7 @@
 	</head>
 
 <?php
+	include('templates/auxiliar.php');
 	include('templates/header.php');
  	include('templates/mainpage.php');      
   	include('templates/footer.php');
