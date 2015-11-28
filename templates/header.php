@@ -19,7 +19,7 @@
             </script>
 
         <?php if(!isLogged()){ ?>
-        
+
           <button type="button" id="register_button"> REGISTER </button>
           <button type="button" id="login_button"> LOGIN </button>
           <div id="register">          
@@ -96,7 +96,8 @@
     </div>   <!-- header end div -->      
       
   <?php if(!isLogged()){ ?>
-    <script type="text/javascript">
+
+    <script type="text/javascript">      
       emptyStatus();
     </script>
     <?php } ?>

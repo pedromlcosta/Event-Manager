@@ -106,12 +106,17 @@ function loginHandler(event) {
 
 }
 
-//TODO: make functions for a number of arguments that takes the colors
+// BUTTON FUNCTIONS AND HANDLERS
+
+var registerSelected = false;
+var loginSelected = false;
+
+var buttonDefaultColors;
 
 function resetButtonColor(button_selector) {
 	$(button_selector).css({
-		"background": "#FF6",
-		"color": "#006bb3"
+		"background": buttonDefaultColors[0],
+		"color": buttonDefaultColors[1]
 	});
 }
 
@@ -122,25 +127,39 @@ function setButtonColor(button_selectors, background_color, text_color) {
 	});
 }
 
-var registerSelected = false;
-var loginSelected = false;
-
 function clickedRegister(event) {
-	// Reset Login coloration
-	resetButtonColor('#login_button');
-	loginSelected = false;
-	// Activate Register coloration
-	setButtonColor('#register_button');
-	registerSelected = true;
+	if (!registerSelected) {
+		// Reset Login coloration
+		resetButtonColor('#login_button');
+		loginSelected = false;
+		// Activate Register coloration
+		setButtonColor('#register_button');
+		hideLogin();
+		showRegister();
+	} else {
+		resetButtonColor('#register_button');
+		hideRegister();
+	}
+
+	registerSelected = !registerSelected;
 }
 
 function clickedLogin(event) {
-	// Reset Register coloration
-	resetButtonColor('#register_button');
-	registerSelected = false;
-	//Activate Login coloration
-	setButtonColor('#login_button');
-	loginSelected = true;
+
+	if (!loginSelected) {
+		// Reset Register coloration
+		resetButtonColor('#register_button');
+		registerSelected = false;
+		//Activate Login coloration
+		setButtonColor('#login_button');
+		hideRegister();
+		showLogin();
+	} else {
+		resetButtonColor('#login_button');
+		hideLogin();
+	}
+
+	loginSelected = !loginSelected;
 }
 
 function hoveredRegister(event) {
@@ -167,6 +186,9 @@ function onReadyAddHandlers() {
 	//On doc ready, add handlers
 	$(document).ready(function() {
 
+		//Keeping CSS default colors for buttons
+		buttonDefaultColors = [$('#login_button').css("background-color"), $('#login_button').css("color")];
+
 		// REGISTER SUBMIT HANDLER
 		$('#register form').submit(registerHandler);
 
@@ -184,14 +206,6 @@ function onReadyAddHandlers() {
 
 		//LOGIN BUTTON HOVER HANDLER
 		$('#login_button').hover(hoveredLogin, unhoveredLogin);
-
-		/*
-		$(':not(#user_fields *)').click(function() {
-			resetButtonColor('#register_button');
-			resetButtonColor('#login_button');
-		});
-*/
-
 
 	});
 }

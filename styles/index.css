@@ -30,22 +30,28 @@ textarea {
 
 #login{
 	padding-bottom: 10px;
+	display: none;
 }
 
-
+#register{
+	display:none;
+}
 
 #register_button, #login_button{
   margin: 0;
   padding-left: 0px;
   padding-right: 0px;
   color: #006bb3;
-  background: #FF6;
+  background: #ffff80;
   font-weight: bold;
   font-size: 25px;
   border-size: 5px;
 }
 
-#register_button:hover,#login_button:hover{
-  color: #FFF;
-  background: #006bb3;
+#register_button{
+	float: right;
+}
+
+#login_button{
+	float: right;
 }
