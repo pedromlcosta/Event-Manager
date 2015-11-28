@@ -106,25 +106,65 @@ function loginHandler(event) {
 
 }
 
-function clickedRegister(event) {
-	
-	console.log("hey");
+//TODO: make functions for a number of arguments that takes the colors
+
+function resetButtonColor(button_selector) {
+	$(button_selector).css({
+		"background": "#FF6",
+		"color": "#006bb3"
+	});
 }
 
-function mouseOverRegister(event) {
+function setButtonColor(button_selectors, background_color, text_color) {
+	$(button_selectors).css({
+		"background": background_color !== undefined ? background_color : "#006bb3",
+		"color": text_color !== undefined ? text_color : "#FFF"
+	});
+}
 
+var registerSelected = false;
+var loginSelected = false;
+
+function clickedRegister(event) {
+	// Reset Login coloration
+	resetButtonColor('#login_button');
+	loginSelected = false;
+	// Activate Register coloration
+	setButtonColor('#register_button');
+	registerSelected = true;
 }
 
 function clickedLogin(event) {
-
+	// Reset Register coloration
+	resetButtonColor('#register_button');
+	registerSelected = false;
+	//Activate Login coloration
+	setButtonColor('#login_button');
+	loginSelected = true;
 }
 
-function mouseOverLogin(event) {
+function hoveredRegister(event) {
+	if (!registerSelected)
+		setButtonColor('#register_button', '#80aaff');
+}
 
+function hoveredLogin(event) {
+	if (!loginSelected)
+		setButtonColor('#login_button', '#80aaff');
+}
+
+function unhoveredRegister(event) {
+	if (!registerSelected)
+		resetButtonColor('#register_button');
+}
+
+function unhoveredLogin(event) {
+	if (!loginSelected)
+		resetButtonColor('#login_button');
 }
 
 function onReadyAddHandlers() {
-	//On doc ready, run handler
+	//On doc ready, add handlers
 	$(document).ready(function() {
 
 		// REGISTER SUBMIT HANDLER
@@ -134,22 +174,24 @@ function onReadyAddHandlers() {
 		$('#login form').submit(loginHandler);
 
 		//REGISTER BUTTON CLICK HANDLER
-		$('#register button').click(clickedRegister);
-
-		//REGISTER BUTTON HOVER HANDLER
-		$('#register button').click(mouseOverRegister);
+		$('#register_button').click(clickedRegister);
 
 		//LOGIN BUTTON CLICK HANDLER
-		$('#login button').hover(clickedLogin);
+		$('#login_button').click(clickedLogin);
+
+		//REGISTER BUTTON HOVER HANDLER
+		$('#register_button').hover(hoveredRegister, unhoveredRegister);
 
 		//LOGIN BUTTON HOVER HANDLER
-		$('#login button').hover(mouseOverLogin);
+		$('#login_button').hover(hoveredLogin, unhoveredLogin);
+
+		/*
+		$(':not(#user_fields *)').click(function() {
+			resetButtonColor('#register_button');
+			resetButtonColor('#login_button');
+		});
+*/
+
 
 	});
 }
-
-
-
-
-
-

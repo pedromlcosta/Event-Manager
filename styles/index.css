@@ -4,17 +4,20 @@ padding: 0;
 color: gray;
 }
 
-body{
-	 
+textarea {
+    vertical-align: top;
 }
 
 #header{
 	width: 100%;
 	background-size: 100%;
 	background-image: url("../images/event_header.jpg");
+	background-repeat: no-repeat;
+	display: inline-block;
 }
 
 #logo{
+	float: left;
 	width: 250px;
 	height: 150px;	
 }
@@ -24,32 +27,25 @@ body{
 	height: 150px;
 }
 
-#header{
-	display: inline-block;
-}
 
 #login{
 	padding-bottom: 10px;
 }
-textarea {
-    vertical-align: top;
-}
 
-#user_fields{
-}
+
 
 #register_button, #login_button{
   margin: 0;
   padding-left: 0px;
   padding-right: 0px;
-  color: #900;
-  background: #FF0;
+  color: #006bb3;
+  background: #FF6;
   font-weight: bold;
   font-size: 25px;
-  border: none;
+  border-size: 5px;
 }
 
 #register_button:hover,#login_button:hover{
   color: #FFF;
-  background: #900;
+  background: #006bb3;
 }
