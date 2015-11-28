@@ -19,8 +19,10 @@
             </script>
 
         <?php if(!isLogged()){ ?>
-          <div id="register">
-          <button id="registerbutton" type="button" > REGISTER </button>
+        
+          <button type="button" id="register_button"> REGISTER </button>
+          <button type="button" id="login_button"> LOGIN </button>
+          <div id="register">          
             <form action="action_register.php" method="post" enctype="multipart/form-data">
               <br>
               <input type="text" name="username" placeholder="Username" />
@@ -32,8 +34,7 @@
             </form>
           </div>
 
-          <div id="login">
-            <button type="button" onclick="clickedLogin()" onmouseover="mouseOverLogin()" > LOGIN </button>
+          <div id="login">          
             <form action="action_login.php" method="post">
               <br>
               <input type="text" name="username" placeholder="Username" />

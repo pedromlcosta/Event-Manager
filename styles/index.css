@@ -1,12 +1,22 @@
+* {
+margin: 0;
+padding: 0;
+color: gray;
+}
+
 body{
-	margin: 0 0 ;
+	 
+}
+
+#header{
+	width: 100%;
+	background-size: 100%;
+	background-image: url("../images/event_header.jpg");
 }
 
 #logo{
 	width: 250px;
-	height: 150px;
-	
-	
+	height: 150px;	
 }
 
 #logo img{
@@ -26,4 +36,20 @@ textarea {
 }
 
 #user_fields{
+}
+
+#register_button, #login_button{
+  margin: 0;
+  padding-left: 0px;
+  padding-right: 0px;
+  color: #900;
+  background: #FF0;
+  font-weight: bold;
+  font-size: 25px;
+  border: none;
+}
+
+#register_button:hover,#login_button:hover{
+  color: #FFF;
+  background: #900;
 }

@@ -107,29 +107,9 @@ function loginHandler(event) {
 }
 
 function clickedRegister(event) {
+	
 	console.log("hey");
 }
-
-function onReadyAddHandlers() {
-	//On doc ready, run handler
-	$(document).ready(function() {
-
-		// REGISTER HANDLER
-		$('#register form').submit(registerHandler);
-
-		// LOGIN HANDLER
-		$('#login form').submit(loginHandler);
-
-
-		//REGISTER BUTTON HANDLER
-		$('#registerbutton').click(clickedRegister);
-
-	});
-}
-
-
-
-
 
 function mouseOverRegister(event) {
 
@@ -142,3 +122,34 @@ function clickedLogin(event) {
 function mouseOverLogin(event) {
 
 }
+
+function onReadyAddHandlers() {
+	//On doc ready, run handler
+	$(document).ready(function() {
+
+		// REGISTER SUBMIT HANDLER
+		$('#register form').submit(registerHandler);
+
+		// LOGIN SUBMIT HANDLER
+		$('#login form').submit(loginHandler);
+
+		//REGISTER BUTTON CLICK HANDLER
+		$('#register button').click(clickedRegister);
+
+		//REGISTER BUTTON HOVER HANDLER
+		$('#register button').click(mouseOverRegister);
+
+		//LOGIN BUTTON CLICK HANDLER
+		$('#login button').hover(clickedLogin);
+
+		//LOGIN BUTTON HOVER HANDLER
+		$('#login button').hover(mouseOverLogin);
+
+	});
+}
+
+
+
+
+
+
