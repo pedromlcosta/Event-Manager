@@ -20,6 +20,7 @@ data same html already	 does as verificações
 see if os Max(id) estão direito
 
 verificar se os pares já existem e estão invisíveis para passar para viveis	
+check os gets por causa de o facto de o par de ids já existerem?
 */
 updateEvents('title',$_POST['eventID'],$_POST['title']);
 updateEvents('fulltext',$_POST['eventID'],$_POST['fullText']);

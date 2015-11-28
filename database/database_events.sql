@@ -55,7 +55,8 @@ CREATE TABLE users_images (
 	image_id	INTEGER,
 	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(user_id) REFERENCES users ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(image_id) REFERENCES images ( id ) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(image_id) REFERENCES images ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY(user_id,image_id)
 );
 
 CREATE TABLE events_users (
@@ -63,7 +64,8 @@ CREATE TABLE events_users (
 	event_id	INTEGER,
 	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(user_id) REFERENCES users ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(event_id) REFERENCES events ( id ) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(event_id) REFERENCES events ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY(user_id,tag_id)
 );
 
 CREATE TABLE events_images (
@@ -71,7 +73,8 @@ CREATE TABLE events_images (
 	image_id	INTEGER,
 	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(event_id) REFERENCES events ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(image_id) REFERENCES image ( id ) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(image_id) REFERENCES image ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY(event_id,image_id)
 );
 
 CREATE TABLE tags_events (
@@ -79,7 +82,8 @@ CREATE TABLE tags_events (
 	tag_id	INTEGER,
 	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(event_id) REFERENCES events ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(tag_id) REFERENCES tag ( id ) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(tag_id) REFERENCES tag ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY(event_id,tag_id)
 );
 
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'Sed nibh arcu', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,NULL,0,1);
