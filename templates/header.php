@@ -1,8 +1,4 @@
-<?php
-  function isLogged(){
-    return isset($_SESSION['username']);
-  }
-?>
+
 
 <body>
   <div id="main">
