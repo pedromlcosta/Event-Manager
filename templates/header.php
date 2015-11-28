@@ -4,13 +4,11 @@
   }
 ?>
 
-
 <body>
   <div id="main">
     <div id="header">
       <div id="logo">
         <img src="images/logo.png" alt="Logo">
-        <p>
       </div>
       <div id="user_fields">
           
@@ -30,7 +28,6 @@
               <input type="text" name="fullname" id="fullname" placeholder="Name" />
               <input type="file" name="fileToUpload" />
               <input type="submit" name="submit" value="Register" />
-              <p>
             </form>
           </div>
 
@@ -40,7 +37,6 @@
               <input type="text" name="username" id="username" placeholder="Username" />
               <input type="password" name="password" id="password" placeholder="Password" />
               <input type="submit" value="Login"/>
-              <p>
             </form>
           </div>
           
@@ -70,7 +66,7 @@
       <div id="search">
       <form action="action_search.php" method="post">
             <div>
-                <textarea   name="tagsToSearch" id="tagsToSearch" placeholder="Tags">
+                <textarea name="tagsToSearch" id="tagsToSearch" placeholder="Tags">
                 </textarea>
             </div>
             
@@ -89,8 +85,8 @@
             } 
             ?>
             <div>
-             <input type=hidden name="username" id="username" value=<?php echo  $username ?>>
-              <input type=hidden name="loggedIn" id="loggedIn" value=<?php echo $loggedIn ?> >
+             <input type="hidden" name="username" id="username" value="<?php echo $username ?>">
+              <input type="hidden" name="loggedIn" id="loggedIn" value="<?php echo $loggedIn ?>">
              </div>
             <div class="button">
                 <button type="submit">Search</button>
