@@ -59,7 +59,6 @@ function registerHandler(event) {
 				// Success so call function to process the form
 				emptyStatus();
 				$('#messageStatus').prepend(data);
-				console.log(data);
 			} else {
 				// Handle errors here
 				console.log('ERRORS: ' + data.error);
@@ -109,10 +108,6 @@ function loginHandler(event) {
 
 }
 
-function mypageHandler(){
-	window.location.replace('user_page.php');
-}
-
 // BUTTON FUNCTIONS AND HANDLERS
 
 var registerSelected = false;
@@ -147,6 +142,7 @@ function clickedRegister(event) {
 	} else {
 		resetButtonColor('#register_button');
 		hideRegister();
+		emptyStatus();
 	}
 
 	registerSelected = !registerSelected;
@@ -166,6 +162,7 @@ function clickedLogin(event) {
 	} else {
 		resetButtonColor('#login_button');
 		hideLogin();
+		emptyStatus();
 	}
 
 	loginSelected = !loginSelected;
@@ -191,12 +188,170 @@ function unhoveredLogin(event) {
 		resetButtonColor('#login_button');
 }
 
+// TABS HANDLERS
+
+//ONLY IF :first.click!!!!
+var loaded = null;
+
+function myEventsTabHandler(event) {
+
+	//TODO: por este codigo repetido numa funcao
+
+	if (loaded != '1') {
+		$.ajax({
+			url: 'action_selectTab.php',
+			type: 'POST',
+			data: {
+				tab: '1'
+			},
+			dataType: 'text',
+			success: function(data, textStatus, jqXHR) {
+				if (typeof data.error === 'undefined') {
+					// Array returned from action_selectTab
+					var events = JSON.parse(data);
+					console.log(events);
+					loaded = '1';
+					//TODO: funcao que recebe array e faz push dos eventos para a lista -> tem de levar pagina
+					//Para este efeito, criar variavel global da pagina em que esta...
+
+				} else {
+					// Handle errors here
+					console.log('ERRORS: ' + data.error);
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				// Handle errors here
+				console.log('ERRORS: ' + textStatus);
+				// STOP LOADING SPINNER
+			}
+		});
+	}
+}
+
+function hostingEventsTabHandler(event) {
+
+	if (loaded != '2') {
+		$.ajax({
+			url: 'action_selectTab.php',
+			type: 'POST',
+			data: {
+				tab: '2'
+			},
+			dataType: 'text',
+			success: function(data, textStatus, jqXHR) {
+				if (typeof data.error === 'undefined') {
+					// Array returned from action_selectTab
+					var events = JSON.parse(data);
+					console.log(events);
+					loaded = '2';
+				} else {
+					// Handle errors here
+					console.log('ERRORS: ' + data.error);
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				// Handle errors here
+				console.log('ERRORS: ' + textStatus);
+				// STOP LOADING SPINNER
+			}
+		});
+	}
+}
+
+function invitedEventsTabHandler(event) {
+
+	if (loaded != '3') {
+		$.ajax({
+			url: 'action_selectTab.php',
+			type: 'POST',
+			data: {
+				tab: '3'
+			},
+			dataType: 'text',
+			success: function(data, textStatus, jqXHR) {
+				if (typeof data.error === 'undefined') {
+					// Array returned from action_selectTab
+					var events = JSON.parse(data);
+					console.log(events);
+					loaded = '3';
+				} else {
+					// Handle errors here
+					console.log('ERRORS: ' + data.error);
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				// Handle errors here
+				console.log('ERRORS: ' + textStatus);
+				// STOP LOADING SPINNER
+			}
+		});
+	}
+}
+
+function otherEventsTabHandler(event) {
+
+	if (loaded != '4') {
+		$.ajax({
+			url: 'action_selectTab.php',
+			type: 'POST',
+			data: {
+				tab: '4'
+			},
+			dataType: 'text',
+			success: function(data, textStatus, jqXHR) {
+				if (typeof data.error === 'undefined') {
+					// Array returned from action_selectTab
+					var events = JSON.parse(data);
+					console.log(events);
+					loaded = '4';
+				} else {
+					// Handle errors here
+					console.log('ERRORS: ' + data.error);
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				// Handle errors here
+				console.log('ERRORS: ' + textStatus);
+				// STOP LOADING SPINNER
+			}
+		});
+	}
+}
+
+function customSearchTabHandler(event) {
+
+	if (loaded != '5') {
+
+		$.ajax({
+			url: 'action_selectTab.php',
+			type: 'POST',
+			data: {
+				tab: '5'
+			},
+			dataType: 'text',
+			success: function(data, textStatus, jqXHR) {
+				if (typeof data.error === 'undefined') {
+					// Array returned from action_selectTab
+					var events = JSON.parse(data);
+					console.log(events);
+					loaded = '5';
+				} else {
+					// Handle errors here
+					console.log('ERRORS: ' + data.error);
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				// Handle errors here
+				console.log('ERRORS: ' + textStatus);
+				// STOP LOADING SPINNER
+			}
+		});
+	}
+}
+
 function onReadyAddHandlers() {
 	//On doc ready, add handlers
 	$(document).ready(function() {
-
-		console.log("hey");
-
 		//Keeping CSS default colors for buttons
 		buttonDefaultColors = [$('#login_button').css("background-color"), $('#login_button').css("color")];
 
@@ -218,12 +373,20 @@ function onReadyAddHandlers() {
 		//LOGIN BUTTON HOVER HANDLER
 		$('#login_button').hover(hoveredLogin, unhoveredLogin);
 
-		//MYPAGE BUTTON CLICK HANDLER
-		$('#userpage_button').click(mypageHandler);
+		$('#link_myEvents').click(myEventsTabHandler);
+
+		$('#link_hostingEvents').click(hostingEventsTabHandler);
+
+		$('#link_invitedEvents').click(invitedEventsTabHandler);
+
+		$('#link_otherEvents').click(otherEventsTabHandler);
+
+		$('#link_customSearch').click(customSearchTabHandler);
 
 		//TABS DISPLAY
 		$('.tab-section').hide();
-		$('#tabs a').bind('click', function(e){
+
+		$('#tabs a').click(function(e) {
 			$('#tabs a.current').removeClass('current');
 			$('.tab-section:visible').hide();
 			$(this.hash).show();

@@ -2,7 +2,7 @@
   <div id="main">
     <div id="header">
       <div id="logo">
-        <img src="images/logo.png" alt="Logo">
+        <a href="index.php"> <img src="images/logo.png" alt="Logo"> </a>
       </div>
       <div id="user_fields">
           
@@ -52,7 +52,10 @@
             </div>
 
             <div id="userpage_button">
-              <button type="button"> My Page </button>
+              <form action='user_page.php' method='GET'>
+                <input type="text" name="userID" value="<?=$_SESSION['userID']?>" hidden>
+                <button type="submit"> My Page </button>
+              </form>
             </div>
 
           <?php } ?>

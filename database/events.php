@@ -4,6 +4,14 @@
 $imageExtension =array('jpg','png','jpeg','gif');
 $maxDistance=2;
 
+function getAllEvents(){
+  global $db;
+  $stmt = $db->prepare('SELECT  * FROM events');
+  $stmt->execute(array());
+
+  return $stmt->fetchAll();
+}
+
 function getEvent($id,$memberOfEvent)
 {
    global $db;
@@ -51,6 +59,24 @@ function getLastEventId(){
   $stmt = $db->prepare('SELECT MAX(id) as id FROM  events WHERE visible=1');
   $stmt->execute();  
   return $stmt->fetch();
+
+}
+
+function getTypes(){
+  global $db;
+
+  $stmt = $db->prepare('SELECT DISTINCT types.name FROM types');
+  $stmt->execute(array());
+  
+  $types = null;
+  $counter = 0;
+
+  while ($row = $stmt->fetch()) {
+    $types[$counter] = $row['name'];
+    $counter++;
+  }
+    
+  return $types;
 
 }
 

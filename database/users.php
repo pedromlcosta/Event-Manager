@@ -71,15 +71,6 @@ function getUser($username){
   return $stmt->fetch();
 }
 
-function getUserFullname($userID){
-	global $db;
-
-  $stmt = $db->prepare('SELECT fullname FROM users WHERE id= ?');
-  $stmt->execute(array($userID));
-
-  return $stmt->fetch()['fullname'];
-}
-
 function getUserId($username){
 	$user=getUser($username);
 
@@ -87,6 +78,15 @@ function getUserId($username){
 		return $user['id'];
 	else
 		return false;
+}
+
+function getUserFullname($userID){
+	global $db;
+
+  $stmt = $db->prepare('SELECT fullname FROM users WHERE id= ?');
+  $stmt->execute(array($userID));
+
+  return $stmt->fetch()['fullname'];
 }
 
 // Returns image URL for the user specified
@@ -97,7 +97,11 @@ function getUserImageURL($userID){
 	$stmt = $db->prepare('SELECT DISTINCT images.url FROM users, images, users_images WHERE users_images.user_id = ? AND users_images.image_id = images.id');
 	$stmt->execute(array($userID));
  	
- 	return $stmt->fetch()['url'];
+ 	$result = $stmt->fetch()['url'];
+
+ 	if($result === null)
+ 		return 'images/default_profile_pic.jpg';
+ 	else
+ 		return $result;
 }
 
-?>
