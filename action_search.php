@@ -1,17 +1,17 @@
  <?php
-  include_once('database/connection.php');
+  include_once('init.php');
+  include_once('templates/header.php');
   include_once('database/tag.php');
   include_once('database/tagEvent.php');
   include_once('database/events.php');
+  global $delimiters;
 
-  $delimiters="[\s,\/,\|]";
-  if(isset($_POST)){
+  if(isset($_POST["tagsToSearch"])){
   $searchResults= array();
   $tags=preg_split( "/".$delimiters."+/",$_POST["tagsToSearch"] ); 
   $tagsToSearch=array();
   $searchByTitle=getEventByTitle($_POST["tagsToSearch"]);
 
-  //print_r($_POST);
 
     if($searchByTitle) {
       array_push ($searchResults,$searchByTitle);
@@ -51,5 +51,6 @@
         return ($tagEvent['id']==$tagEvent1['id']);
    }
    }
+   include_once("templates/footer.php");
 ?>
  

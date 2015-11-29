@@ -1,18 +1,18 @@
 	<?php
-	//include('templates/header.php');
-	  include_once('database/connection.php');
+	  include_once('init.php');
+ 	  include('templates/header.php');
 	  include_once('database/events.php');
 	  include_once('database/image.php');
 	  include_once('database/tagEvent.php');
 	  include_once('database/tag.php');
 	  
-	//print_r($_POST['action']);
+if(isset($_POST['action'])){
 
 		 
-	//	if ($_POST['action'] == "edit") {
+	 	if ($_POST['action'] == "edit") {
 			$path = "action_editEvents.php";
 			$button = "Edit";
-			$eventID = 1;//$_POST['id'];
+			$eventID =  $_POST['id'];
 			$required="";
 			$event = getEventByID($eventID);
 			$title = $event['title'];
@@ -20,8 +20,7 @@
 			$data = $event['data'];
 			$eventTags = "";
 			$tagIDs = getTagWithEvent($eventID);
-			print_r($tagIDs);
-			echo "<br>";
+		 
 			$sizeOfArray=count($tagIDs);
 			for($i=0;$i<$sizeOfArray;$i++) {
 				$tagId=$tagIDs[$i];
@@ -31,23 +30,19 @@
 				else
 					$eventTags = $eventTags.getTagDesc($tagId['tag_id']);
 			}
-			echo "<br>";
-			print_r($eventTags);
-			echo "<br>";
-			echo "<br>";
-			echo "<br>";
-	//	}
+		 
+ 	}
 
-	//	if ($_POST['action'] == "create") {
-			/**$path = "action_createEvents.php";
+	 	if ($_POST['action'] == "create") {
+			 $path = "action_createEvents.php";
 			$button = "Create";
 			$title = "";
 			$fullText = "";
 			$data = "";
 			$eventTags = "";
 			$required="required";
-			$eventID = "";*/
-	//	}
+			$eventID = ""; 
+	 	}
 
 
  ?>
@@ -91,5 +86,5 @@
 			</form>	
 <?php
 			  	include('templates/footer.php');
-
+}
 			  	?>

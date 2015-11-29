@@ -1,8 +1,7 @@
 <?php
   include_once('database/image.php');
   include_once('database/imageEvent.php');
-$imageExtension =array('jpg','png','jpeg','gif');
-$maxDistance=2;
+  include_once('auxiliar.php');
 
 function getEvent($id,$memberOfEvent)
 {
@@ -64,15 +63,9 @@ function eventsByTitleUserDate($data,$user_id){
 function similarEvents($title,$data,$user_id){
 
   $eventsUser=eventsByTitleUserDate($data,$user_id);
-  print_r($eventsUser);
-  echo "<br>";
-  print_r($title);
-  echo "<br>";
+ 
   
   foreach ($eventsUser as $event) {
-  print_r($event);
-  echo "<br>";
-  print_r(levenshtein($event['title'],$title));
       global $maxDistance;
       if(levenshtein($event['title'],$title)<=$maxDistance)  {
         return true;

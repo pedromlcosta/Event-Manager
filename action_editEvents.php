@@ -2,26 +2,21 @@
 print_r($_POST);
 
 if(!isset($_POST)){
-include_once('database/connection.php');
+include_once('init.php');
+ include('templates/header.php');
 include_once('database/events.php');
 include_once('database/tag.php');
 include_once('database/tagEvent.php');
-
+include_once('auxiliar.php');
 /*
 update ao private -> JS for button
-update ao titulo
-update ao texto
-update as tags -> outra tabela
-update a data
 update à imagem -> outra tabela 1 check if field sent
 
 o que será + efeciente?
 para texto fazer parse e subsituir
 private é só um field
-data same html already	 does as verificações
+ 
 see if os Max(id) estão direito
-
-verificar se os pares já existem e estão invisíveis para passar para viveis	
 check os gets por causa de o facto de o par de ids já existerem?
 */
 updateEvents('title',$_POST['eventID'],$_POST['title']);
@@ -44,7 +39,8 @@ updateEvents('data',$_POST['eventID'],$_POST['data']);
 	}
 
 
-$delimiters="[\s,\/,\|]";
+  global $delimiters;
+  
 $tags=preg_split( "/".$delimiters."+/",$_POST["eventTags"] ); 
 $tagsInEvent=getTagWithEvent($_POST['eventID']);
  $currentTagsInEventID=array();
@@ -87,6 +83,8 @@ print_r($tags);
 			print_r($tagsToRemove);
  	foreach($tagsToRemove as $tag){
 		removeTagEvents($tag);
-} 
 }
+
+}
+   include_once("templates/footer.php");
 ?>
