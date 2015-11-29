@@ -83,6 +83,10 @@ textarea {
 	text-decoration: none;
 }
 
+#tabs li a:hover {
+ background-color: #ffff80;
+}
+
 .tab-section {
 	background:#d4efff;
 	padding: 10px;
@@ -94,5 +98,3 @@ textarea {
 	color: #000;
 	border-bottom: 2px solid #d4efff;
 }
-
-ul #tabs a
