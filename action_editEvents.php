@@ -49,7 +49,6 @@ $tagsInEvent=getTagWithEvent($_POST['eventID']);
  }
 $tagsAfterEdit=array();
  
-print_r($tags);
 	foreach($tags as $tagDesc){
 
 		$tag=getTag($tagDesc);
@@ -64,23 +63,16 @@ print_r($tags);
 			}
 			else{
 				//TODO parse para segurança e ignorar casos de erro like so um espaço
-				 echo "<br> TAG DESC:";
 				createTag($tagDesc);
 				$tagId=getLastTagId();
-				print_r($tagId);
 				createTagEvent($tagId,$_POST['eventID']); 
 			}
 			array_push($tagsAfterEdit,$tagId );
 
 	}
-	echo "OVER <br>";
-			print_r($tagsAfterEdit);
-			 echo "<br>";
-			print_r($currentTagsInEventID);
+	 
 	 $tagsToRemove = array_diff($currentTagsInEventID, $tagsAfterEdit);
-		 
-			echo "<br>TAGS to remove: ";
-			print_r($tagsToRemove);
+		  
  	foreach($tagsToRemove as $tag){
 		removeTagEvents($tag);
 }

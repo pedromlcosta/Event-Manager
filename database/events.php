@@ -55,7 +55,7 @@ function getLastEventId(){
 
 function eventsByTitleUserDate($data,$user_id){
 
-    global $db;
+  global $db;
   $stmt = $db->prepare('SELECT  * FROM events WHERE data=? AND user_id=? AND visible=1');
   $stmt->execute(array($data,$user_id));  
   return $stmt->fetchAll();
@@ -69,7 +69,6 @@ function similarEvents($title,$data,$user_id){
       global $maxDistance;
       if(levenshtein($event['title'],$title)<=$maxDistance)  {
         return true;
-
         //Não vai ser sempre assim mas por simplicidiade apenas bloqueamos
       }
   }

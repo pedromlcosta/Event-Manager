@@ -7,8 +7,10 @@
   global $delimiters;
 
   if(isset($_POST["tagsToSearch"])){
+
   $searchResults= array();
   $tags=preg_split( "/".$delimiters."+/",$_POST["tagsToSearch"] ); 
+
   $tagsToSearch=array();
   $searchByTitle=getEventByTitle($_POST["tagsToSearch"]);
 
@@ -50,7 +52,8 @@
       
         return ($tagEvent['id']==$tagEvent1['id']);
    }
-   }
+
+}
    include_once("templates/footer.php");
 ?>
  
