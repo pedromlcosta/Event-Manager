@@ -1,5 +1,7 @@
 <?php
 print_r($_POST);
+
+if(!isset($_POST)){
 include_once('database/connection.php');
 include_once('database/events.php');
 include_once('database/tag.php');
@@ -83,8 +85,8 @@ print_r($tags);
 		 
 			echo "<br>TAGS to remove: ";
 			print_r($tagsToRemove);
- foreach($tagsToRemove as $tag){
-	updateTagEvents('visible','tag_id', $tag ,0);
+ 	foreach($tagsToRemove as $tag){
+		removeTagEvents($tag);
 } 
-
+}
 ?>

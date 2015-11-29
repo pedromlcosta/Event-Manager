@@ -64,4 +64,12 @@ function updateTagEvents($field,$idField,$id,$changes){
   $stmt->execute(array($changes,$id));
 
 }
+
+function removeTagEvents($id){
+  
+  global $db;
+  $stmt = $db->prepare('DELETE FROM   tags_events WHERE tag_id = ?');
+  $stmt->execute(array($id));
+
+}
 ?>

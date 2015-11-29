@@ -5,6 +5,7 @@
   include_once('database/events.php');
 
   $delimiters="[\s,\/,\|]";
+  if(isset($_POST)){
   $searchResults= array();
   $tags=preg_split( "/".$delimiters."+/",$_POST["tagsToSearch"] ); 
   $tagsToSearch=array();
@@ -48,6 +49,7 @@
      function compareEvents($tagEvent,$tagEvent1){
       
         return ($tagEvent['id']==$tagEvent1['id']);
+   }
    }
 ?>
  
