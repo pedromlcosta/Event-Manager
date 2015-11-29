@@ -192,14 +192,14 @@ function unhoveredLogin(event) {
 
 var loaded = null;
 
-function queryEventForTab(tabNumber){
+function queryEventForTab(tabID){
 	//If tab isn't loaded yet, loads it with info from queries
-	if (loaded != tabNumber) {
+	if (loaded != tabID) {
 		$.ajax({
 			url: 'action_selectTab.php',
 			type: 'POST',
 			data: {
-				tab: tabNumber
+				tab: tabID
 			},
 			dataType: 'text',
 			success: function(data, textStatus, jqXHR) {
@@ -207,7 +207,7 @@ function queryEventForTab(tabNumber){
 					// Array returned from action_selectTab
 					var events = JSON.parse(data);
 					console.log(events);
-					loaded = tabNumber;
+					loaded = tabID;
 					//TODO: funcao que recebe array e faz push dos eventos para a lista -> tem de levar pagina
 					//Para este efeito, criar variavel global da pagina em que esta...
 

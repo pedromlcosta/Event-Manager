@@ -1,4 +1,5 @@
 <div id="mainPage">
+ <!-- IF IS ON USER PAGE, USE ONLY A PART OF THIS? OR COPY IT TO USER_PAGE-->
 	<ul id="tabs">
 		<?php if(isLogged()): ?>
 		<li><a id="link_myEvents" href="#myEvents">My Events</a></li>

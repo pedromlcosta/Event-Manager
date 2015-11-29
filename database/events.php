@@ -135,4 +135,21 @@ function updateEvents($field,$id,$changes){
   $stmt->execute(array($changes,$id));
 
 }
+
+// QUERIES FOR MAIN TABS
+    //TODO: Adicionar filtros e ordenacao
+//Order is either 'date' or 'popularity'
+function getEventsUserAttending($userID, $order){
+  global $db;
+
+  if($order == 'date')
+    $queryOrder = 'ORDER BY data DESC';
+  else if ($order == 'popularity')
+    $queryOrder = 'ORDER BY count()';
+
+  $stmt = $db->prepare($query);
+  $stmt->execute(array($changes,$id));
+}
+
+
 ?>

@@ -17,6 +17,8 @@ DROP TABLE IF EXISTS users_images;
 DROP TABLE IF EXISTS events_types;
 DROP TABLE IF EXISTS events_users;
 DROP TABLE IF EXISTS events_images;
+DROP TRIGGER IF EXISTS userAddedToEvent;
+DROP TRIGGER IF EXISTS userRemovedFromEvent;
 
 -- TODO - por os UNIQUE necessarios e/ou os NOT NULL
 CREATE TABLE users (
@@ -33,6 +35,7 @@ CREATE TABLE events (
 	fulltext	VARCHAR,
 	private	Boolean,
 	data	Date,
+	numberUsers INTEGER DEFAULT 0,
 	user_id	VARCHAR,
 	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(user_id) REFERENCES users ( id ) ON UPDATE CASCADE ON DELETE CASCADE
@@ -105,6 +108,22 @@ CREATE TABLE tags_events (
 	PRIMARY KEY(event_id,tag_id)
 );
 
+CREATE TRIGGER userAddedToEvent
+AFTER INSERT ON EVENTS_USERS
+BEGIN
+UPDATE EVENTS
+SET numberUsers = (SELECT numberUsers FROM EVENTS WHERE EVENTS.id = new.event_id) + 1 
+WHERE EVENTS.id = new.event_id; -- da update a ultima a ser mudada
+END;
+
+CREATE TRIGGER userRemovedFromEvent
+AFTER DELETE ON EVENTS_USERS
+BEGIN
+UPDATE EVENTS
+SET numberUsers = (SELECT numberUsers FROM EVENTS WHERE EVENTS.id = old.event_id) - 1 
+WHERE EVENTS.id = old.event_id; -- da update a ultima a ser mudada
+END;
+
 INSERT INTO types (name) VALUES ('Party');
 INSERT INTO types (name) VALUES ('Concert');
 INSERT INTO types (name) VALUES ('Conference');
@@ -114,17 +133,21 @@ INSERT INTO types (name) VALUES ('Birthday');
 INSERT INTO types (name) VALUES ('Fundraising');
 INSERT INTO types (name) VALUES ('Hangout');
 
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 1', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,NULL,0,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 1', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,'2015-01-01',0,1);
 
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 2', 'Sed justo metus, suscipit non fermentum non, sagittis quis arcu. Curabitur tincidunt leo non blandit.',0,NULL,0,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 2', 'Sed justo metus, suscipit non fermentum non, sagittis quis arcu. Curabitur tincidunt leo non blandit.',0,'2012-01-01',0,1);
 
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 3', 'Maecenas ipsum elit, vestibulum id blandit vel, euismod ut urna. Sed nisi lectus.',0,NULL,0,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 3', 'Maecenas ipsum elit, vestibulum id blandit vel, euismod ut urna. Sed nisi lectus.',0,'2013-01-01',0,1);
 
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 4', 'Maecenas quis felis et tortor adipiscing blandit vel ac sem. Sed venenatis justo.',0,NULL,0,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 4', 'Maecenas quis felis et tortor adipiscing blandit vel ac sem. Sed venenatis justo.',0,'2014-01-01',0,1);
 
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 5', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,NULL,0,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 5', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2011-01-01',0,1);
 
-INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (3,1, 1, 1);
+INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (3, 1, 1, 1 );
+INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (3, 2, 1, 1 );
+INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (3, 3, 1, 1 );
+INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (1, 3, 1, 1 );
+DELETE FROM events_users WHERE event_id=3 AND user_id=1;
  
 INSERT INTO users(id,username,password,fullname,visible) VALUES (NULL,'admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3','admin',1); -- Password is tested hashed with SHA 1
 

@@ -11,5 +11,10 @@ function addUserToEvent($eventId,$userId){
 	$stmt = $db->prepare('INSERT INTO events_users (user_id,event_id,visible) VALUES(? ,?,?)');
   	$stmt->execute(array($userId,$eventId,1));
 }
-
+function removeUserFromEvent($eventId,$userId){
+	
+	global $db;
+	$stmt = $db->prepare('DELETE FROM events_users WHERE events_users.user_id = ? AND events_users.event_id = ?');
+  	$stmt->execute(array($userId,$eventId);
+}
 ?>
