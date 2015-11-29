@@ -1,7 +1,7 @@
 <?php
 function checkIfUserResgisteredInEvent($event,$userAttending){
 	global $db;
-  $stmt = $db->prepare('SELECT  * FROM events_users WHERE event= ? AND attending=?');
+  $stmt = $db->prepare('SELECT  * FROM events_users WHERE visible=1 AND event= ? AND attending=?');
   $stmt->execute(array($event,$userAttending));  
   return $stmt->fetch();
 }

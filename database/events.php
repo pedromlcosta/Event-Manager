@@ -1,8 +1,7 @@
 <?php
   include_once('database/image.php');
   include_once('database/imageEvent.php');
-$imageExtension =array('jpg','png','jpeg','gif');
-$maxDistance=2;
+  include_once('auxiliar.php');
 
 function getAllEvents(){
   global $db;
@@ -82,7 +81,7 @@ function getTypes(){
 
 function eventsByTitleUserDate($data,$user_id){
 
-    global $db;
+  global $db;
   $stmt = $db->prepare('SELECT  * FROM events WHERE data=? AND user_id=? AND visible=1');
   $stmt->execute(array($data,$user_id));  
   return $stmt->fetchAll();
@@ -90,19 +89,12 @@ function eventsByTitleUserDate($data,$user_id){
 function similarEvents($title,$data,$user_id){
 
   $eventsUser=eventsByTitleUserDate($data,$user_id);
-  print_r($eventsUser);
-  echo "<br>";
-  print_r($title);
-  echo "<br>";
+ 
   
   foreach ($eventsUser as $event) {
-  print_r($event);
-  echo "<br>";
-  print_r(levenshtein($event['title'],$title));
       global $maxDistance;
       if(levenshtein($event['title'],$title)<=$maxDistance)  {
         return true;
-
         //Não vai ser sempre assim mas por simplicidiade apenas bloqueamos
       }
   }
