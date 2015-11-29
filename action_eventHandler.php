@@ -1,15 +1,20 @@
 	<?php
 	  include_once('init.php');
- 	  include('templates/header.php');
 	  include_once('database/events.php');
 	  include_once('database/image.php');
 	  include_once('database/tagEvent.php');
 	  include_once('database/tag.php');
-	  
-if(isset($_POST['action'])){
+	  include_once("database/users.php");
+ 	  include('templates/header.php');
+ ?>
+ 		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+		<script type="text/javascript" src="events.js"></script>
+ 	 
+ <?php
+ if(isset($_POST['action'])){
 
-		 
-	 	if ($_POST['action'] == "edit") {
+  	if ($_POST['action'] == "edit") {
+
 			$path = "action_editEvents.php";
 			$button = "Edit";
 			$eventID =  $_POST['id'];
@@ -18,6 +23,7 @@ if(isset($_POST['action'])){
 			$title = $event['title'];
 			$fullText = $event['fulltext'];
 			$data = $event['data'];
+			$eventPrivate=$event['private'];
 			$eventTags = "";
 			$tagIDs = getTagWithEvent($eventID);
 		 
@@ -30,10 +36,9 @@ if(isset($_POST['action'])){
 				else
 					$eventTags = $eventTags.getTagDesc($tagId['tag_id']);
 			}
-		 
- 	}
+ 	} 
 
-	 	if ($_POST['action'] == "create") {
+	 	 if ($_POST['action'] == "create") {
 			 $path = "action_createEvents.php";
 			$button = "Create";
 			$title = "";
@@ -41,18 +46,24 @@ if(isset($_POST['action'])){
 			$data = "";
 			$eventTags = "";
 			$required="required";
+			$eventPrivate=0;
 			$eventID = ""; 
-	 	}
+	  	}
 
 
  ?>
-<form action="<?php echo $path ?>"  method="post">
+	<script type="text/javascript"  >
+		 var isPrivate = "<?php echo $eventPrivate; ?>";
+		  eventHandlers();
+	</script>
+
+ <form action="<?php echo $path ?>"  method="post">
 			 <fieldset>
    				 <legend>Event:</legend>
 			   <div>
 			      Title <input type="text" name="title" id="title" value="<?php echo $title ?>" required>
 			   </div>
-			   <div>
+			   <div id="privateCheckbox">
 			      Private <input type="checkbox" name="private" id="private"   > 
 			   </div>
 

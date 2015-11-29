@@ -32,7 +32,7 @@
            <div>
               <input type=hidden value=<?php echo $event['id']?> tag="id"  name="id">
            </div>
-        <?php    if(isOwner($_POST['username']) && $_POST['loggedIn'] ){ ?>
+        <?php    if(isOwner($_SESSION['userID']) && $_POST['loggedIn'] ){ ?>
            <div class="button">
            <button type="submit">Edit</button>
            </div>

@@ -3,11 +3,12 @@ print_r($_POST);
 
 if(!isset($_POST)){
 include_once('init.php');
- include('templates/header.php');
+include('templates/header.php');
 include_once('database/events.php');
 include_once('database/tag.php');
 include_once('database/tagEvent.php');
 include_once('auxiliar.php');
+
 /*
 update ao private -> JS for button
 update à imagem -> outra tabela 1 check if field sent
