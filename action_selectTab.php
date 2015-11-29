@@ -3,25 +3,29 @@
 	include_once('database/users.php');
 	include_once('database/events.php');
 
+    $result = array();
 
 	// REGISTER USER, IF VALID INFO
 	if(isset($_POST['tab'])){
 
 		switch ($_POST['tab']) {
-    case 1:
+
+    case 'link_myEvents':
         $result = array("Tab1");
         break;
-    case 2:
+    case 'link_hostingEvents':
         $result = array("Tab2");
         break;
-    case 3:
+    case 'link_invitedEvents':
         $result = array("Tab3");
         break;
-    case 4:
+    case 'link_otherEvents':
         $result = array("Tab4");
         break;
-    case 5:
+    case 'link_customSearch':
         $result = array("Tab5");
+        break;
+    default:
         break;
 	}
 		

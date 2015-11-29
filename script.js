@@ -190,19 +190,16 @@ function unhoveredLogin(event) {
 
 // TABS HANDLERS
 
-//ONLY IF :first.click!!!!
 var loaded = null;
 
-function myEventsTabHandler(event) {
-
-	//TODO: por este codigo repetido numa funcao
-
-	if (loaded != '1') {
+function queryEventForTab(tabNumber){
+	//If tab isn't loaded yet, loads it with info from queries
+	if (loaded != tabNumber) {
 		$.ajax({
 			url: 'action_selectTab.php',
 			type: 'POST',
 			data: {
-				tab: '1'
+				tab: tabNumber
 			},
 			dataType: 'text',
 			success: function(data, textStatus, jqXHR) {
@@ -210,7 +207,7 @@ function myEventsTabHandler(event) {
 					// Array returned from action_selectTab
 					var events = JSON.parse(data);
 					console.log(events);
-					loaded = '1';
+					loaded = tabNumber;
 					//TODO: funcao que recebe array e faz push dos eventos para a lista -> tem de levar pagina
 					//Para este efeito, criar variavel global da pagina em que esta...
 
@@ -228,126 +225,11 @@ function myEventsTabHandler(event) {
 	}
 }
 
-function hostingEventsTabHandler(event) {
-
-	if (loaded != '2') {
-		$.ajax({
-			url: 'action_selectTab.php',
-			type: 'POST',
-			data: {
-				tab: '2'
-			},
-			dataType: 'text',
-			success: function(data, textStatus, jqXHR) {
-				if (typeof data.error === 'undefined') {
-					// Array returned from action_selectTab
-					var events = JSON.parse(data);
-					console.log(events);
-					loaded = '2';
-				} else {
-					// Handle errors here
-					console.log('ERRORS: ' + data.error);
-				}
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				// Handle errors here
-				console.log('ERRORS: ' + textStatus);
-				// STOP LOADING SPINNER
-			}
-		});
-	}
+// Uses ID of tab to get the number of it
+function eventTabHandler(event){
+	queryEventForTab(event.target.id);
 }
 
-function invitedEventsTabHandler(event) {
-
-	if (loaded != '3') {
-		$.ajax({
-			url: 'action_selectTab.php',
-			type: 'POST',
-			data: {
-				tab: '3'
-			},
-			dataType: 'text',
-			success: function(data, textStatus, jqXHR) {
-				if (typeof data.error === 'undefined') {
-					// Array returned from action_selectTab
-					var events = JSON.parse(data);
-					console.log(events);
-					loaded = '3';
-				} else {
-					// Handle errors here
-					console.log('ERRORS: ' + data.error);
-				}
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				// Handle errors here
-				console.log('ERRORS: ' + textStatus);
-				// STOP LOADING SPINNER
-			}
-		});
-	}
-}
-
-function otherEventsTabHandler(event) {
-
-	if (loaded != '4') {
-		$.ajax({
-			url: 'action_selectTab.php',
-			type: 'POST',
-			data: {
-				tab: '4'
-			},
-			dataType: 'text',
-			success: function(data, textStatus, jqXHR) {
-				if (typeof data.error === 'undefined') {
-					// Array returned from action_selectTab
-					var events = JSON.parse(data);
-					console.log(events);
-					loaded = '4';
-				} else {
-					// Handle errors here
-					console.log('ERRORS: ' + data.error);
-				}
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				// Handle errors here
-				console.log('ERRORS: ' + textStatus);
-				// STOP LOADING SPINNER
-			}
-		});
-	}
-}
-
-function customSearchTabHandler(event) {
-
-	if (loaded != '5') {
-
-		$.ajax({
-			url: 'action_selectTab.php',
-			type: 'POST',
-			data: {
-				tab: '5'
-			},
-			dataType: 'text',
-			success: function(data, textStatus, jqXHR) {
-				if (typeof data.error === 'undefined') {
-					// Array returned from action_selectTab
-					var events = JSON.parse(data);
-					console.log(events);
-					loaded = '5';
-				} else {
-					// Handle errors here
-					console.log('ERRORS: ' + data.error);
-				}
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				// Handle errors here
-				console.log('ERRORS: ' + textStatus);
-				// STOP LOADING SPINNER
-			}
-		});
-	}
-}
 
 function onReadyAddHandlers() {
 	//On doc ready, add handlers
@@ -373,15 +255,7 @@ function onReadyAddHandlers() {
 		//LOGIN BUTTON HOVER HANDLER
 		$('#login_button').hover(hoveredLogin, unhoveredLogin);
 
-		$('#link_myEvents').click(myEventsTabHandler);
-
-		$('#link_hostingEvents').click(hostingEventsTabHandler);
-
-		$('#link_invitedEvents').click(invitedEventsTabHandler);
-
-		$('#link_otherEvents').click(otherEventsTabHandler);
-
-		$('#link_customSearch').click(customSearchTabHandler);
+		$('#tabs a').click(eventTabHandler);
 
 		//TABS DISPLAY
 		$('.tab-section').hide();

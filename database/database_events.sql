@@ -79,6 +79,8 @@ CREATE TABLE events_types (
 CREATE TABLE events_users (
 	event_id	INTEGER,
 	user_id	INTEGER,
+	invited Boolean,
+	attending Boolean,
 	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(user_id) REFERENCES users ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(event_id) REFERENCES events ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -122,15 +124,17 @@ INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento
 
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 5', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,NULL,0,1);
 
-INSERT INTO events_types (event_id, type_id) VALUES (1,1);
-INSERT INTO events_types (event_id, type_id) VALUES (1,2);
-INSERT INTO events_types (event_id, type_id) VALUES (1,3);
-INSERT INTO events_types (event_id, type_id) VALUES (1,4);
-INSERT INTO events_types (event_id, type_id) VALUES (1,5);
+INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (3,1, 1, 1);
  
-INSERT INTO users(id,username,password,fullname,visible) VALUES (NULL,'admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3',NULL,1); -- Password is tested hashed with SHA 1
+INSERT INTO users(id,username,password,fullname,visible) VALUES (NULL,'admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3','admin',1); -- Password is tested hashed with SHA 1
 
-INSERT INTO users(id,username,password,fullname,visible) VALUES(NULL,'Filipe','2e6f9b0d5885b6010f9167787445617f553a735f',NULL,1);
+INSERT INTO users(id,username,password,fullname,visible) VALUES(NULL,'Filipe','2e6f9b0d5885b6010f9167787445617f553a735f','Filipe Moreira',1);
+
+INSERT INTO users(id,username,password,fullname,visible) VALUES(NULL,'Pedro','5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8','Pedro Costa',1);
+
+INSERT INTO events_types (event_id, type_id) VALUES (1,1);
+INSERT INTO events_types (event_id, type_id) VALUES (2,2);
+INSERT INTO events_types (event_id, type_id) VALUES (3,3);
 
 INSERT INTO tags (description) VALUES ('concerto');
 INSERT INTO tags (description) VALUES ('live');
