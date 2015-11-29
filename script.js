@@ -190,6 +190,7 @@ function unhoveredLogin(event) {
 
 // TABS HANDLERS
 
+var EVENTS_PER_PAGE = 10
 var loaded = null;
 
 function queryEventForTab(tabID){
@@ -206,7 +207,10 @@ function queryEventForTab(tabID){
 				if (typeof data.error === 'undefined') {
 					// Array returned from action_selectTab
 					var events = JSON.parse(data);
-					console.log(events);
+					//console.log(events);
+					for(var i = 0; i<events.length; i++){
+						console.log(events[i]['title']);
+					}
 					loaded = tabID;
 					//TODO: funcao que recebe array e faz push dos eventos para a lista -> tem de levar pagina
 					//Para este efeito, criar variavel global da pagina em que esta...

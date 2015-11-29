@@ -139,17 +139,21 @@ function updateEvents($field,$id,$changes){
 // QUERIES FOR MAIN TABS
     //TODO: Adicionar filtros e ordenacao
 //Order is either 'date' or 'popularity'
-function getEventsUserAttending($userID, $order){
+function getEventsUserAttending($userID, $order, $events_per_page, $page){
   global $db;
-
+  
   if($order == 'date')
-    $queryOrder = 'ORDER BY data DESC';
+    $queryOrder = ' ORDER BY data DESC';
   else if ($order == 'popularity')
-    $queryOrder = 'ORDER BY count()';
+    $queryOrder = ' ORDER BY numberUsers DESC';
+
+  $queryLimit =  ' LIMIT ? OFFSET ?';
+
+  $query = 'SELECT * FROM events' . $queryOrder . $queryLimit;
 
   $stmt = $db->prepare($query);
-  $stmt->execute(array($changes,$id));
+  $stmt->execute(array($events_per_page,  ($page-1) * $events_per_page));
+
+  return $stmt->fetchAll();
 }
-
-
 ?>

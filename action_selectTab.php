@@ -11,19 +11,19 @@
 		switch ($_POST['tab']) {
 
     case 'link_myEvents':
-        $result = array("Tab1");
+        $result = getEventsUserAttending(1,'date', 10, 1);
         break;
     case 'link_hostingEvents':
-        $result = array("Tab2");
+        $result = getEventsUserAttending(1,'date', 5, 0);
         break;
     case 'link_invitedEvents':
-        $result = array("Tab3");
+        $result = getEventsUserAttending(1,'date', 5, 0);
         break;
     case 'link_otherEvents':
-        $result = array("Tab4");
+        $result = getEventsUserAttending(1,'date', 5, 0);
         break;
     case 'link_customSearch':
-        $result = array("Tab5");
+        $result = getEventsUserAttending(1,'date', 5, 0);
         break;
     default:
         break;

@@ -33,11 +33,6 @@
 	<?php include('submit.php'); ?>
 </div>
 <ul id="event_list">
-	<?php
-	$events = getAllEvents();
-	for($i = 0; $i < count($events); $i++){
-		echo "<li>".$events[$i]['title'] ."</li>";
-	}
-	?>
+	
 </ul>
 </div>
