@@ -9,8 +9,14 @@ function checkIfUserResgisteredInEvent($event,$userAttending){
 function addUserToEvent($eventId,$userId){
 	
 	global $db;
-	$stmt = $db->prepare('INSERT INTO events_users (user_id,event_id,visible) VALUES(? ,?,?)');
-  	$stmt->execute(array($userId,$eventId,1));
+	$stmt = $db->prepare('INSERT INTO events_users (user_id,event_id,visible,attending,invited) VALUES(?,?,?,?)');
+  	$stmt->execute(array($userId,$eventId,1,1,0));
+}
+function inviteUserToEvent($eventId,$userId){
+	
+	global $db;
+	$stmt = $db->prepare('INSERT INTO events_users (user_id,event_id,visible,attending,invited) VALUES(?,?,?,?)');
+  	$stmt->execute(array($userId,$eventId,1,0,1));
 }
 function removeUserFromEvent($eventId,$userId){
 	

@@ -38,6 +38,9 @@
            <div class="editButton">
            <button type="submit">Edit</button>
            </div>
+           <div class="deleteButton">
+           <button type="submit">Delete</button>
+           </div>
          <?php   }?>
         </form>
         </div>

@@ -1,14 +1,16 @@
 <?php
 print_r($_POST);
 
-if(!isset($_POST)){
+include_once('genericStart.html');	
 include_once('init.php');
 include('templates/header.php');
+
+if(isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['eventID'])  ){
+
 include_once('database/events.php');
 include_once('database/tag.php');
 include_once('database/tagEvent.php');
 include_once('auxiliar.php');
-
 /*
 update ao private -> JS for button
 update à imagem -> outra tabela 1 check if field sent

@@ -2,8 +2,8 @@
 
 function createTag($args){
   global $db;
-  $stmt = $db->prepare('INSERT INTO tags (description) VALUES(?,?)');
-  $stmt->execute(array( $args, 1));
+  $stmt = $db->prepare('INSERT INTO tags (description) VALUES(?)');
+  $stmt->execute(array( $args));
   return getTagId($args);
 }
 

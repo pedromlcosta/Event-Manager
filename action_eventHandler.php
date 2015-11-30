@@ -1,17 +1,18 @@
 	<?php
+	  include_once('genericStart.html');
 	  include_once('init.php');
 	  include_once('database/events.php');
 	  include_once('database/image.php');
 	  include_once('database/tagEvent.php');
 	  include_once('database/tag.php');
 	  include_once("database/users.php");
- 	  include('templates/header.php');
+ 	  include_once('templates/header.php');
  ?>
  		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 		<script type="text/javascript" src="events.js"></script>
  	 
  <?php
- if(isset($_POST['action'])){
+ if(isset($_POST['action']) && isLogged()){
 
   	if ($_POST['action'] == "edit") {
 
@@ -91,7 +92,7 @@
 				</div>
 				<br>
 			   <div class="button">
-			      <button type="submit"><?php echo $button?> </button>
+			      <!-- onclick="history.go(-1); .-->
 			   </div>
 			   </fieldset>
 			</form>	

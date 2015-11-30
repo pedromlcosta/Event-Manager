@@ -1,13 +1,13 @@
 <?php
-include_once('init.php');
+include_once('genericStart.html');
+include_once('init.php'); // connects to the database
 include_once('database/users.php');
 include_once('database/events.php');
 include_once('database/tag.php');
 include_once('database/tagEvent.php');
 include_once('database/usersEvent.php');
-include('templates/header.php');
 
- if (isset($_SESSION) && isset($_SESSION['userID'])) {
+ if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isLogged() ) {
 			//print_r($_POST);
 			$privateValue;
 			if(!isset($_POST['private']))
@@ -29,8 +29,8 @@ include('templates/header.php');
 
 						}
 			  } 
-			  //falta acrescentar as tretas do path e isso
-			  $image=getImageByPath($_POST['image']);
+			  //TODO falta acrescentar as tretas do path e isso
+			  /*$image=getImageByPath($_POST['image']);
 				if(!$image){
 					createImage($_POST['image']);
 					$imageId=getLastimageId();
@@ -38,7 +38,7 @@ include('templates/header.php');
 				else{
 					$imageId=$image['id'];
 				}
-				createImageEvent($eventCreatedId['id'],$imageId);
+				createImageEvent($eventCreatedId['id'],$imageId);*/
 	 }
 
 		   function parseCheckBox($value){
