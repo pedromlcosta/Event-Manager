@@ -1,12 +1,14 @@
  <?php
   include_once('init.php');
+  include_once("database/users.php");
   include_once('templates/header.php');
   include_once('database/tag.php');
   include_once('database/tagEvent.php');
   include_once('database/events.php');
+  include_once('database/usersEvent.php');
   global $delimiters;
 
-  if(isset($_POST["tagsToSearch"])){
+  if(isset($_POST["tagsToSearch"]) && !(empty($_POST["tagsToSearch"])&& empty($_POST['dateTag'])) ){
 
   $searchResults= array();
   $tags=preg_split( "/".$delimiters."+/",$_POST["tagsToSearch"] ); 
