@@ -35,4 +35,7 @@
 <ul id="event_list">
 	
 </ul>
+<div id="page_buttons">
+	SIMULATE BUTTONS HERE
+</div>
 </div>

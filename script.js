@@ -190,7 +190,11 @@ function unhoveredLogin(event) {
 
 // TABS HANDLERS
 
+var order = 'Date';
+var filters = [];
 var EVENTS_PER_PAGE = 10
+var currentPage = 1;
+var totalPages = 1;
 var loaded = null;
 
 //TODO: maybe, add page and events_per_page arguments?
@@ -249,8 +253,11 @@ function queryEventForTab(tabID) {
 	}
 }
 
-// Uses ID of tab to get the number of it
+// Clicked a tab. Gets events for it and displays them
 function eventTabHandler(event) {
+	current_page = 1;
+	order = $('.sortSelection input[name=sortType]:checked').val();
+	console.log(order);
 	queryEventForTab(event.target.id);
 }
 
