@@ -6,10 +6,12 @@
     foreach($searchResults  as $event){
 
       $registeredInEvent=0;
+      print_r($_POST);
         //change it does matter if he is logged in but not in the way I did it
       if($_POST['loggedIn']){
         //might change accordingly if we add an id to user
         $registeredInEvent=checkIfUserResgisteredInEvent($event['id'],$_POST['username']);
+        print_r($registeredInEvent);
 
       }
 
@@ -33,7 +35,7 @@
               <input type=hidden value=<?php echo $event['id']?> tag="id"  name="id">
            </div>
         <?php    if(isOwner($_SESSION['userID']) && $_POST['loggedIn'] ){ ?>
-           <div class="button">
+           <div class="editButton">
            <button type="submit">Edit</button>
            </div>
          <?php   }?>
