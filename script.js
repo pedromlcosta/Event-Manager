@@ -193,7 +193,24 @@ function unhoveredLogin(event) {
 var EVENTS_PER_PAGE = 10
 var loaded = null;
 
-function queryEventForTab(tabID){
+//TODO: maybe, add page and events_per_page arguments?
+function listEventsUnderTab(events) {
+	var cList = $('#event_list');
+	cList.empty();
+
+	$.each(events, function(i) {
+		var li = $('<li/>')
+			.addClass('event-item')
+			.attr('role', 'menuitem')
+			.appendTo(cList);
+		var aaa = $('<a/>')
+			.addClass('ui-all')
+			.text(events[i]['title'])
+			.appendTo(li);
+	});
+}
+
+function queryEventForTab(tabID) {
 	//If tab isn't loaded yet, loads it with info from queries
 	if (loaded != tabID) {
 		$.ajax({
@@ -207,10 +224,13 @@ function queryEventForTab(tabID){
 				if (typeof data.error === 'undefined') {
 					// Array returned from action_selectTab
 					var events = JSON.parse(data);
-					//console.log(events);
-					for(var i = 0; i<events.length; i++){
+					listEventsUnderTab(events);
+					console.log(events);
+					/*
+					for (var i = 0; i < events.length; i++) {
 						console.log(events[i]['title']);
 					}
+					*/
 					loaded = tabID;
 					//TODO: funcao que recebe array e faz push dos eventos para a lista -> tem de levar pagina
 					//Para este efeito, criar variavel global da pagina em que esta...
@@ -230,7 +250,7 @@ function queryEventForTab(tabID){
 }
 
 // Uses ID of tab to get the number of it
-function eventTabHandler(event){
+function eventTabHandler(event) {
 	queryEventForTab(event.target.id);
 }
 

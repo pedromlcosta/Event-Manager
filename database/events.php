@@ -137,9 +137,10 @@ function updateEvents($field,$id,$changes){
 }
 
 // QUERIES FOR MAIN TABS
-    //TODO: Adicionar filtros e ordenacao
-//Order is either 'date' or 'popularity'
-function getEventsUserAttending($userID, $order, $events_per_page, $page){
+   
+// Gets events user is connected to - TODO: decide if attends only or attends+invited
+function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_filters){
+  
   global $db;
   
   if($order == 'date')
@@ -149,11 +150,33 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page){
 
   $queryLimit =  ' LIMIT ? OFFSET ?';
 
-  $query = 'SELECT * FROM events' . $queryOrder . $queryLimit;
+  $querySelect = 'SELECT DISTINCT events.* FROM users, events, events_users, events_types, types WHERE events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id';
 
+  $nr_filters = count($type_filters);
+  
+  if($nr_filters > 0){
+    $querySelect = $querySelect . ' AND (';
+
+    for($i = 0; $i < $nr_filters-1; $i++){
+      $querySelect = $querySelect . " types.name = ? OR ";
+    }
+    $querySelect = $querySelect . 'types.name= ?)';
+  }else{
+    // NO TYPES SELECTED! THEREFORE NO EVENTS SHOULD SHOW!
+    return array();
+  }
+
+  $query = $querySelect . $queryOrder . $queryLimit;
+
+  $executeArray = array_merge(array($userID) , $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
+  
   $stmt = $db->prepare($query);
-  $stmt->execute(array($events_per_page,  ($page-1) * $events_per_page));
-
+  
+  $stmt->execute($executeArray);
   return $stmt->fetchAll();
+  
+  //return array($query);
 }
+
+
 ?>
