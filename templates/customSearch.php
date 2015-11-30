@@ -1,10 +1,28 @@
-<div class="tagsSearch">
-	<textarea name="tagsToSearch" id="tagsToSearch" placeholder="Tags">
-	</textarea>
-</div>
+      <form action="action_search.php" method="post">
+            <div>
+             <textarea name="tagsToSearch" id="tagsToSearch" placeholder="Tags"></textarea>
+            </div>
+            <div>
+            <label for="dateTag">Date:</label>
+             <input type="date"  name="dateTag" id="dateTag" >  
+            </div>
 
-<div class="date">
-	<label>Date:
-	<input type="date"  name="dateTag" id="dateTag" > 
-	</label> 
-</div>
+            <?php 
+            $loggedIn=0;
+            $username='';  
+            if (isLogged()) {
+                $loggedIn=1; 
+               $username=$_SESSION['userID'];
+                 
+            } 
+            ?>
+            <div>
+             <input type="hidden" name="username" id="username" value="<?php echo $username ?>">
+              <input type="hidden" name="loggedIn" id="loggedIn" value="<?php echo $loggedIn ?>">
+             </div>
+            <div class="button">
+                <button type="submit">Search</button>
+            </div>
+
+      </form>
+     
