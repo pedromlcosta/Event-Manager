@@ -1,11 +1,11 @@
 <?php
 include_once('init.php');
- include('templates/header.php');
+include_once('database/users.php');
 include_once('database/events.php');
 include_once('database/tag.php');
 include_once('database/tagEvent.php');
-include_once('database/users.php');
 include_once('database/usersEvent.php');
+include('templates/header.php');
 
  if (isset($_SESSION) && isset($_SESSION['userID'])) {
 			//print_r($_POST);

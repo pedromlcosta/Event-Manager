@@ -16,6 +16,6 @@ function removeUserFromEvent($eventId,$userId){
 	
 	global $db;
 	$stmt = $db->prepare('DELETE FROM events_users WHERE events_users.user_id = ? AND events_users.event_id = ?');
-  	$stmt->execute(array($userId,$eventId);
+  	$stmt->execute(array($userId,$eventId));
 }
 ?>
