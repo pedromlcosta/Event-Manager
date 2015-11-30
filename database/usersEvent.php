@@ -2,7 +2,7 @@
 //TODO check where I use checkIfUser (Filipe)
 function checkIfUserResgisteredInEvent($event,$userAttending){
 	global $db;
-  $stmt = $db->prepare('SELECT  * FROM events_users WHERE visible=1 AND event_id= ? AND attending=?');
+  $stmt = $db->prepare('SELECT  attending FROM events_users WHERE visible=1 AND event_id= ? AND user_id=?');
   $stmt->execute(array($event,$userAttending));  
   return $stmt->fetch();
 }

@@ -178,5 +178,9 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
   //return array($query);
 }
 
-
+    function compareEvents($tagEvent, $tagEvent1)
+    {
+      return ($tagEvent['id'] == $tagEvent1['id']);
+    }
+ 
 ?>

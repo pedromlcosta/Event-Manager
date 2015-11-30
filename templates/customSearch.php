@@ -16,10 +16,6 @@
                  
             } 
             ?>
-            <div>
-             <input type="hidden" name="username" id="username" value="<?php echo $username ?>">
-              <input type="hidden" name="loggedIn" id="loggedIn" value="<?php echo $loggedIn ?>">
-             </div>
             <div class="button">
                 <button type="submit">Search</button>
             </div>
