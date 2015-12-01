@@ -190,14 +190,41 @@ function unhoveredLogin(event) {
 
 // TABS HANDLERS
 
+var userID = null;
+var selectedTab = null;
 var order = 'Date';
-var filters = [];
-var EVENTS_PER_PAGE = 10
+var typeFilters = [];
+var EVENTS_PER_PAGE = 2;
 var currentPage = 1;
 var totalPages = 1;
 var loaded = null;
 
-//TODO: maybe, add page and events_per_page arguments?
+function updatePageButtons() {
+	console.log("currentPage on update buttons: " + currentPage);
+	//Number of pages it can go back or forward with the buttons, at once
+	var numberBackForward = 2;
+
+	numberBackForward = numberBackForward > totalPages - 1 ? totalPages - 1 : numberBackForward;
+
+	// Se ultrapassar os limites que devia (1a pagina possivel e ultima), nao consegue
+	var firstButton = currentPage - numberBackForward <= 1 ? 1 : currentPage - numberBackForward;
+	var lastButton = currentPage + numberBackForward >= totalPages ? totalPages : currentPage + numberBackForward;
+
+	$('#page_buttons').empty();
+	for (var i = firstButton; i <= lastButton; i++) {
+		// We do not want page 0. You could have started with i = 1 too.
+		$('#page_buttons').append('<a href="#" class="pageClick">' + i + '</a>');
+	}
+	$('.pageClick').on('click', function(e) {
+		e.preventDefault();
+		currentPage = $(this).index() + 1;
+		eventTabHandler('undefined', true);
+		//showPage($(this).index() + 1);
+	})
+
+	//$(#page_buttons);
+}
+
 function listEventsUnderTab(events) {
 	var cList = $('#event_list');
 	cList.empty();
@@ -214,31 +241,48 @@ function listEventsUnderTab(events) {
 	});
 }
 
-function queryEventForTab(tabID) {
-	//If tab isn't loaded yet, loads it with info from queries
-	if (loaded != tabID) {
+function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
+
+	// Run Handler only if: wants to update info or current tab isn't yet loaded with info
+	if (loaded != tabID || update == true) {
+
+		//Can only send text, array has to go on JSON format!
+		var tempFilters = JSON.stringify(eventTypeFilters);
 		$.ajax({
 			url: 'action_selectTab.php',
 			type: 'POST',
 			data: {
-				tab: tabID
+				tab: tabID,
+				order: eventOrder,
+				eventsPerPage: EVENTS_PER_PAGE,
+				page: currentPage,
+				typeFilters: tempFilters
 			},
-			dataType: 'text',
+			dataType: 'json', // -> automatically parses response data!
 			success: function(data, textStatus, jqXHR) {
 				if (typeof data.error === 'undefined') {
-					// Array returned from action_selectTab
-					var events = JSON.parse(data);
-					listEventsUnderTab(events);
-					console.log(events);
-					/*
-					for (var i = 0; i < events.length; i++) {
-						console.log(events[i]['title']);
-					}
-					*/
-					loaded = tabID;
-					//TODO: funcao que recebe array e faz push dos eventos para a lista -> tem de levar pagina
-					//Para este efeito, criar variavel global da pagina em que esta...
+					// 1st Item returned is the total of events
 
+					if (data.length > 0) {
+
+						//Update total number of pages
+						totalPages = Math.ceil(data[data.length - 1]['numEvents'] / EVENTS_PER_PAGE);
+						console.log("Number of events: " + data[data.length - 1]['numEvents']);
+
+						data.pop();
+					}
+					console.log("Total Pages: " + totalPages);
+
+					//IF USER CLICKED ON A NO LONGER EXISTANT PAGE (page 5, but the only event there was deleted meanwhile)
+					if (currentPage > totalPages) {
+						currentPage = totalPages;
+						queryEventForTab(tabID, eventOrder, eventTypeFilters, true);
+					} else {
+					//Else, user clicked on a valid page and updates/shows as it should
+						updatePageButtons();
+						listEventsUnderTab(data);
+						loaded = tabID;
+					}
 				} else {
 					// Handle errors here
 					console.log('ERRORS: ' + data.error);
@@ -246,6 +290,7 @@ function queryEventForTab(tabID) {
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				// Handle errors here
+				console.log(jqXHR.responseText);
 				console.log('ERRORS: ' + textStatus);
 				// STOP LOADING SPINNER
 			}
@@ -254,13 +299,33 @@ function queryEventForTab(tabID) {
 }
 
 // Clicked a tab. Gets events for it and displays them
-function eventTabHandler(event) {
-	current_page = 1;
-	order = $('.sortSelection input[name=sortType]:checked').val();
-	console.log(order);
-	queryEventForTab(event.target.id);
-}
+function eventTabHandler(event, update) {
+	
+	var eventsUpdate = null;
 
+	if (event ==undefined || event.data == undefined){
+		var eventsUpdate = update != undefined ? update : false;
+	}else{
+		var eventsUpdate = event.data.update != undefined ? event.data.update : false;
+	}
+
+	// Updating order selected -> selects currentTab div, then the input of it
+	order = $('.tab-section.current .sortSelection input[name=sortType]:checked').val();
+	// Updating type of events selected
+	typeFilters = $('.tab-section.current input:checkbox:checked').map(function() {
+		return $(this).val();
+	}).get();
+
+	/* Debugging
+    console.log(selectedTab);
+	console.log(order);
+	console.log(typeFilters);
+	*/
+
+	// Querying Database for the tab events
+	queryEventForTab(selectedTab, order, typeFilters, eventsUpdate);
+
+}
 
 function onReadyAddHandlers() {
 	//On doc ready, add handlers
@@ -286,17 +351,33 @@ function onReadyAddHandlers() {
 		//LOGIN BUTTON HOVER HANDLER
 		$('#login_button').hover(hoveredLogin, unhoveredLogin);
 
-		$('#tabs a').click(eventTabHandler);
-
 		//TABS DISPLAY
 		$('.tab-section').hide();
 
+		//IMPORTANT: ORDER OF THESE NEXT 3 FUNCTIONS IS IMPORTANT!
 		$('#tabs a').click(function(e) {
+			currentPage = 1;
+			// Reset the current class from link and div
+			// Div current removed first, otherwise there would be no current href to get to it
+			$($('#tabs a.current').attr('href')).removeClass('current');
 			$('#tabs a.current').removeClass('current');
+
+			// Hide divs from previous tab and show the new one
 			$('.tab-section:visible').hide();
 			$(this.hash).show();
+
+			// Update current class from link and div
 			$(this).addClass('current');
+			$($('#tabs a.current').attr('href')).addClass('current');
+			selectedTab = $('#tabs a.current').attr('href');
 			e.preventDefault();
-		}).filter(':first').click();
+		})
+
+		$('#tabs a').click(eventTabHandler);
+
+		$('.typeSelection label').click({update: true}, eventTabHandler);
+		$('.sortSelection label').click({update: true}, eventTabHandler);
+
+		$('#tabs a').filter(':first').click();
 	});
 }

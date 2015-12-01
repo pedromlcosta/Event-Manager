@@ -1,3 +1,4 @@
+<script type="text/javascript" src="script.js"></script>
 <body>
   <div id="main">
     <div id="header">
@@ -14,6 +15,7 @@
 
           <button type="button" id="register_button"> REGISTER </button>
           <button type="button" id="login_button"> LOGIN </button>
+
           <div id="register">          
             <form action="action_register.php" method="post" enctype="multipart/form-data">
               <br>
@@ -57,39 +59,20 @@
                 <button type="submit"> My Page </button>
               </form>
             </div>
+        <div id="createEventForm">
+        <form  action="action_eventHandler.php" method="post">
+          <input type="hidden" name="action" id="action" value="create">
 
+           <div class="button">
+              <button type="submit" id="create_event"> Create Events </button>
+          </div>
+           </form>
           <?php } ?>
       </div> <!-- user_fields end div -->
-      <div id="search">
-      <form action="action_search.php" method="post">
-            <div>
-                <textarea name="tagsToSearch" id="tagsToSearch" placeholder="Tags">
-                </textarea>
-            </div>
-            
-            <div>
-            <label for="dateTag">Date:</label>
-             <input type="date"  name="dateTag" id="dateTag" >  
-            </div>
-
-            <?php 
-            $loggedIn=0;
-            $username='';  
-            if (isLogged()) {
-                $loggedIn=1; 
-               $username=$_SESSION['userID'];
-                 
-            } 
-            ?>
-            <div>
-             <input type="hidden" name="username" id="username" value="<?php echo $username ?>">
-              <input type="hidden" name="loggedIn" id="loggedIn" value="<?php echo $loggedIn ?>">
-             </div>
-            <div class="button">
-                <button type="submit">Search</button>
-            </div>
-      </form>
-      </div> <!-- search end div -->
+  
+      
+       
+      </div>
     </div>   <!-- header end div -->      
       
   <?php if(!isLogged()){ ?>

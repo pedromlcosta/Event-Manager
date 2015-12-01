@@ -143,39 +143,56 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
   
   global $db;
   
-  if($order == 'date')
+  if($order == 'Date')
     $queryOrder = ' ORDER BY data DESC';
-  else if ($order == 'popularity')
+  else if ($order == 'Popularity')
     $queryOrder = ' ORDER BY numberUsers DESC';
 
   $queryLimit =  ' LIMIT ? OFFSET ?';
 
-  $querySelect = 'SELECT DISTINCT events.* FROM users, events, events_users, events_types, types WHERE events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id';
+  //TODO: DEFAULT EVENT IMAGE!!! -> Creating event without image, then the EVENTS_IMAGES table redirects to 1st default image on DB
+  $querySelect = 'SELECT DISTINCT events.*, images.url FROM users, events, events_users, events_types, types, images, events_images WHERE events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id';
 
-  $nr_filters = count($type_filters);
+   $nr_filters = count($type_filters);
   
   if($nr_filters > 0){
-    $querySelect = $querySelect . ' AND (';
+    $queryTypes = ' AND (';
 
     for($i = 0; $i < $nr_filters-1; $i++){
-      $querySelect = $querySelect . " types.name = ? OR ";
+      $queryTypes = $queryTypes . " types.name = ? OR ";
     }
-    $querySelect = $querySelect . 'types.name= ?)';
+    $queryTypes = $queryTypes . 'types.name= ?)';
   }else{
     // NO TYPES SELECTED! THEREFORE NO EVENTS SHOULD SHOW!
-    return array();
+    // Returns only the count (which is equal to 0 events)
+    $countEvents = array();
+    $countEvents[0]['numEvents'] = 0;
+   return $countEvents;
   }
 
-  $query = $querySelect . $queryOrder . $queryLimit;
+  $query = $querySelect . $queryTypes . $queryOrder . $queryLimit;
 
   $executeArray = array_merge(array($userID) , $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
   
   $stmt = $db->prepare($query);
-  
   $stmt->execute($executeArray);
-  return $stmt->fetchAll();
+  $events = $stmt->fetchAll();
+ 
+ 
+  // COUNT EVENTS RESULTING FROM QUERY
+  $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id';
+  $query2 =   $queryCount . $queryTypes;
   
-  //return array($query);
+  $stmt = $db->prepare($query2);
+  $stmt->execute(array_merge(array($userID) , $type_filters));
+  $countEvents = $stmt->fetchAll();
+	
+  $result = array_merge($events, $countEvents);
+  
+  return $result;
+  //return $events;
+  //TODO Merge fetchAll of events with fetch of its image and owner
+  
 }
 
     function compareEvents($tagEvent, $tagEvent1)
@@ -183,4 +200,5 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
       return ($tagEvent['id'] == $tagEvent1['id']);
     }
  
+
 ?>

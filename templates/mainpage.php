@@ -30,7 +30,6 @@
 <div id="customSearch" class="tab-section">
 	<?php include('filter.php'); ?>
 	<?php include('customSearch.php'); ?>
-	<?php include('submit.php'); ?>
 </div>
 <ul id="event_list">
 	
