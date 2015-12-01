@@ -133,20 +133,39 @@ INSERT INTO types (name) VALUES ('Birthday');
 INSERT INTO types (name) VALUES ('Fundraising');
 INSERT INTO types (name) VALUES ('Hangout');
 
+INSERT INTO images(title, description, url) VALUES ('hue', 'huehue', 'user_images/username3.jpg');
+
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 1', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,'2015-01-01',0,1);
-
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 2', 'Sed justo metus, suscipit non fermentum non, sagittis quis arcu. Curabitur tincidunt leo non blandit.',0,'2012-01-01',0,1);
-
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 3', 'Maecenas ipsum elit, vestibulum id blandit vel, euismod ut urna. Sed nisi lectus.',0,'2013-01-01',0,1);
-
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 4', 'Maecenas quis felis et tortor adipiscing blandit vel ac sem. Sed venenatis justo.',0,'2014-01-01',0,1);
-
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 5', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2011-01-01',0,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 6', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2009-01-01',0,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 7', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2008-01-01',0,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 8', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2007-01-01',0,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 9', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2006-01-01',0,1);
+
+INSERT INTO events_images(event_id,image_id) VALUES(1,1);
+INSERT INTO events_images(event_id,image_id) VALUES(2,1);
+INSERT INTO events_images(event_id,image_id) VALUES(3,1);
+INSERT INTO events_images(event_id,image_id) VALUES(4,1);
+INSERT INTO events_images(event_id,image_id) VALUES(5,1);
+INSERT INTO events_images(event_id,image_id) VALUES(6,1);
+INSERT INTO events_images(event_id,image_id) VALUES(7,1);
+INSERT INTO events_images(event_id,image_id) VALUES(8,1);
+INSERT INTO events_images(event_id,image_id) VALUES(9,1);
 
 INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (3, 1, 1, 1 );
 INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (3, 2, 1, 1 );
-INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (3, 3, 1, 1 );
+
 INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (1, 3, 1, 1 );
+INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (3, 3, 1, 1 );
+INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (4, 3, 1, 1 );
+INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (5, 3, 1, 1 );
+INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (6, 3, 1, 1 );
+INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (7, 3, 1, 1 );
+INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (8, 3, 1, 1 );
+INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (9, 3, 1, 1 );
 DELETE FROM events_users WHERE event_id=3 AND user_id=1;
  
 INSERT INTO users(id,username,password,fullname,visible) VALUES (NULL,'admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3','admin',1); -- Password is tested hashed with SHA 1
@@ -158,6 +177,12 @@ INSERT INTO users(id,username,password,fullname,visible) VALUES(NULL,'Pedro','5b
 INSERT INTO events_types (event_id, type_id) VALUES (1,1);
 INSERT INTO events_types (event_id, type_id) VALUES (2,2);
 INSERT INTO events_types (event_id, type_id) VALUES (3,3);
+INSERT INTO events_types (event_id, type_id) VALUES (4,4);
+INSERT INTO events_types (event_id, type_id) VALUES (5,5);
+INSERT INTO events_types (event_id, type_id) VALUES (6,6);
+INSERT INTO events_types (event_id, type_id) VALUES (7,7);
+INSERT INTO events_types (event_id, type_id) VALUES (8,8);
+INSERT INTO events_types (event_id, type_id) VALUES (9,5);
 
 INSERT INTO tags (description) VALUES ('concerto');
 INSERT INTO tags (description) VALUES ('live');

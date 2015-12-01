@@ -186,7 +186,7 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
   $stmt = $db->prepare($query2);
   $stmt->execute(array_merge(array($userID) , $type_filters));
   $countEvents = $stmt->fetchAll();
-	
+  
   $result = array_merge($events, $countEvents);
   
   return $result;

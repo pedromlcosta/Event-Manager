@@ -8,21 +8,28 @@
 	// REGISTER USER, IF VALID INFO
 	if(isset($_POST['tab'])){
 
-		switch ($_POST['tab']) {
-    case 'link_myEvents':
-        $result = getEventsUserAttending(3,'date', 10, 1, array('Party'));
+    //Arrived in JSON form, turn into array again
+    $typeFilters = json_decode($_POST['typeFilters']);
+
+    $eventsPerPage = $_POST['eventsPerPage'];
+    $page = $_POST['page'];
+    $order = $_POST['order'];
+
+	switch ($_POST['tab']) {
+    case '#myEvents':
+        $result = getEventsUserAttending($_SESSION['userID'], $order, $eventsPerPage, $page, $typeFilters);
         break;
-    case 'link_hostingEvents':
-        $result = getEventsUserAttending(2,'date', 10, 1, array('Conference','lel', 'works'));
+    case '#hostingEvents':
+        $result = getEventsUserAttending(2,$order, $eventsPerPage, 1, array('Conference','lel', 'works'));
         break;
-    case 'link_invitedEvents':
-        $result = getEventsUserAttending(1,'date', 10, 1, array());
+    case '#invitedEvents':
+        $result = getEventsUserAttending(1,$order, $eventsPerPage, 1, array());
         break;
-    case 'link_otherEvents':
-        $result = getEventsUserAttending(1,'date', 10, 1, array());
+    case '#otherEvents':
+        $result = getEventsUserAttending(1,$order, $eventsPerPage, 1, array());
         break;
-    case 'link_customSearch':
-        $result = getEventsUserAttending(1,'date', 10, 1, array());
+    case '#customSearch':
+        $result = getEventsUserAttending(1,$order, $eventsPerPage, 1, array());
         break;
     default:
         break;
@@ -31,6 +38,6 @@
 	}else{
 		die();
 	}
-	
+
     echo json_encode($result);
 ?>
