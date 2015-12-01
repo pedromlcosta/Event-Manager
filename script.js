@@ -200,27 +200,37 @@ var totalPages = 1;
 var loaded = null;
 
 function updatePageButtons() {
-	console.log("currentPage on update buttons: " + currentPage);
 	//Number of pages it can go back or forward with the buttons, at once
 	var numberBackForward = 2;
-
 	numberBackForward = numberBackForward > totalPages - 1 ? totalPages - 1 : numberBackForward;
 
 	// Se ultrapassar os limites que devia (1a pagina possivel e ultima), nao consegue
 	var firstButton = currentPage - numberBackForward <= 1 ? 1 : currentPage - numberBackForward;
 	var lastButton = currentPage + numberBackForward >= totalPages ? totalPages : currentPage + numberBackForward;
 
+	/* Debugging
+	console.log("Number of pages: " + totalPages);
+	console.log("First Button " + firstButton);
+	console.log("Last Button " + lastButton);
+	*/
+
 	$('#page_buttons').empty();
 	for (var i = firstButton; i <= lastButton; i++) {
-		// We do not want page 0. You could have started with i = 1 too.
-		$('#page_buttons').append('<a href="#" class="pageClick">' + i + '</a>');
+
+		if(i!=currentPage){
+		$('#page_buttons').append('<button type="button" class="pageClick">' + i + '</button>');
+		}else{
+			$('#page_buttons').append('<button type="button" class="pageClick current">' + i + '</button>');
+		}
 	}
+
+	// Handler only installed after buttons exist/are created
 	$('.pageClick').on('click', function(e) {
 		e.preventDefault();
-		currentPage = $(this).index() + 1;
+		// Updates current page and refreshes events/buttons
+		currentPage = $(this).context.textContent;
 		eventTabHandler('undefined', true);
-		//showPage($(this).index() + 1);
-	})
+	});
 
 	//$(#page_buttons);
 }
@@ -267,18 +277,18 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 
 						//Update total number of pages
 						totalPages = Math.ceil(data[data.length - 1]['numEvents'] / EVENTS_PER_PAGE);
-						console.log("Number of events: " + data[data.length - 1]['numEvents']);
+						//console.log("Number of events: " + data[data.length - 1]['numEvents']);
 
 						data.pop();
 					}
-					console.log("Total Pages: " + totalPages);
+					//console.log("Total Pages: " + totalPages);
 
 					//IF USER CLICKED ON A NO LONGER EXISTANT PAGE (page 5, but the only event there was deleted meanwhile)
 					if (currentPage > totalPages) {
 						currentPage = totalPages;
 						queryEventForTab(tabID, eventOrder, eventTypeFilters, true);
 					} else {
-					//Else, user clicked on a valid page and updates/shows as it should
+						//Else, user clicked on a valid page and updates/shows as it should
 						updatePageButtons();
 						listEventsUnderTab(data);
 						loaded = tabID;
@@ -300,12 +310,12 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 
 // Clicked a tab. Gets events for it and displays them
 function eventTabHandler(event, update) {
-	
+
 	var eventsUpdate = null;
 
-	if (event ==undefined || event.data == undefined){
+	if (event == undefined || event.data == undefined) {
 		var eventsUpdate = update != undefined ? update : false;
-	}else{
+	} else {
 		var eventsUpdate = event.data.update != undefined ? event.data.update : false;
 	}
 
@@ -375,8 +385,12 @@ function onReadyAddHandlers() {
 
 		$('#tabs a').click(eventTabHandler);
 
-		$('.typeSelection label').click({update: true}, eventTabHandler);
-		$('.sortSelection label').click({update: true}, eventTabHandler);
+		$('.typeSelection label').click({
+			update: true
+		}, eventTabHandler);
+		$('.sortSelection label').click({
+			update: true
+		}, eventTabHandler);
 
 		$('#tabs a').filter(':first').click();
 	});
