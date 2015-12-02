@@ -147,17 +147,13 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
     $queryOrder = ' ORDER BY data DESC';
   else if ($order == 'Popularity')
     $queryOrder = ' ORDER BY numberUsers DESC';
-
   $queryLimit =  ' LIMIT ? OFFSET ?';
-
   //TODO: DEFAULT EVENT IMAGE!!! -> Creating event without image, then the EVENTS_IMAGES table redirects to 1st default image on DB
-  $querySelect = 'SELECT DISTINCT events.*, images.url FROM users, events, events_users, events_types, types, images, events_images WHERE events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events_users.attending_status=? ';
-
+  $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname FROM users, events, events_users, events_types, types, images, events_images WHERE events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events_users.attending_status=? AND events.user_id=users.id';
    $nr_filters = count($type_filters);
   
   if($nr_filters > 0){
     $queryTypes = ' AND (';
-
     for($i = 0; $i < $nr_filters-1; $i++){
       $queryTypes = $queryTypes . " types.name = ? OR ";
     }
@@ -169,9 +165,7 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
     $countEvents[0]['numEvents'] = 0;
    return $countEvents;
   }
-
   $query = $querySelect . $queryTypes . $queryOrder . $queryLimit;
-
   $executeArray = array_merge(array($userID), array($attending_status), $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
   
   $stmt = $db->prepare($query);
@@ -193,10 +187,104 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
   
 }
 
-    function compareEvents($tagEvent, $tagEvent1)
-    {
-      return ($tagEvent['id'] == $tagEvent1['id']);
+// Gets events the user is hosting, whether he is going to attend them or not
+function getEventsUserHosting($userID, $order, $events_per_page, $page, $type_filters){
+global $db;
+  
+  if($order == 'Date')
+    $queryOrder = ' ORDER BY data DESC';
+  else if ($order == 'Popularity')
+    $queryOrder = ' ORDER BY numberUsers DESC';
+  $queryLimit =  ' LIMIT ? OFFSET ?';
+
+  $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname FROM users, events, events_users, events_types, types, images, events_images WHERE events.user_id = ? AND events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events.user_id=users.id';
+   $nr_filters = count($type_filters);
+  
+  if($nr_filters > 0){
+    $queryTypes = ' AND (';
+    for($i = 0; $i < $nr_filters-1; $i++){
+      $queryTypes = $queryTypes . " types.name = ? OR ";
     }
+    $queryTypes = $queryTypes . 'types.name= ?)';
+  }else{
+
+    $countEvents = array();
+    $countEvents[0]['numEvents'] = 0;
+   return $countEvents;
+  }
+  $query = $querySelect . $queryTypes . $queryOrder . $queryLimit;
+  $executeArray = array_merge(array($userID, $userID), $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
+  
+  $stmt = $db->prepare($query);
+  $stmt->execute($executeArray);
+  $events = $stmt->fetchAll();
+ 
+ 
+  // COUNT EVENTS RESULTING FROM QUERY
+  $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE events.user_id = ? AND events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id = users.id';
+  $query2 =   $queryCount . $queryTypes;
+  
+  $stmt = $db->prepare($query2);
+  $stmt->execute(array_merge(array($userID, $userID), $type_filters));
+  $countEvents = $stmt->fetchAll();
+  
+  $result = array_merge($events, $countEvents);
+  
+  return $result;
+  
+}
+
+function getAllVisibleEvents($userID, $order, $events_per_page, $page, $type_filters){
+  
+  global $db;
+  
+  if($order == 'Date')
+    $queryOrder = ' ORDER BY data DESC';
+  else if ($order == 'Popularity')
+    $queryOrder = ' ORDER BY numberUsers DESC';
+  $queryLimit =  ' LIMIT ? OFFSET ?';
+
+  $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname FROM users, events, events_users, events_types, types, images, events_images WHERE (events.private=0 OR (events_users.user_id = ? AND events_users.event_id = events.id)) AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events.user_id=users.id';
+   $nr_filters = count($type_filters);
+  
+  if($nr_filters > 0){
+    $queryTypes = ' AND (';
+    for($i = 0; $i < $nr_filters-1; $i++){
+      $queryTypes = $queryTypes . " types.name = ? OR ";
+    }
+    $queryTypes = $queryTypes . 'types.name= ?)';
+  }else{
+
+    $countEvents = array();
+    $countEvents[0]['numEvents'] = 0;
+   return $countEvents;
+  }
+  $query = $querySelect . $queryTypes . $queryOrder . $queryLimit;
+  $executeArray = array_merge(array($userID), $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
+  
+  $stmt = $db->prepare($query);
+  $stmt->execute($executeArray);
+  $events = $stmt->fetchAll();
+ 
+ 
+  // COUNT EVENTS RESULTING FROM QUERY
+  $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE (events.private=0 OR (events_users.user_id = ? AND events_users.event_id = events.id)) AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id = users.id';
+  $query2 =   $queryCount . $queryTypes;
+  
+  $stmt = $db->prepare($query2);
+  $stmt->execute(array_merge(array($userID), $type_filters));
+  $countEvents = $stmt->fetchAll();
+  
+  $result = array_merge($events, $countEvents);
+  
+  return $result;
+  
+}
+
+function compareEvents($tagEvent, $tagEvent1)
+{
+  return ($tagEvent['id'] == $tagEvent1['id']);
+}
  
 
 ?>
