@@ -10,14 +10,23 @@ function addUserToEvent($eventId,$userId){
 	
 	global $db;
 	$stmt = $db->prepare('INSERT INTO events_users (user_id,event_id,attending_status) VALUES(?,?,?)');
-  	$stmt->execute(array($userId,$eventId,1,1));
+  	$stmt->execute(array($userId,$eventId,1));
 }
 function inviteUserToEvent($eventId,$userId){
 	
 	global $db;
 	$stmt = $db->prepare('INSERT INTO events_users (user_id,event_id,attending_status) VALUES(?,?,?)');
-  	$stmt->execute(array($userId,$eventId,1,0));
+  	$stmt->execute(array($userId,$eventId,0));
 }
+
+function changeAttendingStatus($eventID, $userID, $status){
+
+	global $db;
+	$stmt = $db->prepare('UPDATE events_users SET attending_status = ? WHERE event_id = ? AND user_id = ?');
+  	$stmt->execute(array($status,$eventID,userID));
+
+}
+
 function removeUserFromEvent($eventId,$userId){
 	
 	global $db;
