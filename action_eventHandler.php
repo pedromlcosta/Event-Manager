@@ -91,7 +91,8 @@
 				<input type=hidden  name="eventID" id="eventID" value="<?php echo $eventID?>"> 
 				</div>
 				<br>
-			   <div class="button">
+			     <div class="button">
+			      <button type="submit"> <?php echo $button?></button>
 			      <!-- onclick="history.go(-1); .-->
 			   </div>
 			   </fieldset>
