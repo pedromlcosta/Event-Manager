@@ -163,7 +163,7 @@ INSERT INTO types (name) VALUES ('Birthday');
 INSERT INTO types (name) VALUES ('Fundraising');
 INSERT INTO types (name) VALUES ('Hangout');
 
-INSERT INTO images(title, description, url) VALUES ('hue', 'huehue', 'user_images/username3.jpg');
+INSERT INTO images(title, description, url) VALUES ('hue', 'huehue', 'images/backg.jpg');
 
 -- User 3 created all events
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 1', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,'2015-01-01',3,1);
@@ -175,6 +175,9 @@ INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 7', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2008-01-01',3,1);
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 8', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2007-01-01',3,1);
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 9', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2006-01-01',3,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 10', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2006-01-01',2,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 11', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',1,'2006-01-01',1,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 12', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',1,'2006-01-01',1,1);
 
 INSERT INTO events_images(event_id,image_id) VALUES(1,1);
 INSERT INTO events_images(event_id,image_id) VALUES(2,1);
@@ -185,6 +188,9 @@ INSERT INTO events_images(event_id,image_id) VALUES(6,1);
 INSERT INTO events_images(event_id,image_id) VALUES(7,1);
 INSERT INTO events_images(event_id,image_id) VALUES(8,1);
 INSERT INTO events_images(event_id,image_id) VALUES(9,1);
+INSERT INTO events_images(event_id,image_id) VALUES(10,1);
+INSERT INTO events_images(event_id,image_id) VALUES(11,1);
+INSERT INTO events_images(event_id,image_id) VALUES(12,1);
 
 -- User 1 and 2 were invited to event 3
 INSERT INTO events_users(event_id, user_id, attending_status) VALUES (3, 1, 0);
@@ -200,6 +206,9 @@ UPDATE events_users SET attending_status=0 WHERE event_id=8 AND user_id=3;
 -- User 2 is going to event 3
 UPDATE events_users SET attending_status=1 WHERE event_id=3 AND user_id=2;
 
+-- User 3 was invited to event 12
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (12, 3, 0);
+
 DELETE FROM events_users WHERE event_id=3 AND user_id=2;
 
 
@@ -212,6 +221,10 @@ INSERT INTO events_types (event_id, type_id) VALUES (6,6);
 INSERT INTO events_types (event_id, type_id) VALUES (7,7);
 INSERT INTO events_types (event_id, type_id) VALUES (8,8);
 INSERT INTO events_types (event_id, type_id) VALUES (9,5);
+INSERT INTO events_types (event_id, type_id) VALUES (10,4);
+INSERT INTO events_types (event_id, type_id) VALUES (11,7);
+INSERT INTO events_types (event_id, type_id) VALUES (12,1);
+
 
 INSERT INTO tags (description) VALUES ('concerto');
 INSERT INTO tags (description) VALUES ('live');

@@ -240,21 +240,40 @@ function updatePageButtons() {
 }
 
 function listEventsUnderTab(events) {
+
+	console.log(events);
+
 	var cList = $('#event_list');
 	cList.empty();
 
 	$.each(events, function(i) {
 		var li = $('<li/>')
-			.addClass('event-item')
-			.attr('role', 'menuitem')
+			.addClass('event_item')
 			.appendTo(cList);
-		var aaa = $('<a/>')
-			.addClass('ui-all')
-			.text(events[i]['title'])
-			.appendTo(li);
+
+		var info = $('<div/>')
+			.addClass('info')
+			.append($('<div/>')
+				.append($('<h4/>').text('Title').val('Title'))
+				.append(events[i]['title']))
+			.append($('<div/>')
+				.append($('<h4/>').text('Date').val('Date'))
+				.append(events[i]['data']))
+			.append($('<div/>')
+				.append($('<h4/>').text('Number of Users').val('Number Of Users'))
+				.append(events[i]['numberUsers']))
+			.append($('<div/>')
+				.append($('<h4/>').text('Author').val('Author'))
+				.append(events[i]['fullname']));
+
+		var a = $('<a/>')
+			.attr("href","event"+events[i]['id']+".php")
+			.append($('<img src="' + events[i]['url'] + '" alt="event" width="200" height="120">'))
+			.append(info);
+
+			li.append(a);
 	});
 }
-
 function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 
 	// Run Handler only if: wants to update info or current tab isn't yet loaded with info
