@@ -204,14 +204,18 @@ function updatePageButtons() {
 	var numberBackForward = 2;
 	numberBackForward = numberBackForward > totalPages - 1 ? totalPages - 1 : numberBackForward;
 
+	var lel = currentPage+numberBackForward;
+
 	// Se ultrapassar os limites que devia (1a pagina possivel e ultima), nao consegue
 	var firstButton = currentPage - numberBackForward <= 1 ? 1 : currentPage - numberBackForward;
-	var lastButton = currentPage + numberBackForward >= totalPages ? totalPages : currentPage + numberBackForward;
+	var lastButton = lel >= totalPages ? totalPages : currentPage + numberBackForward;
 
 	/* Debugging
+	console.log("numberBackForward: " + numberBackForward);
 	console.log("Number of pages: " + totalPages);
-	console.log("First Button " + firstButton);
-	console.log("Last Button " + lastButton);
+	console.log("Current Page: " + currentPage);
+	console.log("First Button: " + firstButton);
+	console.log("Last Button: " + lastButton);
 	*/
 
 	$('#page_buttons').empty();
@@ -228,7 +232,7 @@ function updatePageButtons() {
 	$('.pageClick').on('click', function(e) {
 		e.preventDefault();
 		// Updates current page and refreshes events/buttons
-		currentPage = $(this).context.textContent;
+		currentPage = parseInt($(this).context.textContent);
 		eventTabHandler('undefined', true);
 	});
 

@@ -8,26 +8,6 @@ textarea {
     vertical-align: top;
 }
 
-
-#mainPage{
-	max-width: 1200px;
-	margin: 0 auto;
-}
-
-#page_buttons{
-	text-align: center;
-}
-
-.pageClick{
-	padding: 5px;
-	margin: 3px;
-	background-color: #ffff80;
-}
-
-.pageClick.current{
-	background-color: #cce5ff;
-}
-
 #header{
 	width: 100%;
 	background-size: 100%;
@@ -118,4 +98,27 @@ textarea {
 	color: #000;
 	border-bottom: 2px solid #d4efff;
 }
+
+
+
+
+#mainPage{
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+#page_buttons{
+	text-align: center;
+}
+
+.pageClick{
+	padding: 5px;
+	margin: 3px;
+	background-color: #ffff80;
+}
+
+.pageClick.current{
+	background-color: #cce5ff;
+}
+
 

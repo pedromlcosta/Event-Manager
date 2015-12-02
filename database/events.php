@@ -180,7 +180,7 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
  
  
   // COUNT EVENTS RESULTING FROM QUERY
-  $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_users.attending_status=? ';
+  $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_users.attending_status=? AND events.user_id = users.id';
   $query2 =   $queryCount . $queryTypes;
   
   $stmt = $db->prepare($query2);
@@ -190,8 +190,6 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
   $result = array_merge($events, $countEvents);
   
   return $result;
-  //return $events;
-  //TODO Merge fetchAll of events with fetch of its image and owner
   
 }
 
