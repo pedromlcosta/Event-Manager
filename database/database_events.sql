@@ -1,12 +1,5 @@
 
 
---> Tabelas sempre no plural
---> Nomes das tabelas com underscore
---> Atributos das tabelas com underscore
---> Todas as tabelas devem ter SEMPRE (SEMPRE) atributo ID e esse é sempre a chave primária
---> Chaves estrangeiras devem ser sempre do género: user_id e não "user"
---> O nome da tabela principal deve ser sempre escrito primeiro (ex: events_images e não images_events)
-
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS images;
@@ -17,8 +10,11 @@ DROP TABLE IF EXISTS users_images;
 DROP TABLE IF EXISTS events_types;
 DROP TABLE IF EXISTS events_users;
 DROP TABLE IF EXISTS events_images;
+DROP TRIGGER IF EXISTS userGoingToEvent;
+DROP TRIGGER IF EXISTS userNotGoingToEvent;
 DROP TRIGGER IF EXISTS userAddedToEvent;
 DROP TRIGGER IF EXISTS userRemovedFromEvent;
+DROP TRIGGER IF EXISTS creatorAttendsEvent;
 
 -- TODO - por os UNIQUE necessarios e/ou os NOT NULL
 CREATE TABLE users (
@@ -36,7 +32,7 @@ CREATE TABLE events (
 	private	Boolean,
 	data	Date,
 	numberUsers INTEGER DEFAULT 0,
-	user_id	VARCHAR,
+	user_id	INTEGER,
 	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(user_id) REFERENCES users ( id ) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -108,21 +104,55 @@ CREATE TABLE tags_events (
 	PRIMARY KEY(event_id,tag_id)
 );
 
-CREATE TRIGGER userAddedToEvent
-AFTER INSERT ON EVENTS_USERS
+-- When attending status changes to going
+CREATE TRIGGER userGoingToEvent
+AFTER UPDATE ON EVENTS_USERS
+WHEN old.attending_status = 0 AND new.attending_status = 1
 BEGIN
 UPDATE EVENTS
 SET numberUsers = (SELECT numberUsers FROM EVENTS WHERE EVENTS.id = new.event_id) + 1 
-WHERE EVENTS.id = new.event_id; -- da update a ultima a ser mudada
+WHERE EVENTS.id = new.event_id;
 END;
 
+-- When attending status changes to not going
+CREATE TRIGGER userNotGoingToEvent
+AFTER UPDATE ON EVENTS_USERS
+WHEN old.attending_status = 1 AND new.attending_status = 0
+BEGIN
+UPDATE EVENTS
+SET numberUsers = (SELECT numberUsers FROM EVENTS WHERE EVENTS.id = new.event_id) - 1 
+WHERE EVENTS.id = new.event_id;
+END;
+
+CREATE TRIGGER userAddedToEvent
+AFTER INSERT ON EVENTS_USERS
+WHEN new.attending_status = 1
+BEGIN
+UPDATE EVENTS
+SET numberUsers = (SELECT numberUsers FROM EVENTS WHERE EVENTS.id = new.event_id) + 1 
+WHERE EVENTS.id = new.event_id;
+END;
+
+--When user is literally removed, not even invited, to the event
 CREATE TRIGGER userRemovedFromEvent
 AFTER DELETE ON EVENTS_USERS
+WHEN old.attending_status = 1
 BEGIN
 UPDATE EVENTS
 SET numberUsers = (SELECT numberUsers FROM EVENTS WHERE EVENTS.id = old.event_id) - 1 
-WHERE EVENTS.id = old.event_id; -- da update a ultima a ser mudada
+WHERE EVENTS.id = old.event_id;
 END;
+
+CREATE TRIGGER creatorAttendsEvent
+AFTER INSERT ON EVENTS
+BEGIN
+INSERT INTO EVENTS_USERS(event_id, user_id, attending_status)
+VALUES(new.id, new.user_id, 1);
+END;
+
+INSERT INTO users(id,username,password,fullname) VALUES (NULL,'admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3','admin'); -- Password is tested hashed with SHA 1
+INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Filipe','2e6f9b0d5885b6010f9167787445617f553a735f','Filipe Moreira');
+INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Pedro','5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8','Pedro Costa');
 
 INSERT INTO types (name) VALUES ('Party');
 INSERT INTO types (name) VALUES ('Concert');
@@ -135,15 +165,16 @@ INSERT INTO types (name) VALUES ('Hangout');
 
 INSERT INTO images(title, description, url) VALUES ('hue', 'huehue', 'user_images/username3.jpg');
 
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 1', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,'2015-01-01',0,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 2', 'Sed justo metus, suscipit non fermentum non, sagittis quis arcu. Curabitur tincidunt leo non blandit.',0,'2012-01-01',0,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 3', 'Maecenas ipsum elit, vestibulum id blandit vel, euismod ut urna. Sed nisi lectus.',0,'2013-01-01',0,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 4', 'Maecenas quis felis et tortor adipiscing blandit vel ac sem. Sed venenatis justo.',0,'2014-01-01',0,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 5', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2011-01-01',0,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 6', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2009-01-01',0,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 7', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2008-01-01',0,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 8', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2007-01-01',0,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 9', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2006-01-01',0,1);
+-- User 3 created all events
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 1', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,'2015-01-01',3,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 2', 'Sed justo metus, suscipit non fermentum non, sagittis quis arcu. Curabitur tincidunt leo non blandit.',0,'2012-01-01',3,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 3', 'Maecenas ipsum elit, vestibulum id blandit vel, euismod ut urna. Sed nisi lectus.',0,'2013-01-01',3,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 4', 'Maecenas quis felis et tortor adipiscing blandit vel ac sem. Sed venenatis justo.',0,'2014-01-01',3,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 5', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2011-01-01',3,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 6', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2009-01-01',3,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 7', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2008-01-01',3,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 8', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2007-01-01',3,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 9', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2006-01-01',3,1);
 
 INSERT INTO events_images(event_id,image_id) VALUES(1,1);
 INSERT INTO events_images(event_id,image_id) VALUES(2,1);
@@ -155,24 +186,22 @@ INSERT INTO events_images(event_id,image_id) VALUES(7,1);
 INSERT INTO events_images(event_id,image_id) VALUES(8,1);
 INSERT INTO events_images(event_id,image_id) VALUES(9,1);
 
-INSERT INTO events_users(event_id, user_id, attending_status) VALUES (3, 1, 1);
-INSERT INTO events_users(event_id, user_id, attending_status) VALUES (3, 2, 1);
+-- User 1 and 2 were invited to event 3
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (3, 1, 0);
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (3, 2, 0);
 
-INSERT INTO events_users(event_id, user_id, attending_status) VALUES (1, 3, 1);
-INSERT INTO events_users(event_id, user_id, attending_status) VALUES (3, 3, 1);
-INSERT INTO events_users(event_id, user_id, attending_status) VALUES (4, 3, 1);
-INSERT INTO events_users(event_id, user_id, attending_status) VALUES (5, 3, 1);
-INSERT INTO events_users(event_id, user_id, attending_status) VALUES (6, 3, 0);
-INSERT INTO events_users(event_id, user_id, attending_status) VALUES (7, 3, 0);
-INSERT INTO events_users(event_id, user_id, attending_status) VALUES (8, 3, 0);
-INSERT INTO events_users(event_id, user_id, attending_status) VALUES (9, 3, 0);
+-- User 1 removed himself from event 3
 DELETE FROM events_users WHERE event_id=3 AND user_id=1;
  
-INSERT INTO users(id,username,password,fullname,visible) VALUES (NULL,'admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3','admin',1); -- Password is tested hashed with SHA 1
+ -- Creator of event 8 and 9 said he was not going
+UPDATE events_users SET attending_status=0 WHERE event_id=9 AND user_id=3;
+UPDATE events_users SET attending_status=0 WHERE event_id=8 AND user_id=3;
 
-INSERT INTO users(id,username,password,fullname,visible) VALUES(NULL,'Filipe','2e6f9b0d5885b6010f9167787445617f553a735f','Filipe Moreira',1);
+-- User 2 is going to event 3
+UPDATE events_users SET attending_status=1 WHERE event_id=3 AND user_id=2;
 
-INSERT INTO users(id,username,password,fullname,visible) VALUES(NULL,'Pedro','5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8','Pedro Costa',1);
+DELETE FROM events_users WHERE event_id=3 AND user_id=2;
+
 
 INSERT INTO events_types (event_id, type_id) VALUES (1,1);
 INSERT INTO events_types (event_id, type_id) VALUES (2,2);

@@ -6,17 +6,19 @@ function checkIfUserResgisteredInEvent($event,$userAttending){
   $stmt->execute(array($event,$userAttending));  
   return $stmt->fetch();
 }
+
 function addUserToEvent($eventId,$userId){
 	
 	global $db;
-	$stmt = $db->prepare('INSERT INTO events_users (user_id,event_id,attending_status) VALUES(?,?,?)');
-  	$stmt->execute(array($userId,$eventId,1));
+	$stmt = $db->prepare('INSERT INTO events_users (user_id,event_id,attending_status) VALUES(?,?,1)');
+  	$stmt->execute(array($userId,$eventId));
 }
+
 function inviteUserToEvent($eventId,$userId){
 	
 	global $db;
-	$stmt = $db->prepare('INSERT INTO events_users (user_id,event_id,attending_status) VALUES(?,?,?)');
-  	$stmt->execute(array($userId,$eventId,0));
+	$stmt = $db->prepare('INSERT INTO events_users (user_id,event_id,attending_status) VALUES(?,?,0)');
+  	$stmt->execute(array($userId,$eventId));
 }
 
 function changeAttendingStatus($eventID, $userID, $status){
