@@ -163,7 +163,7 @@ INSERT INTO types (name) VALUES ('Birthday');
 INSERT INTO types (name) VALUES ('Fundraising');
 INSERT INTO types (name) VALUES ('Hangout');
 
-INSERT INTO images(title, description, url) VALUES ('hue', 'huehue', 'user_images/username3.jpg');
+INSERT INTO images(title, description, url) VALUES ('hue', 'huehue', 'images/backg.jpg');
 
 -- User 3 created all events
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 1', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,'2015-01-01',3,1);
