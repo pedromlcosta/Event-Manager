@@ -139,7 +139,7 @@ function updateEvents($field,$id,$changes){
 // QUERIES FOR MAIN TABS
    
 // Gets events user is connected to - TODO: decide if attends only or attends+invited
-function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_filters){
+function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_filters, $attending_status){
   
   global $db;
   
@@ -151,7 +151,7 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
   $queryLimit =  ' LIMIT ? OFFSET ?';
 
   //TODO: DEFAULT EVENT IMAGE!!! -> Creating event without image, then the EVENTS_IMAGES table redirects to 1st default image on DB
-  $querySelect = 'SELECT DISTINCT events.*, images.url FROM users, events, events_users, events_types, types, images, events_images WHERE events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id';
+  $querySelect = 'SELECT DISTINCT events.*, images.url FROM users, events, events_users, events_types, types, images, events_images WHERE events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events_users.attending_status=? ';
 
    $nr_filters = count($type_filters);
   
@@ -172,7 +172,7 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
 
   $query = $querySelect . $queryTypes . $queryOrder . $queryLimit;
 
-  $executeArray = array_merge(array($userID) , $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
+  $executeArray = array_merge(array($userID), array($attending_status), $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
   
   $stmt = $db->prepare($query);
   $stmt->execute($executeArray);
@@ -180,11 +180,11 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
  
  
   // COUNT EVENTS RESULTING FROM QUERY
-  $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id';
+  $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_users.attending_status=? ';
   $query2 =   $queryCount . $queryTypes;
   
   $stmt = $db->prepare($query2);
-  $stmt->execute(array_merge(array($userID) , $type_filters));
+  $stmt->execute(array_merge(array($userID), array($attending_status), $type_filters));
   $countEvents = $stmt->fetchAll();
   
   $result = array_merge($events, $countEvents);

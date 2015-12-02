@@ -272,7 +272,7 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 			success: function(data, textStatus, jqXHR) {
 				if (typeof data.error === 'undefined') {
 					// 1st Item returned is the total of events
-
+					console.log(data);
 					if (data.length > 0) {
 
 						//Update total number of pages

@@ -17,19 +17,21 @@
 
 	switch ($_POST['tab']) {
     case '#myEvents':
-        $result = getEventsUserAttending($_SESSION['userID'], $order, $eventsPerPage, $page, $typeFilters);
+        $result = getEventsUserAttending($_SESSION['userID'], $order, $eventsPerPage, $page, $typeFilters, 1);
         break;
     case '#hostingEvents':
-        $result = getEventsUserAttending(2,$order, $eventsPerPage, 1, array('Conference','lel', 'works'));
+        // Done
+        $result = getEventsUserAttending($_SESSION['userID'], $order, $eventsPerPage, $page, $typeFilters, 1);
         break;
     case '#invitedEvents':
-        $result = getEventsUserAttending(1,$order, $eventsPerPage, 1, array());
+        // Done
+        $result = getEventsUserAttending($_SESSION['userID'], $order, $eventsPerPage, $page, $typeFilters, 0);
         break;
     case '#otherEvents':
-        $result = getEventsUserAttending(1,$order, $eventsPerPage, 1, array());
+        $result = getEventsUserAttending($_SESSION['userID'], $order, $eventsPerPage, $page, $typeFilters, 1);
         break;
     case '#customSearch':
-        $result = getEventsUserAttending(1,$order, $eventsPerPage, 1, array());
+        $result = getEventsUserAttending($_SESSION['userID'], $order, $eventsPerPage, $page, $typeFilters, 1);
         break;
     default:
         break;

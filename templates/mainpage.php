@@ -2,9 +2,9 @@
  <!-- IF IS ON USER PAGE, USE ONLY A PART OF THIS? OR COPY IT TO USER_PAGE-->
 	<ul id="tabs">
 		<?php if(isLogged()): ?>
-		<li><a id="link_myEvents" href="#myEvents">My Events</a></li>
-		<li><a id="link_hostingEvents" href="#hostingEvents">Hosting Events</a></li>
-		<li><a id="link_invitedEvents" href="#invitedEvents">Invitations</a></li>
+		<li><a id="link_hostingEvents" href="#hostingEvents">I'm Hosting ...</a></li>
+		<li><a id="link_myEvents" href="#myEvents">I'm Going ...</a></li>
+		<li><a id="link_invitedEvents" href="#invitedEvents">I'm Invited ...</a></li>
 		<li><a id="link_otherEvents" href="#otherEvents">Other Events</a></li>
 		<li><a id="link_customSearch" href="#customSearch" >Custom Search</a></li>
 	<?php else: ?>

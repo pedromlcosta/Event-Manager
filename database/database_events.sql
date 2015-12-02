@@ -79,11 +79,11 @@ CREATE TABLE events_types (
 	PRIMARY KEY(event_id,type_id)
 );
 
+-- attending_status - 0 if invited, 1 if attending. If user says "Not Going", he is still invited and can change status at anytime! He may choose to remove himself
 CREATE TABLE events_users (
 	event_id	INTEGER,
 	user_id	INTEGER,
-	invited Boolean,
-	attending Boolean,
+	attending_status INTEGER,
 	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(user_id) REFERENCES users ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(event_id) REFERENCES events ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -155,17 +155,17 @@ INSERT INTO events_images(event_id,image_id) VALUES(7,1);
 INSERT INTO events_images(event_id,image_id) VALUES(8,1);
 INSERT INTO events_images(event_id,image_id) VALUES(9,1);
 
-INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (3, 1, 1, 1 );
-INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (3, 2, 1, 1 );
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (3, 1, 1);
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (3, 2, 1);
 
-INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (1, 3, 1, 1 );
-INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (3, 3, 1, 1 );
-INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (4, 3, 1, 1 );
-INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (5, 3, 1, 1 );
-INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (6, 3, 1, 1 );
-INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (7, 3, 1, 1 );
-INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (8, 3, 1, 1 );
-INSERT INTO events_users(event_id, user_id, invited, attending) VALUES (9, 3, 1, 1 );
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (1, 3, 1);
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (3, 3, 1);
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (4, 3, 1);
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (5, 3, 1);
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (6, 3, 0);
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (7, 3, 0);
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (8, 3, 0);
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (9, 3, 0);
 DELETE FROM events_users WHERE event_id=3 AND user_id=1;
  
 INSERT INTO users(id,username,password,fullname,visible) VALUES (NULL,'admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3','admin',1); -- Password is tested hashed with SHA 1
