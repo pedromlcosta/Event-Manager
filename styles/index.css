@@ -11,6 +11,26 @@ textarea {
 	vertical-align: top;
 }
 
+#mainPage{
+	max-width: 1200px;
+	margin: 0 auto;
+	text-align: left;
+}
+
+#page_buttons{
+	text-align: center;
+}
+
+.pageClick{
+	padding: 5px;
+	margin: 3px;
+	background-color: #ffff80;
+}
+
+.pageClick.current{
+	background-color: #cce5ff;
+}
+
 #header{
 	width: 100%;
 	background-size: 100%;
@@ -142,26 +162,54 @@ textarea {
 	color:black;
 }
 
+#filter label{
+	color:Darkgrey;
+}
 
-#mainPage{
-	max-width: 1200px;
+.container{
 	margin: 0 auto;
 }
 
-#page_buttons{
-	text-align: center;
+.event_item{
+	color:black;
+	display: inline-block;
+	width: 33%;
+	border: 1px Moccasin solid;
+	padding: 10px 0;
 }
 
-.pageClick{
-	padding: 5px;
-	margin: 3px;
-	background-color: #ffff80;
+.event_item a{
+	/* flex box*/
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	text-decoration: none;
+
+	-webkit-flex-flow: row wrap;
+	justify-content: space-around;
+
+	padding: 0 2px;
 }
 
-.pageClick.current{
-	background-color: #cce5ff;
+.event_item a img{
+	max-width: 100%;
+	height: 150px;
 }
 
-#filter label{
-	color:Darkgrey;
+.event_item a > div{
+	display: block;
+}
+
+.info{
+	padding: 0px 0;
+}
+
+.info > div{
+	color:black;
+}
+
+.info > div h4{
+	color:DarkGreen;
 }
