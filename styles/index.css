@@ -61,6 +61,7 @@ textarea {
 
 #messageStatus{
 	-webkit-text-stroke: 1px red;
+	color: Grey;
 }
 
 #buttons{
@@ -129,8 +130,9 @@ textarea {
 	text-align: center;
 	text-decoration: none;
 	background: #ddd;
-	//background-image: linear-gradient(to bottom, #fff, #ddd);
+	background-image: linear-gradient(to bottom, #fff, #ddd);
 	border-radius: 10px 10px 0 0;
+	color: Grey;
 }
 
 #tabs li a:hover {
@@ -165,8 +167,8 @@ textarea {
 	color:Darkgrey;
 }
 
-.container{
-	margin: 0 auto;
+#event_list{
+	text-align: center;
 }
 
 .event_item{
@@ -175,6 +177,9 @@ textarea {
 	width: 33%;
 	border: 1px Moccasin solid;
 	padding: 10px 0;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	background-color: #ffb366;
 }
 
 .event_item a{
@@ -205,10 +210,16 @@ textarea {
 	padding: 0px 0;
 }
 
-.info > div{
+.info > div::not(indice){
 	color:black;
 }
 
 .info > div h4{
 	color:DarkGreen;
+}
+
+.indice{
+	text-align: righ;
+	color:DarkGreen;
+	font-size: 120%;
 }
