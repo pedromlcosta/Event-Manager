@@ -1,9 +1,10 @@
       <form action="action_search.php" method="post">
-            <div>
-             <textarea name="tagsToSearch" id="tagsToSearch" placeholder="Tags"></textarea>
+            <div class="tagSelection">
+              <label><h4 class="selTitle">Tags to Search:</h4>
+             <textarea name="tagsToSearch" id="tagsToSearch" placeholder="Tags"></textarea></label>
             </div>
-            <div>
-            <label for="dateTag">Date:</label>
+            <div class="dateSelection">
+            <label for="dateTag"> <h4 class="selTitle">Date:</h4></label>
              <input type="date"  name="dateTag" id="dateTag" >  
             </div>
 
