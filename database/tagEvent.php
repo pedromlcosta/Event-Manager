@@ -13,35 +13,70 @@ function getEventWithTag($id){
   return $stmt->fetchAll();
 }
 
-function getEventsWithAnd($tags){
+function getEventsWithAnd($tags,$types){
   global $db;
-  $queryPart = 'SELECT DISTINCT id FROM events WHERE  visible=1 AND id NOT IN (SELECT events.id as event1 FROM events,tags WHERE tags.id IN (';
-  $queryPart2 = ') AND NOT ( tags.id IN    (SELECT tag_id FROM tags_events WHERE event_id=event1 AND visible=1)))';
-  $queryPart1 = '';
-  for ($i = 0; $i < count($tags); $i++) {
-    if ($i == 0) $queryPart1 = $queryPart1 . '?';
-    else $queryPart1 = $queryPart1 . ',?';
+  $queryPart0 = 'SELECT DISTINCT id FROM events WHERE  visible=1 AND id IN (SELECT DISTINCT event_id FROM events_types WHERE visible=1 AND type_id IN ( '
+  $queryPart1= ' ) AND event_id NOT IN (SELECT events.id as event1 FROM events,tags WHERE tags.id IN (';
+  $queryPart2='';
+  $queryPart3 = '';
+  $queryPart4 = ') AND NOT ( tags.id IN    (SELECT tag_id FROM tags_events WHERE event_id=event1 AND visible=1))))';
+ 
+ createInArray($queryPart2,count($types));
+ createInArray($queryPart3,count($tags));
+ /*
+   for ($i = 0; $i < count($types); $i++) {
+    if ($i == 0) $queryPart2 = $queryPart2 . '?';
+    else $queryPart2 = $queryPart2 . ',?';
   }
 
-  $query = $queryPart . $queryPart1 . $queryPart2;
+  for ($i = 0; $i < count($tags); $i++) {
+    if ($i == 0) $queryPart3 = $queryPart3 . '?';
+    else $queryPart3 = $queryPart3 . ',?';
+  }
+*/ 
+
+  $args=array_merge($types, $tags);
+  $query = $queryPart0.$queryPart1.$queryPart2.$queryPart3.$queryPart4;
   $stmt = $db->prepare($query);
-  $stmt->execute($tags);
+  $stmt->execute($args);
   return $stmt->fetchAll();
 }
 
-function getEventsWithOr($tags){
+function getEventsWithOr($tags,$types){
   global $db;
-  $queryPart = 'SELECT id FROM events WHERE visible=1 AND  id IN (SELECT DISTINCT event_id FROM tags_events WHERE  visible=1 AND tag_id IN (';
-  $queryPart1 = '';
-  for ($i = 0; $i < count($tags); $i++) {
-    if ($i == 0) $queryPart1 = $queryPart1 . '?';
-    else $queryPart1 = $queryPart1 . ',?';
-  }
+  $queryPart0 = 'SELECT DISTINCT id FROM events WHERE visible=1 AND  id IN (SELECT DISTINCT event_id FROM events_types WHERE visible=1 and type_id IN ( ';
+  $queryPart1= '';//add types IDs
+  $queryPart2=' ) AND event_id IN (SELECT DISTINCT event_id FROM tags_events WHERE  visible=1 AND tag_id IN (';
+  $queryPart3 = '';//add tags IDs
 
-  $query = $queryPart . $queryPart1 . '))';
+  createInArray($queryPart2,count($types));
+  createInArray($queryPart3,count($tags));
+   /*
+  for ($i = 0; $i < count($types); $i++) {
+    if ($i == 0) $queryPart2 = $queryPart2 . '?';
+    else $queryPart2 = $queryPart2 . ',?';
+  }*/
+
+  
+  /*
+  for ($i = 0; $i < count($tags); $i++) {
+    if ($i == 0) $queryPart3 = $queryPart3 . '?';
+    else $queryPart3 = $queryPart3 . ',?';
+  }*/
+
+  $query = $queryPart0.$queryPart1.$queryPart2.$queryPart3.')))';
+
+  $args=array_merge($types, $tags);
   $stmt = $db->prepare($query);
-  $stmt->execute($tags);
+  $stmt->execute($args);
   return $stmt->fetchAll();
+}
+function createInArray(&$array,$times){
+
+  for ($i = 0; $i < times; $i++) {
+    if ($i == 0) $array = $array . '?';
+    else $array = $array . ',?';
+
 }
 
 function getTagWithEvent($id){

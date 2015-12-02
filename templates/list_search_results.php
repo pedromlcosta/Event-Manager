@@ -1,6 +1,7 @@
       <!-- should I have this as one page? and then add it or should i leave it as it is?  ; por isto para imprimir singular events
 </script>-->
 <?php if(!empty($toPrintEvent)  ){
+  
   include_once("genericStart.html");
   ?>
   <script type="text/javascript" src="searchButtons.js"> 

@@ -7,19 +7,7 @@
             <label for="dateTag"> <h4 class="selTitle">Date:</h4></label>
              <input type="date"  name="dateTag" id="dateTag" >  
             </div>
-
-            <?php 
-            $loggedIn=0;
-            $username='';  
-            if (isLogged()) {
-                $loggedIn=1; 
-               $username=$_SESSION['userID'];
-                 
-            } 
-            ?>
-            <div class="button">
-                <button type="submit">Search</button>
-            </div>
+           
 
       </form>
      

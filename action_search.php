@@ -1,3 +1,7 @@
+
+<script>
+console.log("HELLO");
+</script>
  <?php
 include_once('genericStart.html'); 
 include_once('init.php');
@@ -8,6 +12,7 @@ include_once('database/tagEvent.php');
 include_once('database/events.php');
 include_once('database/usersEvent.php');
 global $delimiters;
+
   if(isset($_POST["tagsToSearch"]) && !(empty($_POST["tagsToSearch"])&& empty($_POST['dateTag']))  ){
 
 
@@ -41,33 +46,7 @@ global $delimiters;
         else array_splice($searchResults, 0);
       }
 
-      if (empty($searchResults)) {
-        echo "No events match you search";
-      }
-      else {
-        foreach($searchResults as $event) {
-
-          // change it does matter if he is logged in but not in the way I did it
-
-          if (isLogged()) {
-
-            // might change accordingly if we add an id to user
-            $registeredInEvent = checkIfUserResgisteredInEvent($event['id'],$_SESSION['userID']);
-              if(!$registeredInEvent)
-                $registeredInEvent['attending'] = 0;
-          }
-
-          $toPrintEvent = getEvent($event['id'], $registeredInEvent['attending']);
-          if ($toPrintEvent) {
-            $eventImage = eventGetImage($event['id']);
-            include_once ("templates/list_search_results.php");
-
-          }
-          // add button to go back or go back to main page falta ainda ver quando tem sessão iniciada
-        }
-      }
-    }
-       include_once("templates/footer.php");
+      
 }
 ?>
  
