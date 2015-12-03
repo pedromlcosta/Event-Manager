@@ -208,10 +208,12 @@ function updatePageButtons() {
 	var firstButton = currentPage - numberBackForward <= 1 ? 1 : currentPage - numberBackForward;
 	var lastButton = currentPage + numberBackForward >= totalPages ? totalPages : currentPage + numberBackForward;
 
+	/*
 	console.log("Number of pages: " + totalPages);
 	console.log("First Button " + firstButton);
 	console.log("Last Button " + lastButton);
-
+	*/
+	
 	$('#page_buttons').empty();
 	for (var i = firstButton; i <= lastButton; i++) {
 
@@ -235,7 +237,7 @@ function updatePageButtons() {
 
 function listEventsUnderTab(events) {
 
-	console.log(events);
+	//console.log(events);
 
 	var cList = $('#event_list');
 	cList.empty();
@@ -290,7 +292,7 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 			success: function(data, textStatus, jqXHR) {
 				if (typeof data.error === 'undefined') {
 					// 1st Item returned is the total of events
-					console.log(data);
+					//console.log(data);
 					if (data.length > 0) {
 
 						console.log("data",data.length);
