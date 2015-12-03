@@ -295,16 +295,12 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 					//console.log(data);
 					if (data.length > 0) {
 
-						console.log("data",data.length);
-						//Update total number of pages
-						// ????????????????????????
-						totalPages = Math.ceil(data.length / EVENTS_PER_PAGE);
+						//console.log("data",data.length);
 
-						//totalPages = Math.ceil(data[data.length - 1]['numEvents'] / EVENTS_PER_PAGE);
+						totalPages = Math.ceil(data[data.length - 1]['numEvents'] / EVENTS_PER_PAGE);
 						//console.log("Number of events: " + data[data.length - 1]['numEvents']);
-
-						//Why this pop?
-						//data.pop();
+						
+						data.pop();
 					}
 					//console.log("Total Pages: " + totalPages);
 
@@ -351,9 +347,11 @@ function eventTabHandler(event, update) {
 		return $(this).val();
 	}).get();
 
+	/*
     console.log(selectedTab);
 	console.log(order);
 	console.log(typeFilters);
+	*/
 
 	// Querying Database for the tab events
 	queryEventForTab(selectedTab, order, typeFilters, eventsUpdate);

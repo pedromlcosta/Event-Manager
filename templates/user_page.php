@@ -20,45 +20,12 @@
 
 		<div id="userEventTabs">
 			<ul id="tabs">
-				<?php if(isLogged()): ?>
-					<li><a id="link_hostingEvents" href="#hostingEvents">I'm Hosting ...</a></li>
-					<li><a id="link_myEvents" href="#myEvents">I'm Going ...</a></li>
-					<li><a id="link_invitedEvents" href="#invitedEvents">I'm Invited ...</a></li>
-					<li><a id="link_otherEvents" href="#otherEvents">Other Events</a></li>
-					<li><a id="link_customSearch" href="#customSearch" >Custom Search</a></li>
-				<?php else: ?>
-					<li><a id="link_customSearch" href="#customSearch" >Custom Search</a></li>
-				<?php endif; ?>
+				<li><a id="link_hostingEvents" href="#hostingEvents">I'm Hosting ...</a></li>
 			</ul>
 
 			<form>
-				<div id="myEvents" class="tab-section">
-					<?php include('filter.php'); ?>
-					<?php include('submit.php'); ?>
-				</div>
-			</form>
-			<form>
 				<div id="hostingEvents" class="tab-section">
 					<?php include('filter.php'); ?>
-					<?php include('submit.php'); ?>
-				</div>
-			</form>
-			<form>
-				<div id="invitedEvents" class="tab-section">
-					<?php include('filter.php'); ?>
-					<?php include('submit.php'); ?>
-				</div>
-			</form>
-			<form>
-				<div id="otherEvents" class="tab-section">
-					<?php include('filter.php'); ?>
-					<?php include('submit.php'); ?>
-				</div>
-			</form>
-			<form>
-				<div id="customSearch" class="tab-section">
-					<?php include('filter.php'); ?>
-					<?php include('customSearch.php'); ?>
 					<?php include('submit.php'); ?>
 				</div>
 			</form>
