@@ -194,7 +194,7 @@ var userID = null;
 var selectedTab = null;
 var order = 'Date';
 var typeFilters = [];
-var EVENTS_PER_PAGE = 5;
+var EVENTS_PER_PAGE = 10;
 var currentPage = 1;
 var totalPages = 1;
 var loaded = null;
@@ -213,13 +213,13 @@ function updatePageButtons() {
 	console.log("First Button " + firstButton);
 	console.log("Last Button " + lastButton);
 	*/
-	
+
 	$('#page_buttons').empty();
 	for (var i = firstButton; i <= lastButton; i++) {
 
-		if(i!=currentPage){
-		$('#page_buttons').append('<button type="button" class="pageClick">' + i + '</button>');
-		}else{
+		if (i != currentPage) {
+			$('#page_buttons').append('<button type="button" class="pageClick">' + i + '</button>');
+		} else {
 			$('#page_buttons').append('<button type="button" class="pageClick current">' + i + '</button>');
 		}
 	}
@@ -233,6 +233,34 @@ function updatePageButtons() {
 	});
 
 	//$(#page_buttons);
+}
+
+function respondToInvite(action, user, event_ID) {
+	console.log(action);
+	$.ajax({
+		url: 'action_eventInvites.php',
+		type: 'POST',
+		data: {
+			response: action,
+			userID: user,
+			eventID: event_ID
+		},
+		dataType: 'json', // -> automatically parses response data!
+		success: function(data, textStatus, jqXHR) {
+			if (typeof data.error === 'undefined') {
+				//console.log(data);
+			} else {
+				// Handle errors here
+				console.log('ERRORS: ' + data.error);
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			// Handle errors here
+			console.log(jqXHR.responseText);
+			console.log('ERRORS: ' + textStatus);
+			// STOP LOADING SPINNER
+		}
+	});
 }
 
 function listEventsUnderTab(events) {
@@ -262,15 +290,56 @@ function listEventsUnderTab(events) {
 				.append($('<h4/>').text('Author').val('Author'))
 				.append(events[i]['fullname']));
 
+		if (selectedTab == '#invitedEvents') {
+			info.append($('<div/>')
+				.append($('<input type="button" id="removeButton" class="inviteResponse"  value="Remove Event" />')));
+
+			info.append($('<div/>')
+				.append($('<input type="button" id="acceptButton" class="inviteResponse" value="Accept Invite" />')));
+
+
+			/*
+			$('#acceptButton').on('click', function(event){
+				respondToInvite(0); // Code 0 is for accepting
+			});
+			*/
+			//Hide or update here!
+			//hide
+			//totalpages -= 1
+			//updateButtons
+			//if 1 event only, if currentpage!=0, currentPage-=1 ?
+		}
+
 		var a = $('<a/>')
-			.attr("href","event"+events[i]['id']+".php")
+			//.attr("href","event"+events[i]['id']+".php")
 			.append($('<img src="images/logo.png" alt="event" width="150" height="90">'))
 			.append(info);
 
-			li.append(a);
+		li.append(a);
 	});
+
+	//Bind response buttons outside cycle, not to repeat them
+	if (selectedTab == '#invitedEvents') {
+		$('#removeButton').on('click', function(event) {
+			console.log("test1");
+			//respondToInvite(0, $_SESSION['userID'], eventID); // Code 1 is for removing
+			//hide the element here with animation, THEN the next line is called
+			eventTabHandler('undefined', true);
+		});
+
+		$('#acceptButton').on('click', function(event) {
+			console.log("test2");
+			//respondToInvite(1, $_SESSION['userID'], eventID); // Code 1 is for removing
+			//hide the element here with animation, THEN the next line is called
+			eventTabHandler('undefined', true);
+		});
+	}
+
 }
 
+// TODO: updateTotalCurrentPages function, using query, blah blah, just maybe
+
+// Reload Events for the specified tab, using the specified parameters
 function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 
 	// Run Handler only if: wants to update info or current tab isn't yet loaded with info
@@ -299,11 +368,12 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 
 						totalPages = Math.ceil(data[data.length - 1]['numEvents'] / EVENTS_PER_PAGE);
 						//console.log("Number of events: " + data[data.length - 1]['numEvents']);
-						
+
 						data.pop();
 					}
 					//console.log("Total Pages: " + totalPages);
 
+					//TODO: Maybe move this following part to a separate function
 					//IF USER CLICKED ON A NO LONGER EXISTANT PAGE (page 5, but the only event there was deleted meanwhile)
 					if (currentPage > totalPages) {
 						currentPage = totalPages;
@@ -329,7 +399,7 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 	}
 }
 
-// Clicked a tab. Gets events for it and displays them
+// Clicked to refresh tab. Gets query parameters and calls the query and refresh function
 function eventTabHandler(event, update) {
 
 	var eventsUpdate = null;
@@ -353,7 +423,7 @@ function eventTabHandler(event, update) {
 	console.log(typeFilters);
 	*/
 
-	// Querying Database for the tab events
+	// Querying Database for the tab events and filling 
 	queryEventForTab(selectedTab, order, typeFilters, eventsUpdate);
 
 }
