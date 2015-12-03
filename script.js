@@ -194,7 +194,7 @@ var userID = null;
 var selectedTab = null;
 var order = 'Date';
 var typeFilters = [];
-var EVENTS_PER_PAGE = 2;
+var EVENTS_PER_PAGE = 5;
 var currentPage = 1;
 var totalPages = 1;
 var loaded = null;
@@ -204,20 +204,16 @@ function updatePageButtons() {
 	var numberBackForward = 2;
 	numberBackForward = numberBackForward > totalPages - 1 ? totalPages - 1 : numberBackForward;
 
-	var lel = currentPage+numberBackForward;
-
 	// Se ultrapassar os limites que devia (1a pagina possivel e ultima), nao consegue
 	var firstButton = currentPage - numberBackForward <= 1 ? 1 : currentPage - numberBackForward;
-	var lastButton = lel >= totalPages ? totalPages : currentPage + numberBackForward;
+	var lastButton = currentPage + numberBackForward >= totalPages ? totalPages : currentPage + numberBackForward;
 
-	/* Debugging
-	console.log("numberBackForward: " + numberBackForward);
+	/*
 	console.log("Number of pages: " + totalPages);
-	console.log("Current Page: " + currentPage);
-	console.log("First Button: " + firstButton);
-	console.log("Last Button: " + lastButton);
+	console.log("First Button " + firstButton);
+	console.log("Last Button " + lastButton);
 	*/
-
+	
 	$('#page_buttons').empty();
 	for (var i = firstButton; i <= lastButton; i++) {
 
@@ -232,7 +228,7 @@ function updatePageButtons() {
 	$('.pageClick').on('click', function(e) {
 		e.preventDefault();
 		// Updates current page and refreshes events/buttons
-		currentPage = parseInt($(this).context.textContent);
+		currentPage = $(this).context.textContent;
 		eventTabHandler('undefined', true);
 	});
 
@@ -241,7 +237,7 @@ function updatePageButtons() {
 
 function listEventsUnderTab(events) {
 
-	console.log(events);
+	//console.log(events);
 
 	var cList = $('#event_list');
 	cList.empty();
@@ -268,12 +264,13 @@ function listEventsUnderTab(events) {
 
 		var a = $('<a/>')
 			.attr("href","event"+events[i]['id']+".php")
-			.append($('<img src="' + events[i]['url'] + '" alt="event" width="200" height="120">'))
+			.append($('<img src="images/logo.png" alt="event" width="150" height="90">'))
 			.append(info);
 
 			li.append(a);
 	});
 }
+
 function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 
 	// Run Handler only if: wants to update info or current tab isn't yet loaded with info
@@ -295,13 +292,14 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 			success: function(data, textStatus, jqXHR) {
 				if (typeof data.error === 'undefined') {
 					// 1st Item returned is the total of events
-					console.log(data);
+					//console.log(data);
 					if (data.length > 0) {
 
-						//Update total number of pages
+						//console.log("data",data.length);
+
 						totalPages = Math.ceil(data[data.length - 1]['numEvents'] / EVENTS_PER_PAGE);
 						//console.log("Number of events: " + data[data.length - 1]['numEvents']);
-
+						
 						data.pop();
 					}
 					//console.log("Total Pages: " + totalPages);
@@ -349,7 +347,7 @@ function eventTabHandler(event, update) {
 		return $(this).val();
 	}).get();
 
-	/* Debugging
+	/*
     console.log(selectedTab);
 	console.log(order);
 	console.log(typeFilters);
