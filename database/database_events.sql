@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS images;
 DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS types;
+DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS tags_events;
 DROP TABLE IF EXISTS users_images;
 DROP TABLE IF EXISTS events_types;
@@ -55,6 +56,13 @@ CREATE TABLE tags (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
 	description	VARCHAR UNIQUE,
 	visible	Boolean DEFAULT 1
+);
+
+CREATE TABLE comments(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	user_id INTEGER,
+	event_id INTEGER,
+	comment TEXT
 );
 
 CREATE TABLE users_images (
