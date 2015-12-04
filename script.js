@@ -313,7 +313,7 @@ function listEventsUnderTab(events) {
 		}
 
 		var cont = $('<div/>')
-			.append($('<img src="images/logo.png" alt="event" width="200" height="120">'))
+			.append($('<img src="' + events[i]['url'] + '" alt="event" width="200" height="120">'))
 			.append(info);
 
 		li.append(cont);
