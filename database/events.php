@@ -74,11 +74,11 @@ function getEventByTitle($title)
   $value= getImage($image['image']);
   return $value;
 }
-function isOwner($username){
+function isOwner($userID,$eventID){
   
   global $db;
-  $stmt = $db->prepare('SELECT  * FROM events WHERE visible=1 AND user_id= ? ');
-  $stmt->execute(array($username));  
+  $stmt = $db->prepare('SELECT  * FROM events WHERE visible=1 AND id=? AND user_id= ? ');
+  $stmt->execute(array($eventID,$userID));  
   return $stmt->fetch();
 }
 function getLastEventId(){
