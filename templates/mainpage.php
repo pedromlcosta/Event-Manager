@@ -14,32 +14,27 @@
 <form>
 <div id="myEvents" class="tab-section">
 	<?php include('filter.php'); ?>
-	<?php include('submit.php'); ?>
 </div>
 </form>
 <form>
 <div id="hostingEvents" class="tab-section">
 	<?php include('filter.php'); ?>
-	<?php include('submit.php'); ?>
 </div>
 </form>
 <form>
 <div id="invitedEvents" class="tab-section">
 	<?php include('filter.php'); ?>
-	<?php include('submit.php'); ?>
 </div>
 </form>
 <form>
 <div id="otherEvents" class="tab-section">
 	<?php include('filter.php'); ?>
-	<?php include('submit.php'); ?>
 </div>
 </form>
 <form>
 <div id="customSearch" class="tab-section">
 	<?php include('filter.php'); ?>
 	<?php include('customSearch.php'); ?>
-	<?php include('submit.php'); ?>
 </div>
 </form>
 <ul id="event_list">
