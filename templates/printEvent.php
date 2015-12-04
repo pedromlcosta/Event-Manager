@@ -39,7 +39,7 @@ print_r($_GET);
       $event=getEventInfo($_GET['eventID']);
      ?>
        <h3><?=$event['title']?> </h3>
-    <!--  <img src=<?php  echo $eventImage['image']?> title="evenPicture" />-->
+     <img src=<?php  echo $event['url']?> title="evenPicture" /> 
     <p> <?=$event['fulltext']?> </p>
     <p><?=$event['data']?> </p>
     <p> <?=getUserFullname($event['user_id']);?> </p>
