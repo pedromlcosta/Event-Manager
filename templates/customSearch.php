@@ -19,4 +19,4 @@
   include_once('init.php');
 //$result=customSearch(2,'concerto',[], ["Party"],'Date', 3, 1);
 ?>
-<a href="templates/printEvent.php?eventID=<?=1?>">Link To</a> 
+<a href="printIndex.php?eventID=<?=1?>">Link To</a> 

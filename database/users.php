@@ -62,7 +62,6 @@ function registerUser($username, $password, $fullname){
 	}
 }
 
-//TODO: Mudar as 2 funcoes seguintes para usarem ID em vez de username
 function getUser($username){
 
    global $db;

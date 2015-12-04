@@ -2,7 +2,7 @@
  <?php
  if(isset($_POST['action']) && isLogged()){
 
-  	if ($_POST['action'] == "edit") {
+  	if ($_POST['action'] == 'edit') {
 
 			$path = "action_editEvents.php";
 			$button = "Edit";
@@ -27,7 +27,7 @@
 			}
  	} 
 
-	 	 if ($_POST['action'] == "create") {
+	 	 if ($_POST['action'] == 'create') {
 			 $path = "action_createEvents.php";
 			$button = "Create";
 			$title = "";
@@ -85,4 +85,7 @@
 			   </div>
 			   </fieldset>
 			</form>	
+			<?php
+		}
+		?>
  

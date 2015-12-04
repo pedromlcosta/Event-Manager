@@ -2,7 +2,7 @@
 //TODO check where I use checkIfUser (Filipe)
 function checkIfUserResgisteredInEvent($event,$userAttending){
 	global $db;
-  $stmt = $db->prepare('SELECT  attending FROM events_users WHERE visible=1 AND event_id= ? AND user_id=?');
+  $stmt = $db->prepare('SELECT  attending_status FROM events_users WHERE visible=1 AND event_id= ? AND user_id=?');
   $stmt->execute(array($event,$userAttending));  
   return $stmt->fetch();
 }
@@ -20,7 +20,6 @@ function inviteUserToEvent($eventId,$userId){
 	$stmt = $db->prepare('INSERT INTO events_users (user_id,event_id,attending_status) VALUES(?,?,0)');
   	$stmt->execute(array($userId,$eventId));
 }
-
 function changeAttendingStatus($eventID, $userID, $status){
 
 	global $db;
@@ -48,7 +47,7 @@ function removeUserEventByEvent($eventId){
 
 function isInvited($eventId,$userId){
 
-	$result=getEventUsers($eventId,$userId);
+	$result=checkIfUserResgisteredInEvent($eventId,$userId);
   if($result&&$result['attending_status']==0)
   		return true;
   	else
@@ -57,7 +56,7 @@ function isInvited($eventId,$userId){
 }
 function isAttending($eventId,$userId){
 
-	$result=getEventUsers($eventId,$userId);
+	$result=checkIfUserResgisteredInEvent($eventId,$userId);
 
 	if($result&&$result['attending_status']==1)
   		return true;

@@ -25,7 +25,17 @@ function getEvent($id,$memberOfEvent)
   $stmt->execute(array($id,$memberOfEvent));  
   return $stmt->fetch();
 }
-
+function isPublic($id){
+  $event=getEventInfo($id);
+  if($event){
+      if($event['private'] == 0)
+        return true;
+      else
+        return false;
+  }
+  else
+    return false;
+}
 function getEventInfo($eventID){
   global $db;
 
