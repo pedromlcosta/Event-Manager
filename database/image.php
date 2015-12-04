@@ -19,10 +19,10 @@ function getLastimageId(){
   return $stmt->fetch();
 
 }
-function createImage($image){
+function createImage($url,$title,$description){
 	 global $db;
-   $stmt = $db->prepare('INSERT INTO images( image ,visible) VALUES( ?,? ) ');
-   $stmt->execute(array( $image,1));
+   $stmt = $db->prepare('INSERT INTO images(url,title,description,visible) VALUES( ?,?,?,? ) ');
+   $stmt->execute(array($url,$title,$description,1));
 }
- 
+  
   ?>
