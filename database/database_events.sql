@@ -1,5 +1,6 @@
+ /*PRAGMA foreign_keys = ON;
 
-
+.open web.db*/
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS images;
@@ -16,8 +17,8 @@ DROP TRIGGER IF EXISTS userNotGoingToEvent;
 DROP TRIGGER IF EXISTS userAddedToEvent;
 DROP TRIGGER IF EXISTS userRemovedFromEvent;
 DROP TRIGGER IF EXISTS creatorAttendsEvent;
-
--- TODO - por os UNIQUE necessarios e/ou os NOT NULL
+ 
+-- TODO - por os UNIQUE necessarios e/ou os NOT NULL echo .quit|
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 	username	VARCHAR UNIQUE,
@@ -157,7 +158,6 @@ BEGIN
 INSERT INTO EVENTS_USERS(event_id, user_id, attending_status)
 VALUES(new.id, new.user_id, 1);
 END;
-
 INSERT INTO users(id,username,password,fullname) VALUES (NULL,'admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3','admin'); -- Password is tested hashed with SHA 1
 INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Filipe','2e6f9b0d5885b6010f9167787445617f553a735f','Filipe Moreira');
 INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Pedro','5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8','Pedro Costa');
@@ -248,3 +248,4 @@ INSERT INTO tags_events VALUES(1,2,1);
 INSERT INTO tags_events VALUES(2,3,1);
 INSERT INTO tags_events VALUES(3,4,1);
 INSERT INTO tags_events VALUES(1,5,1);
+

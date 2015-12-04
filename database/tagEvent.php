@@ -13,70 +13,99 @@ function getEventWithTag($id){
   return $stmt->fetchAll();
 }
 
-function getEventsWithAnd($tags,$types){
+function getEventsWithAnd($tags,$types,$order){
   global $db;
-  $queryPart0 = 'SELECT DISTINCT id FROM events WHERE  visible=1 AND id IN (SELECT DISTINCT event_id FROM events_types WHERE visible=1 AND type_id IN ( '
-  $queryPart1= ' ) AND event_id NOT IN (SELECT events.id as event1 FROM events,tags WHERE tags.id IN (';
-  $queryPart2='';
+
+$nr_tags=count($tags);
+$nr_filters=count($types);
+
+ if($order == 'Date')
+    $queryOrder = ' ORDER BY data DESC';
+  else if ($order == 'Popularity')
+    $queryOrder = ' ORDER BY numberUsers DESC';
+
+
+  $queryPart0 = 'SELECT DISTINCT events.id FROM events,events_users WHERE events_users.visible=1 AND events.visible=1 AND (events_users.user_id=? OR events.private =0)
+   AND events_users.event_id =events.id AND events.id IN (SELECT DISTINCT event_id FROM events_types WHERE visible=1 AND type_id IN ( ';
+  $queryPart1='';
+  $queryPart2= ' ) AND event_id NOT IN (SELECT events.id as event1 FROM events,tags WHERE tags.id IN ( ';
   $queryPart3 = '';
-  $queryPart4 = ') AND NOT ( tags.id IN    (SELECT tag_id FROM tags_events WHERE event_id=event1 AND visible=1))))';
+  $queryPart4 = ' ) AND NOT ( tags.id IN    (SELECT tag_id FROM tags_events WHERE event_id=event1 AND visible=1))))';
  
- createInArray($queryPart2,count($types));
- createInArray($queryPart3,count($tags));
- /*
-   for ($i = 0; $i < count($types); $i++) {
-    if ($i == 0) $queryPart2 = $queryPart2 . '?';
-    else $queryPart2 = $queryPart2 . ',?';
-  }
+ 
+  if($nr_filters>0)
+   createInArray($queryPart1,$nr_filters);
+  else
+    $queryPart2= ' type_id ';
 
-  for ($i = 0; $i < count($tags); $i++) {
-    if ($i == 0) $queryPart3 = $queryPart3 . '?';
-    else $queryPart3 = $queryPart3 . ',?';
-  }
-*/ 
+  if($nr_tags>0)
+   createInArray($queryPart3,$nr_tags);
+  else
+    $queryPart3= ' tag_id ';
+  echo "<br>";
+  print_r($queryPart1);
+  echo "<br>";  
+  echo "<br>";
+  print_r($queryPart3);
+  echo "<br>";
 
-  $args=array_merge($types, $tags);
-  $query = $queryPart0.$queryPart1.$queryPart2.$queryPart3.$queryPart4;
+
+  $args=array_merge($types, $tags,array($events_per_page,  ($page-1) * $events_per_page));
+  $query = $queryPart0.$queryPart1.$queryPart2.$queryPart3.$queryPart4.$queryOrder;
+  echo "<br>";
+  print_r($args);
+  echo "<br>";
+  print_r($query);
+  
   $stmt = $db->prepare($query);
   $stmt->execute($args);
   return $stmt->fetchAll();
 }
 
-function getEventsWithOr($tags,$types){
+function getEventsWithOr($tags,$types,$order){
   global $db;
-  $queryPart0 = 'SELECT DISTINCT id FROM events WHERE visible=1 AND  id IN (SELECT DISTINCT event_id FROM events_types WHERE visible=1 and type_id IN ( ';
+
+$nr_tags=count($tags);
+$nr_filters=count($types);
+
+if($order == 'Date')
+    $queryOrder = ' ORDER BY data DESC';
+  else if ($order == 'Popularity')
+    $queryOrder = ' ORDER BY numberUsers DESC';
+
+
+
+  $queryPart0 = 'SELECT DISTINCT events.id FROM events,events_users WHERE events_users.visible=1 AND events.visible=1 AND (events_users.user_id=? OR events.private =0) AND events_users.event_id =events.id
+   AND events.id IN (SELECT DISTINCT event_id FROM events_types WHERE visible=1 and type_id IN ( ';
   $queryPart1= '';//add types IDs
   $queryPart2=' ) AND event_id IN (SELECT DISTINCT event_id FROM tags_events WHERE  visible=1 AND tag_id IN (';
   $queryPart3 = '';//add tags IDs
 
-  createInArray($queryPart2,count($types));
-  createInArray($queryPart3,count($tags));
-   /*
-  for ($i = 0; $i < count($types); $i++) {
-    if ($i == 0) $queryPart2 = $queryPart2 . '?';
-    else $queryPart2 = $queryPart2 . ',?';
-  }*/
+   if($nr_filters>0)
+   createInArray($queryPart1,$nr_filters);
+  else
+    $queryPart2= ' type_id ';
 
-  
-  /*
-  for ($i = 0; $i < count($tags); $i++) {
-    if ($i == 0) $queryPart3 = $queryPart3 . '?';
-    else $queryPart3 = $queryPart3 . ',?';
-  }*/
+  if($nr_tags>0)
+   createInArray($queryPart3,$nr_tags);
+  else
+    $queryPart3= ' tag_id ';
+ 
 
-  $query = $queryPart0.$queryPart1.$queryPart2.$queryPart3.')))';
+  $query = $queryPart0.$queryPart1.$queryPart2.$queryPart3.')))'.$queryOrder;
 
-  $args=array_merge($types, $tags);
+  $args=array_merge($types, $tags,array($events_per_page,  ($page-1) * $events_per_page));
   $stmt = $db->prepare($query);
   $stmt->execute($args);
   return $stmt->fetchAll();
 }
 function createInArray(&$array,$times){
 
-  for ($i = 0; $i < times; $i++) {
+  for ($i = 0; $i < $times; $i++) {
     if ($i == 0) $array = $array . '?';
     else $array = $array . ',?';
 
+  }
 }
 
 function getTagWithEvent($id){
@@ -105,6 +134,12 @@ function removeTagEvents($id){
   global $db;
   $stmt = $db->prepare('DELETE FROM   tags_events WHERE tag_id = ?');
   $stmt->execute(array($id));
+
+}
+function removeTagEventsByEvent($eventId){
+   global $db;
+  $stmt = $db->prepare('DELETE FROM   tags_events WHERE event_id = ?');
+  $stmt->execute(array($eventId));
 
 }
 ?>

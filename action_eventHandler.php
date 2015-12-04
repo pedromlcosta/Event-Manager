@@ -1,4 +1,5 @@
 	<?php
+
 	  include_once('genericStart.html');
 	  include_once('init.php');
 	  include_once('database/events.php');
@@ -9,7 +10,9 @@
  	  include_once('templates/header.php');
  ?>
  		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-		<script type="text/javascript" src="events.js"></script>
+		<script type="text/javascript" src="events.js">
+				console.log("HERE");
+		</script>
  	 
  <?php
  if(isset($_POST['action']) && isLogged()){
