@@ -8,12 +8,10 @@
             <label for="dateTag"> <h4 class="selTitle">Date:</h4></label>
              <input type="date"  name="dateTag" id="dateTag" >  
         </div>
-
-        <div id="button">
-           <button type="submit" >Search</button>
+         <div id="button">
+           <button   id="customSearchButton" >Search</button>
         </div>
-
     </form>
-
+        
     <a href="event_page.php?eventID=<?=1?>">Event 1 Test Link</a> 
 </div>

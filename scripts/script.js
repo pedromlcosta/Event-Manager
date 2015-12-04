@@ -342,10 +342,12 @@ function listEventsUnderTab(events) {
 // TODO: updateTotalCurrentPages function, using query, blah blah, just maybe
 
 // Reload Events for the specified tab, using the specified parameters
-function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
+function queryEventForTab(tabID, eventOrder, eventTypeFilters, update,tags,data) {
 
 	// Run Handler only if: wants to update info or current tab isn't yet loaded with info
 	if (loaded != tabID || update == true) {
+		console.log(tags);
+		console.log(data);
 
 		//Can only send text, array has to go on JSON format!
 		var tempFilters = JSON.stringify(eventTypeFilters);
@@ -357,7 +359,9 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 				order: eventOrder,
 				eventsPerPage: EVENTS_PER_PAGE,
 				page: currentPage,
-				typeFilters: tempFilters
+				typeFilters: tempFilters,
+				userProvidedTags: tags,
+				dateTag:data
 			},
 			dataType: 'json', // -> automatically parses response data!
 			success: function(data, textStatus, jqXHR) {
@@ -402,6 +406,7 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 // Clicked to refresh tab. Gets query parameters and calls the query and refresh function
 function eventTabHandler(event, update) {
 	var eventsUpdate = null;
+ event.preventDefault();
 
 	if (event == undefined || event.data == undefined) {
 		var eventsUpdate = update != undefined ? update : false;
@@ -416,6 +421,15 @@ function eventTabHandler(event, update) {
 		return $(this).val();
 	}).get();
 
+	var tags=1;
+	var data=1;
+	
+	if(selectedTab=="#customSearch"){
+		  tags=$('#tagsToSearch').val();
+		  data=$('#dateTag').val();
+		}
+		queryEventForTab(selectedTab, order, typeFilters, eventsUpdate,tags,data);
+
 	/*
     console.log(selectedTab);
 	console.log(order);
@@ -423,7 +437,6 @@ function eventTabHandler(event, update) {
 	*/
 
 	// Querying Database for the tab events and filling 
-	queryEventForTab(selectedTab, order, typeFilters, eventsUpdate);
 
 }
 
@@ -444,6 +457,9 @@ function onReadyAddHandlers() {
 
 		//LOGIN BUTTON CLICK HANDLER
 		$('#login_button').click(clickedLogin);
+
+
+		$('#customSearchButton').on('click',eventTabHandler);
 
 		//REGISTER BUTTON HOVER HANDLER
 		$('#register_button').hover(hoveredRegister, unhoveredRegister);
