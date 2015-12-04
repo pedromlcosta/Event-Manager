@@ -25,13 +25,16 @@ function changeAttendingStatus($eventID, $userID, $status){
 
 	global $db;
 	$stmt = $db->prepare('UPDATE events_users SET attending_status = ? WHERE event_id = ? AND user_id = ?');
-  	$stmt->execute(array($status,$eventID,userID));
+  	$stmt->execute(array($status,$eventID,$userID));
 
+  	return $userID;
 }
 
+//TODO: what if event no longer exists?
 function removeUserFromEvent($eventId,$userId){
 	
 	global $db;
+
 	$stmt = $db->prepare('DELETE FROM events_users WHERE events_users.user_id = ? AND events_users.event_id = ?');
   	$stmt->execute(array($userId,$eventId));
 }

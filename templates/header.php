@@ -57,7 +57,7 @@
 
         <div id="userpage_button">
           <form action='user_page.php' method='GET'>
-            <input type="text" name="userID" value="<?=$_SESSION['userID']?>" hidden>
+            <input type="hidden" name="userID" value="<?=$_SESSION['userID']?>" >
             <button type="submit"> My Page </button>
           </form>
         </div>

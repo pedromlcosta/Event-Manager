@@ -1,6 +1,7 @@
 * {
 	margin: 0;
 	padding: 0;
+	font-family: Segoe UI;
 }
 body{
 	background-image: url("../images/background.png");
@@ -190,6 +191,7 @@ textarea {
 	display: -webkit-flex;
 	display: flex;
 	text-decoration: none;
+	
 
 	-webkit-flex-flow: row wrap;
 	justify-content: space-around;
@@ -202,7 +204,7 @@ textarea {
 	height: 150px;
 }
 
-.event_item a > div{
+.event_item div{
 	display: block;
 }
 
