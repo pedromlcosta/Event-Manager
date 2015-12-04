@@ -1,4 +1,4 @@
-<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="scripts/script.js"></script>
 <body>
   <div id="main">
     <div id="header">

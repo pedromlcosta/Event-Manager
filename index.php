@@ -5,7 +5,6 @@
 	include('genericStart.html');
 ?>
 
-
 <?php
 	
 	include('templates/header.php');
