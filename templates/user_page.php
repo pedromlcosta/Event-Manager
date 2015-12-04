@@ -31,7 +31,6 @@
 			<form>
 				<div id="hostedPublic" class="tab-section">
 					<?php include('filter.php'); ?>
-					<?php include('submit.php'); ?>
 				</div>
 			</form>
 
