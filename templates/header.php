@@ -62,7 +62,7 @@
           </form>
         </div>
         <div id="createEventForm">
-          <form  action="action_eventHandler.php" method="post">
+          <form  action="events_create_edit.php" method="post">
             <input type="hidden" name="action" id="action" value="create">
 
             <div class="button">

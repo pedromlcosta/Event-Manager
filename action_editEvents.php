@@ -3,7 +3,6 @@ print_r($_POST);
 
 include_once('genericStart.html');	
 include_once('init.php');
-include('templates/header.php');
 
 if(isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['eventID'])  ){
 
@@ -81,5 +80,4 @@ $tagsAfterEdit=array();
 }
 
 }
-   include_once("templates/footer.php");
 ?>
