@@ -194,7 +194,7 @@ var userID = null;
 var selectedTab = null;
 var order = 'Date';
 var typeFilters = [];
-var EVENTS_PER_PAGE = 10;
+var EVENTS_PER_PAGE = 5;
 var currentPage = 1;
 var totalPages = 1;
 var loaded = null;
@@ -208,11 +208,14 @@ function updatePageButtons() {
 	var firstButton = currentPage - numberBackForward <= 1 ? 1 : currentPage - numberBackForward;
 	var lastButton = currentPage + numberBackForward >= totalPages ? totalPages : currentPage + numberBackForward;
 
-	/*
+	
 	console.log("Number of pages: " + totalPages);
+	console.log("numberBackForward+currentPage = " + currentPage + numberBackForward);
+	console.log("numberBackForward: " + numberBackForward);
+	console.log("Current Page: " + currentPage);
 	console.log("First Button " + firstButton);
 	console.log("Last Button " + lastButton);
-	*/
+	
 
 	$('#page_buttons').empty();
 	for (var i = firstButton; i <= lastButton; i++) {
@@ -228,22 +231,21 @@ function updatePageButtons() {
 	$('.pageClick').on('click', function(e) {
 		e.preventDefault();
 		// Updates current page and refreshes events/buttons
-		currentPage = $(this).context.textContent;
+		currentPage = parseInt($(this).context.textContent);
 		eventTabHandler('undefined', true);
 	});
 
 	//$(#page_buttons);
 }
 
-function respondToInvite(action, user, event_ID) {
-	console.log(action);
+function respondToInvite(action, events) {
+	console.log(action + " " + events);
 	$.ajax({
 		url: 'action_eventInvites.php',
 		type: 'POST',
 		data: {
 			response: action,
-			userID: user,
-			eventID: event_ID
+			event_ID: events
 		},
 		dataType: 'json', // -> automatically parses response data!
 		success: function(data, textStatus, jqXHR) {
@@ -266,20 +268,22 @@ function respondToInvite(action, user, event_ID) {
 function listEventsUnderTab(events) {
 
 	//console.log(events);
-
+	var eventNum = events.length;
 	var cList = $('#event_list');
 	cList.empty();
 
 	$.each(events, function(i) {
-		var li = $('<li/>')
+		var li = $('<li class="list_event" id="li_event' +events[i]['id'] +'"> </li>')
 			.addClass('event_item')
 			.appendTo(cList);
 
 		var info = $('<div/>')
 			.addClass('info')
 			.append($('<div/>')
-				.append($('<h4/>').text('Title').val('Title'))
-				.append(events[i]['title']))
+				.append($('<a href="event'+events[i]['id']+'.php">' + events[i]['title'] +' </a>')))
+			.append($('<div/>')
+				.append($('<h4/>').text('Type').val('Type'))
+				.append(events[i]['type']))
 			.append($('<div/>')
 				.append($('<h4/>').text('Date').val('Date'))
 				.append(events[i]['data']))
@@ -290,50 +294,45 @@ function listEventsUnderTab(events) {
 				.append($('<h4/>').text('Author').val('Author'))
 				.append(events[i]['fullname']));
 
+			if(selectedTab != "#customSearch" && selectedTab != "#otherEvents"){
+				if(events[i]['attending_status'] == 1){
+					info.append("Attending");
+				}else{
+					info.append("Not attending");
+				}
+				
+			}
+
 		if (selectedTab == '#invitedEvents') {
 			info.append($('<div/>')
-				.append($('<input type="button" id="removeButton" class="inviteResponse"  value="Remove Event" />')));
+				.append($('<a href="javascript:void(0,' + events[i]['id'] + ')" class="inviteResponse removeEvent" > Remove Event </a>')));
 
 			info.append($('<div/>')
-				.append($('<input type="button" id="acceptButton" class="inviteResponse" value="Accept Invite" />')));
+				.append($('<a href="javascript:void(1,' + events[i]['id'] + ')" class="inviteResponse acceptEvent" > Accept Invite </a>')));
 
-
-			/*
-			$('#acceptButton').on('click', function(event){
-				respondToInvite(0); // Code 0 is for accepting
-			});
-			*/
-			//Hide or update here!
-			//hide
-			//totalpages -= 1
-			//updateButtons
-			//if 1 event only, if currentpage!=0, currentPage-=1 ?
 		}
 
-		var a = $('<a/>')
-			//.attr("href","event"+events[i]['id']+".php")
-			.append($('<img src="images/logo.png" alt="event" width="150" height="90">'))
+		var cont = $('<div/>')
+			.append($('<img src="' + events[i]['url'] + '" alt="event" width="200" height="120">'))
 			.append(info);
 
-		li.append(a);
+		li.append(cont);
 	});
 
 	//Bind response buttons outside cycle, not to repeat them
-	if (selectedTab == '#invitedEvents') {
-		$('#removeButton').on('click', function(event) {
-			console.log("test1");
-			//respondToInvite(0, $_SESSION['userID'], eventID); // Code 1 is for removing
-			//hide the element here with animation, THEN the next line is called
-			eventTabHandler('undefined', true);
-		});
 
-		$('#acceptButton').on('click', function(event) {
-			console.log("test2");
-			//respondToInvite(1, $_SESSION['userID'], eventID); // Code 1 is for removing
-			//hide the element here with animation, THEN the next line is called
-			eventTabHandler('undefined', true);
-		});
-	}
+	$('.inviteResponse').on('click', function(event) {
+
+		var hrefValues = $(this).attr("href").replace("javascript:void(","").replace(")", "");
+		hrefValues = hrefValues.split(',');
+
+		respondToInvite(hrefValues[0], hrefValues[1]); // Code 1 is for removing
+
+		//hide the element here with animation, THEN the next line is called
+		$('#li_event' + hrefValues[1]).fadeOut('slow').delay(1000);
+
+		setTimeout(eventTabHandler,1000, 'undefined', true);
+	});
 
 }
 
@@ -361,10 +360,8 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 			success: function(data, textStatus, jqXHR) {
 				if (typeof data.error === 'undefined') {
 					// 1st Item returned is the total of events
-					//console.log(data);
+					
 					if (data.length > 0) {
-
-						//console.log("data",data.length);
 
 						totalPages = Math.ceil(data[data.length - 1]['numEvents'] / EVENTS_PER_PAGE);
 						//console.log("Number of events: " + data[data.length - 1]['numEvents']);
@@ -401,7 +398,6 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 
 // Clicked to refresh tab. Gets query parameters and calls the query and refresh function
 function eventTabHandler(event, update) {
-
 	var eventsUpdate = null;
 
 	if (event == undefined || event.data == undefined) {
