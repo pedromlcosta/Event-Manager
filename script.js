@@ -208,13 +208,14 @@ function updatePageButtons() {
 	var firstButton = currentPage - numberBackForward <= 1 ? 1 : currentPage - numberBackForward;
 	var lastButton = currentPage + numberBackForward >= totalPages ? totalPages : currentPage + numberBackForward;
 
-	
+	/*
 	console.log("Number of pages: " + totalPages);
-	console.log("numberBackForward+currentPage = " + currentPage + numberBackForward);
+	console.log(currentPage + numberBackForward);
 	console.log("numberBackForward: " + numberBackForward);
 	console.log("Current Page: " + currentPage);
 	console.log("First Button " + firstButton);
 	console.log("Last Button " + lastButton);
+	*/
 	
 
 	$('#page_buttons').empty();
@@ -295,9 +296,10 @@ function listEventsUnderTab(events) {
 				.append(events[i]['fullname']));
 
 			if(selectedTab != "#customSearch" && selectedTab != "#otherEvents"){
+				// TODO: Funcao que vai buscar attending Status. Se nao encontrar, fica Not Going
 				if(events[i]['attending_status'] == 1){
 					info.append("Attending");
-				}else{
+				}else if(events[i]['attending_status'] == 0){
 					info.append("Not attending");
 				}
 				
@@ -321,6 +323,7 @@ function listEventsUnderTab(events) {
 
 	//Bind response buttons outside cycle, not to repeat them
 
+	//TODO: use javascript:function(0, 1342) on href
 	$('.inviteResponse').on('click', function(event) {
 
 		var hrefValues = $(this).attr("href").replace("javascript:void(","").replace(")", "");
@@ -360,11 +363,11 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update) {
 			success: function(data, textStatus, jqXHR) {
 				if (typeof data.error === 'undefined') {
 					// 1st Item returned is the total of events
-					
+					console.log(data)
 					if (data.length > 0) {
 
 						totalPages = Math.ceil(data[data.length - 1]['numEvents'] / EVENTS_PER_PAGE);
-						//console.log("Number of events: " + data[data.length - 1]['numEvents']);
+						console.log("Number of events: " + data[data.length - 1]['numEvents']);
 
 						data.pop();
 					}

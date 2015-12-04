@@ -5,7 +5,7 @@
 		<li><a id="link_hostingEvents" href="#hostingEvents">I'm Hosting ...</a></li>
 		<li><a id="link_myEvents" href="#myEvents">I'm Going ...</a></li>
 		<li><a id="link_invitedEvents" href="#invitedEvents">I'm Invited ...</a></li>
-		<li><a id="link_otherEvents" href="#otherEvents">Other Events</a></li>
+		<li><a id="link_otherEvents" href="#otherEvents">All Events</a></li>
 		<li><a id="link_customSearch" href="#customSearch" >Custom Search</a></li>
 	<?php else: ?>
 	<li><a id="link_customSearch" href="#customSearch" >Custom Search</a></li>

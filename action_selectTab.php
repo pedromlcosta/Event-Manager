@@ -18,7 +18,7 @@
 	switch ($_POST['tab']) {
     case '#hostingEvents':
         // Done
-        $result = getEventsUserHosting($_SESSION['userID'], $order, $eventsPerPage, $page, $typeFilters);
+        $result = getEventsUserHosting($_SESSION['userID'], $_SESSION['userID'], $order, $eventsPerPage, $page, $typeFilters, 0);
         break;
     case '#myEvents':
         // Done
@@ -34,6 +34,16 @@
         break;
     case '#customSearch':
         $result = getEventsUserAttending($_SESSION['userID'], $order, $eventsPerPage, $page, $typeFilters, 1);
+        break;
+    case '#hostedPublic':
+        if(isLogged()){
+            $permission = 1;
+            $userWatching = $_SESSION['userID'];
+        }else{
+            $permission = 2;
+            $userWatching = null;
+        }
+        $result = getEventsUserHosting($_SESSION['currentUserPage'], $userWatching, $order, $eventsPerPage, $page, $typeFilters, $permission);
         break;
     default:
         break;

@@ -161,6 +161,7 @@ END;
 INSERT INTO users(id,username,password,fullname) VALUES (NULL,'admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3','admin'); -- Password is tested hashed with SHA 1
 INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Filipe','2e6f9b0d5885b6010f9167787445617f553a735f','Filipe Moreira');
 INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Pedro','5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8','Pedro Costa');
+INSERT INTO users(username, password, fullname) VALUES('Mysterion', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'Mysterion' );
 
 INSERT INTO types (name) VALUES ('Party');
 INSERT INTO types (name) VALUES ('Concert');
@@ -173,7 +174,7 @@ INSERT INTO types (name) VALUES ('Hangout');
 
 INSERT INTO images(title, description, url) VALUES ('hue', 'huehue', 'images/backg.jpg');
 
--- User 3 created all events
+-- User 3 the first 9 events and the 13
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 1', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,'2015-01-01',3,1);
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 2', 'Sed justo metus, suscipit non fermentum non, sagittis quis arcu. Curabitur tincidunt leo non blandit.',0,'2012-01-01',3,1);
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 3', 'Maecenas ipsum elit, vestibulum id blandit vel, euismod ut urna. Sed nisi lectus.',0,'2013-01-01',3,1);
@@ -186,6 +187,8 @@ INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 10', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2006-01-01',2,1);
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 11', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',1,'2006-01-01',1,1);
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 12', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',1,'2006-01-01',1,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 13', 'Passagem de Ano',1,'2016-01-01',3,1);
+INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 14', 'Passagem de Ano 2',1,'2017-01-01',3,1);
 
 INSERT INTO events_images(event_id,image_id) VALUES(1,1);
 INSERT INTO events_images(event_id,image_id) VALUES(2,1);
@@ -199,6 +202,8 @@ INSERT INTO events_images(event_id,image_id) VALUES(9,1);
 INSERT INTO events_images(event_id,image_id) VALUES(10,1);
 INSERT INTO events_images(event_id,image_id) VALUES(11,1);
 INSERT INTO events_images(event_id,image_id) VALUES(12,1);
+INSERT INTO events_images(event_id,image_id) VALUES(13,1);
+INSERT INTO events_images(event_id,image_id) VALUES(14,1);
 
 -- User 1 and 2 were invited to event 3
 INSERT INTO events_users(event_id, user_id, attending_status) VALUES (3, 1, 0);
@@ -217,6 +222,8 @@ UPDATE events_users SET attending_status=1 WHERE event_id=3 AND user_id=2;
 -- User 3 was invited to event 12
 INSERT INTO events_users(event_id, user_id, attending_status) VALUES (12, 3, 0);
 
+INSERT INTO events_users(event_id, user_id, attending_status) VALUES (14, 4, 0);
+
 DELETE FROM events_users WHERE event_id=3 AND user_id=2;
 
 
@@ -232,6 +239,8 @@ INSERT INTO events_types (event_id, type_id) VALUES (9,5);
 INSERT INTO events_types (event_id, type_id) VALUES (10,4);
 INSERT INTO events_types (event_id, type_id) VALUES (11,7);
 INSERT INTO events_types (event_id, type_id) VALUES (12,1);
+INSERT INTO events_types (event_id, type_id) VALUES (13,1);
+INSERT INTO events_types (event_id, type_id) VALUES (14,1);
 
 
 INSERT INTO tags (description) VALUES ('concerto');

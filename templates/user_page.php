@@ -1,8 +1,13 @@
-<?php if(!isLogged()){
-	//Not logged, redirecting or showing error message
-	header("Location:" . 'index.php');
-	die();
-}else{ ?>
+<?php
+
+	if(!isset($_GET['userID'])){
+		// On leaving the page, reset this session variable
+		echo "really?";
+		header('Location:'. 'index.php');
+	}else{
+		$_SESSION['currentUserPage'] = $_GET['userID'];
+?>
+
 	<div id="content">
 		<div id="photo">
 			<?php
@@ -20,11 +25,11 @@
 
 		<div id="userEventTabs">
 			<ul id="tabs">
-				<li><a id="link_hostingEvents" href="#hostingEvents">I'm Hosting ...</a></li>
+				<li><a id="link_userHostedPublic" href="#hostedPublic">User's Public Hosted Events ...</a></li>
 			</ul>
 
 			<form>
-				<div id="hostingEvents" class="tab-section">
+				<div id="hostedPublic" class="tab-section">
 					<?php include('filter.php'); ?>
 					<?php include('submit.php'); ?>
 				</div>

@@ -156,6 +156,9 @@ function updateEvents($field,$id,$changes){
 
 // QUERIES FOR MAIN TABS
    
+//TODO: Don't show past events -> AND julianblahblah("now") >= event.date
+//TODO: Past Attended events tab! 
+
 // Gets events user is connected to - TODO: decide if attends only or attends+invited
 function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_filters, $attending_status){
   
@@ -165,6 +168,10 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
     $queryOrder = ' ORDER BY data DESC';
   else if ($order == 'Popularity')
     $queryOrder = ' ORDER BY numberUsers DESC';
+  else if ($order == 'Type')
+    $queryOrder = ' ORDER BY type ASC';
+  
+
   $queryLimit =  ' LIMIT ? OFFSET ?';
   
   if($attending_status == 1){
@@ -226,16 +233,54 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
 }
 
 // Gets events the user is hosting, whether he is going to attend them or not
-function getEventsUserHosting($userID, $order, $events_per_page, $page, $type_filters){
+// If private permission is true: returns hosted public events + private ones the user is permitted to see
+// Else: only returns the hosted public events
+function getEventsUserHosting($hostID, $userID, $order, $events_per_page, $page, $type_filters, $permissionLevel){
 global $db;
   
   if($order == 'Date')
     $queryOrder = ' ORDER BY data DESC';
   else if ($order == 'Popularity')
     $queryOrder = ' ORDER BY numberUsers DESC';
+  else if ($order == 'Type')
+    $queryOrder = ' ORDER BY type ASC';
+
   $queryLimit =  ' LIMIT ? OFFSET ?';
 
-  $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname, types.name as \'type\', events_users.attending_status FROM users, events, events_users, events_types, types, images, events_images WHERE events.user_id = ? AND events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events.user_id=users.id';
+  // Permission Level: 0 - Host   1 - Logged user   2 - Logged out
+  // Host permission returns all the events the host has made, public + private.
+  // Logged user permission returns all the public events + ones he is enrolled in
+  // Logged out permission returns all the public events
+
+  if($permissionLevel == 0){
+
+    $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname, types.name as "type", events_users.attending_status FROM users, events, events_users, events_types, types, images, events_images WHERE events.user_id = ? AND events_users.user_id = users.id AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events.user_id=users.id';
+
+    $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE events.user_id = ? AND events_users.user_id = users.id AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id = users.id';
+
+    $executeArray = array_merge(array($hostID), $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
+    $executeCountArray = array_merge(array($hostID), $type_filters);
+
+  }else if ($permissionLevel == 1){
+    //falta este
+
+     $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname, types.name as "type" FROM users, events, events_users, events_types, types, images, events_images WHERE events.user_id = ? AND (events.private=0 OR (events_users.user_id = ? AND events_users.event_id = events.id)) AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events.user_id=users.id';
+
+    $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE events.user_id = ? AND (events.private=0 OR (events_users.user_id = ? AND events_users.event_id = events.id)) AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id=users.id';
+
+    $executeArray = array_merge(array($hostID, $userID), $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
+    $executeCountArray = array_merge(array($hostID, $userID), $type_filters);
+  }else if ($permissionLevel == 2){
+
+    $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname, types.name as "type" FROM users, events, events_types, types, images, events_images WHERE events.private = 0 AND events.user_id = ? AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events.user_id=users.id';
+
+    $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE events.private = 0 AND events.user_id = ? AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id = users.id';
+
+    $executeArray = array_merge(array($hostID), $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
+    $executeCountArray = array_merge(array($hostID), $type_filters);
+  }
+
+  // Preparing filters
    $nr_filters = count($type_filters);
   
   if($nr_filters > 0){
@@ -250,20 +295,20 @@ global $db;
     $countEvents[0]['numEvents'] = 0;
    return $countEvents;
   }
+
+  // Doing page events query
   $query = $querySelect . $queryTypes . $queryOrder . $queryLimit;
-  $executeArray = array_merge(array($userID, $userID), $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
   
   $stmt = $db->prepare($query);
   $stmt->execute($executeArray);
   $events = $stmt->fetchAll();
- 
- 
-  // COUNT EVENTS RESULTING FROM QUERY
-  $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE events.user_id = ? AND events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id = users.id';
-  $query2 =   $queryCount . $queryTypes;
+
+
+  // Doing total events count query
+  $queryCount =   $queryCount . $queryTypes;
   
-  $stmt = $db->prepare($query2);
-  $stmt->execute(array_merge(array($userID, $userID), $type_filters));
+  $stmt = $db->prepare($queryCount);
+  $stmt->execute($executeCountArray);
   $countEvents = $stmt->fetchAll();
   
   $result = array_merge($events, $countEvents);
@@ -280,6 +325,9 @@ function getAllVisibleEvents($userID, $order, $events_per_page, $page, $type_fil
     $queryOrder = ' ORDER BY data DESC';
   else if ($order == 'Popularity')
     $queryOrder = ' ORDER BY numberUsers DESC';
+  else if ($order == 'Type')
+    $queryOrder = ' ORDER BY type ASC';
+
   $queryLimit =  ' LIMIT ? OFFSET ?';
 
   $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname, types.name as "type" FROM users, events, events_users, events_types, types, images, events_images WHERE (events.private=0 OR (events_users.user_id = ? AND events_users.event_id = events.id)) AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events.user_id=users.id';

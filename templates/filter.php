@@ -2,6 +2,7 @@
 		<div class="sortSelection">
 			<label><input type="radio" name="sortType" value="Date" checked>Date</label>
 			<label><input type="radio" name="sortType" value="Popularity">Popularity</label>
+			<label><input type="radio" name="sortType" value="Type">Type</label>
 		</div>
 		<div class="types">
 			<?php
