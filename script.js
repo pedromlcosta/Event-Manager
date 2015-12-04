@@ -194,7 +194,7 @@ var userID = null;
 var selectedTab = null;
 var order = 'Date';
 var typeFilters = [];
-var EVENTS_PER_PAGE = 2;
+var EVENTS_PER_PAGE = 5;
 var currentPage = 1;
 var totalPages = 1;
 var loaded = null;
@@ -312,7 +312,11 @@ function listEventsUnderTab(events) {
 
 		}
 
-		li.append(info);
+		var cont = $('<div/>')
+			.append($('<img src="images/logo.png" alt="event" width="200" height="120">'))
+			.append(info);
+
+		li.append(cont);
 	});
 
 	//Bind response buttons outside cycle, not to repeat them
