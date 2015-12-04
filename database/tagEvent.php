@@ -25,7 +25,8 @@ $nr_filters=count($types);
     $queryOrder = ' ORDER BY numberUsers DESC';
 
 
-  $queryPart0 = 'SELECT DISTINCT events.id FROM events,events_users WHERE events_users.visible=1 AND events.visible=1 AND (events_users.user_id=? OR events.private =0)
+  $queryPart0 = 'SELECT DISTINCT events.*,images.url,users.username FROM events,events_users,events_images,users,images WHERE events.user_id=users.id AND users.visible=1 
+  AND events_images.event_id =events.id AND events_images.image_id = images.id AND events_users.visible=1 AND events.visible=1 AND (events_users.user_id=? OR events.private =0)
    AND events_users.event_id =events.id AND events.id IN (SELECT DISTINCT event_id FROM events_types WHERE visible=1 AND type_id IN ( ';
   $queryPart1='';
   $queryPart2= ' ) AND event_id NOT IN (SELECT events.id as event1 FROM events,tags WHERE tags.id IN ( ';
@@ -42,13 +43,6 @@ $nr_filters=count($types);
    createInArray($queryPart3,$nr_tags);
   else
     $queryPart3= ' tag_id ';
-  echo "<br>";
-  print_r($queryPart1);
-  echo "<br>";  
-  echo "<br>";
-  print_r($queryPart3);
-  echo "<br>";
-
 
   $args=array_merge($types, $tags,array($events_per_page,  ($page-1) * $events_per_page));
   $query = $queryPart0.$queryPart1.$queryPart2.$queryPart3.$queryPart4.$queryOrder;
@@ -74,9 +68,10 @@ if($order == 'Date')
     $queryOrder = ' ORDER BY numberUsers DESC';
 
 
-
-  $queryPart0 = 'SELECT DISTINCT events.id FROM events,events_users WHERE events_users.visible=1 AND events.visible=1 AND (events_users.user_id=? OR events.private =0) AND events_users.event_id =events.id
-   AND events.id IN (SELECT DISTINCT event_id FROM events_types WHERE visible=1 and type_id IN ( ';
+//check queries they seem to work
+  $queryPart0 = 'SELECT DISTINCT events.*,images.url,users.username FROM events,events_users,events_images,users,images WHERE events.user_id=users.id AND users.visible=1 
+  AND events_images.event_id =events.id AND events_images.image_id = images.id AND events_users.visible=1 AND events.visible=1 AND (events_users.user_id=? OR events.private =0)
+   AND events_users.event_id =events.id AND events.id IN (SELECT DISTINCT event_id FROM events_types WHERE visible=1 and type_id IN ( ';
   $queryPart1= '';//add types IDs
   $queryPart2=' ) AND event_id IN (SELECT DISTINCT event_id FROM tags_events WHERE  visible=1 AND tag_id IN (';
   $queryPart3 = '';//add tags IDs

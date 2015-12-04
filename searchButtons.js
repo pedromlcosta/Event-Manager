@@ -1,7 +1,7 @@
 
 function deleteButton(event){
 	$.ajax({
-		url: '../action_buttons.php',
+		url: '../eventsIndex.php',
 		type: 'POST',
 		data: {
 			action: 'DELETE',
