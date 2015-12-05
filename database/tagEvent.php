@@ -24,12 +24,11 @@ $nr_filters=count($types);
   else if ($order == 'Popularity')
     $queryOrder = ' ORDER BY numberUsers DESC';
 
-
-  $queryPart0 = 'SELECT DISTINCT events.*,images.url,users.fullname,types.name as "type" FROM events,events_users,events_images,users,images,types,events_types WHERE events.user_id=users.id AND users.visible=1 
-  AND events_images.event_id =events.id AND events_images.image_id = images.id AND events_users.visible=1 AND events.visible=1 AND (events_users.user_id=? OR events.private =0) 
-  AND events_types.event_id= events.id AND events_types.type_id=types.id  AND events_users.event_id =events.id AND events.id IN (SELECT DISTINCT event_id FROM events_types WHERE visible=1 AND type_id IN ( ';
+$queryPart0 = 'SELECT DISTINCT events.*,images.url,users.fullname,types.name as "type" FROM events,events_users,events_images,users,images,types,events_types WHERE events.user_id=users.id AND users.visible=1   AND events_images.event_id =events.id AND events_images.image_id = images.id AND events_users.visible=1 AND events.visible=1 
+AND (events_users.user_id = ? OR events.private = 0)   AND events_types.event_id= events.id AND events_types.type_id=types.id  AND events_users.event_id =events.id 
+AND events.id IN   (SELECT DISTINCT event_id FROM events_types WHERE visible=1 AND type_id IN ( ';
   $queryPart1='';
-  $queryPart2= ' )   ';
+  $queryPart2= ' )  AND event_id NOT IN (SELECT events.id as event1 FROM events,tags WHERE tags.id IN ( ';
   $queryPart3 = '';
   $queryPart4 = ' ) AND NOT ( tags.id IN    (SELECT tag_id FROM tags_events WHERE event_id=event1 AND visible=1))))';
  
@@ -46,11 +45,7 @@ $nr_filters=count($types);
 
   $args=array_merge(array($userID),$types, $tags);
   $query = $queryPart0.$queryPart1.$queryPart2.$queryPart3.$queryPart4.$queryOrder;
-  echo "<br>";
-  print_r($args);
-  echo "<br>";
-  print_r($query);
-  
+ 
   $stmt = $db->prepare($query);
   $stmt->execute($args);
   return $stmt->fetchAll();
