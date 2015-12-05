@@ -1,7 +1,7 @@
 function hideLogin() {
 	$("#login").hide();
-	$("#login #username").val('');
-	$("#login #password").val('');
+	$("#login #username_login").val('');
+	$("#login #password_login").val('');
 }
 
 function hideLogout() {
@@ -10,8 +10,8 @@ function hideLogout() {
 
 function hideRegister() {
 	$("#register").hide();
-	$("#register #username").val('');
-	$("#register #password").val('');
+	$("#register #username_register").val('');
+	$("#register #password_register").val('');
 	$("#register #fullname").val('');
 }
 

@@ -21,8 +21,8 @@
         <div id="register">          
           <form action="action_register.php" method="post" enctype="multipart/form-data">
             <br>
-            <input type="text" id="username" name="username" placeholder="Username" />
-            <input type="password" id="password" name="password" placeholder="Password" />
+            <input type="text" id="username_register" name="username" placeholder="Username" />
+            <input type="password" id="password_register" name="password" placeholder="Password" />
             <input type="text" name="fullname" id="fullname" placeholder="Name" />
             <input type="file" name="fileToUpload" />
             <input type="submit" name="submit" value="Register" />
@@ -32,8 +32,8 @@
         <div id="login">          
           <form action="action_login.php" method="post">
             <br>
-            <input type="text" name="username" id="username" placeholder="Username" />
-            <input type="password" name="password" id="password" placeholder="Password" />
+            <input type="text" name="username" id="username_login" placeholder="Username" />
+            <input type="password" name="password" id="password_login" placeholder="Password" />
             <input type="submit" value="Login"/>
           </form>
         </div>
@@ -61,6 +61,7 @@
             <button type="submit"> My Page </button>
           </form>
         </div>
+
         <div id="createEventForm">
           <form  action="events_create_edit.php" method="post">
             <input type="hidden" name="action" id="action" value="create">
@@ -69,10 +70,10 @@
               <button type="submit" id="create_event"> Create Events </button>
             </div>
           </form>
+        </div>
+
           <?php } ?>
         </div> <!-- user_fields end div -->
-
-      </div>
     </div>   <!-- header end div -->      
 
     <?php if(!isLogged()){ ?>

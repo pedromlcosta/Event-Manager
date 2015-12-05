@@ -22,10 +22,55 @@
 			?>
 			<img src="<?= $photoURL ?>" alt="Profile Photo" width="200px" height="200px">
 		</div>
+
 		<div id="userInfo">
-			<div id="">
-			</div>
+			
 		</div>
+
+		<?php
+		if(isLogged()){
+			if($_SESSION['userID'] == $_GET['userID']){?> 
+	 	
+		<div id="editFields">
+
+			<div id="errorMessage">
+			</div>
+
+			<div id="fullName_change">
+				<button type="button" id="fullName_button">Change Full Name </button>
+			</div>
+						
+			<fieldset  id="changeNameForm">
+				<legend>Personal Info:</legend>
+				<div id="inputFieldOldName">
+		 			<input type="text" id="oldUserName">
+		 		</div>
+		 		<div id="inputFieldNewName">
+		 			<input type="text" id="newUserName">
+		 		</div>
+		 		<button type="submit" id="saveUserNameChanges">Save Changes</button>
+			</fieldset>
+
+			<div id="password_change">
+				<button type="button" id="password_button">Change Password </button>
+			</div>
+
+			<fieldset id="changePassWord">
+				<legend>Security:</legend>
+		 			<input type="password" id="oldPass"   placeholder="Current password">
+		 		
+		 			<input type="password" id="newPass"   placeholder="New password">
+		 		
+		 			<input type="password" id="typeAgainPass"   placeholder="Confirm New password">
+		 		
+		 		<button type="submit" id="savePasswordChanges">Save Changes</button>
+			</fieldset>
+
+		</div> <!-- End editFields div  -->
+		<?php
+				}
+		}?>
+
 
 		<div id="userEventTabs">
 			<ul id="tabs">
@@ -45,54 +90,7 @@
 			<div id="page_buttons">
 
 			</div>
-
-			<?php
-		if(isLogged()){
-			if($_SESSION['userID'] == $_GET['userID']){?> 
-	 
-
-		<div id="errorMessage">
-		</div>
-
-		<div id="fullName_change">
-			<button type="button" id="fullName_button">Change Full Name </button>
-		</div>
-						
-		<fieldset  id="changeNameForm">
-			<legend>Personal Info:</legend>
-			<div id="inputFieldOldName">
-		 		<input type="text" id="oldUserName">
-		 	</div>
-		 	<div id="inputFieldNewName">
-		 		<input type="text" id="newUserName">
-		 	</div>
-		 	<button type="submit" id="saveUserNameChanges">Save Changes</button>
-		</fieldset>
-
-		<div id="password_change">
-			<button type="button" id="password_button">Change Password </button>
-		</div>
-
-		<fieldset id="changePassWord">
-			<div id="inputFieldOldPass">
-			<legend>Security:</legend>
-		 		<input type="password" id="oldPass"   placeholder="Current password">
-		 	</div>
-		 	<div id="inputFielNewPass">
-		 		<input type="password" id="newPass"   placeholder="New password">
-		 	</div>
-		 	<div id="typeAgainNewPass">
-		 		<input type="password" id="typeAgainPass"   placeholder="Confirm New password">
-		 	</div>
-		 		<button type="submit" id="savePasswordChanges">Save Changes</button>
-		</fieldset>
-
-		
-		<?php
-				}
-		}?>
-
-		</div> <!-- End userEventTabs div  -->
+		</div> <!-- End userEventTabs div  -->			
 	</div>	   <!-- End content div  -->
  
 <?php } ?>
