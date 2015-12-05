@@ -32,7 +32,6 @@ function joinButton(event) {
 			userID: userID,
 			eventID: eventID
 		},
-		dataType: 'json', // -> automatically parses response data!
 		success: function(data, textStatus, jqXHR) {
 
 			showLeaveButton();
@@ -58,7 +57,6 @@ function leaveButton(event) {
 			userID: userID,
 			eventID: eventID
 		},
-		dataType: 'json', // -> automatically parses response data!
 		success: function(data, textStatus, jqXHR) {
 			hideLeaveButton();
 			showJoinButton();
@@ -83,7 +81,6 @@ function removeButton(event) {
 			userID: userID,
 			eventID: eventID
 		},
-		dataType: 'json', // -> automatically parses response data!
 		success: function(data, textStatus, jqXHR) {
 
 			if (typeof data.error === 'undefined') {
@@ -127,11 +124,14 @@ function showDeleteButton() {
 }
 
 function showJoinButton() {
+	console.log("show join button");
 	$("#joinButton").show();
+	hideLeaveButton();
 }
 
 function showLeaveButton() {
 	$("#leaveButton").show();
+	hideJoinButton();
 }
 
 function showRemoveButton() {
@@ -140,6 +140,7 @@ function showRemoveButton() {
 
 function showInviteButton() {
 	$("#inviteButton").show();
+	 
 }
 
 function hideEditButton() {
@@ -166,11 +167,7 @@ function hideInviteButton() {
 	$("#inviteButton").hide();
 }
 
-function hideAll() {
-
-	hideLeaveButton();
-	hideJoinButton();
-}
+ 
 
 var event_id = null;
 var COMMENTS_PER_PAGE = 2;
@@ -321,10 +318,8 @@ function handleSubmits() {
 
 		$("#addCommentButton").click({action: "addComment"},loadComments);
 		loadComments();
-		hideAll();
 
 	});
-	//hideAll();
 
 	
 

@@ -13,24 +13,21 @@ if(isset($_POST) && (!empty($_POST)) && isset($_POST['action']) ) {
 	{
 		if($_POST['action']=='JOIN' ) {
 			changeAttendingStatus($_POST['eventID'], $_POST['userID'],1);
-			//echo json_encode(array(true));
 		}
 		else
 			if($_POST['action']=='REMOVE' ) {
 			removeUserFromEvent($_POST['eventID'], $_POST['userID']);
-			//echo json_encode(array(true));
 		}
 		else
 			if($_POST['action']=='LEAVE' ) {
 			changeAttendingStatus($_POST['eventID'], $_POST['userID'],0);
-			//echo json_encode(array(true));
+print_r($_POST);
 		}
 		else
 			if($_POST['action']=='DELETE' ) {
 			deleteEvent($_POST['eventID']);
 			//removeTagEventsByEvent($_POST['eventID']);
 	
-			//echo json_encode(array(true));
 		}
 	}
 	 
@@ -52,6 +49,6 @@ if(isset($_POST) && (!empty($_POST)) && isset($_POST['action']) ) {
 		else
 			$reply= "Insert Correct Password";
 	}
-	echo "Success";
+	echo $reply;
 }
 ?>
