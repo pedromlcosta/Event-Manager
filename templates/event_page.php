@@ -1,7 +1,7 @@
 <?php
 print_r($_GET);
 
-//TODO check private
+//TODO check private change url in AJAX
  if(isset($_GET['eventID'])  && !empty($_GET['eventID'] )) {
   $remove=false;
   $hasPermission=false;
@@ -57,26 +57,28 @@ else
                 <input type=hidden id="action" name="action" value="edit" />
                 <input type=hidden id="id" name="id" value="<?php echo $_GET['eventID'];?>" />
                 <button type="submit" id="editButton">Edit</button>
-                <button type="submit" id="deleteButton">Delete</button>
+       
+             
+            </form>
+          <button type="submit" id="deleteButton">Delete</button>
                 <button type="submit" id="inviteButton">Invite</button>
                 <button type="submit" id="joinButton">Going</button>
                 <button type="submit" id="leaveButton">Not Going</button>
                 <button type="submit" id="removeButton">Remove From Event</button>
-             
-            </form>
-
             <br>
             <script type="text/javascript">
             handleSubmits();
             </script>
             <?php    
-      if($isLogged){
-        if($isOwner){
-       ?>
-                <script type="text/javascript">
+      if($isLogged){?>
+          <script type="text/javascript">
                 var userID = parseInt("<?php echo $_SESSION['userID'];?>", 10);
                 var eventID = parseInt("<?php echo $_GET['eventID'];?>", 10);
                 </script>
+                <?php
+        if($isOwner){
+       ?>
+               
                 <div id="buttons">
                     <script type="text/javascript">
                     showOwnerButtons();
