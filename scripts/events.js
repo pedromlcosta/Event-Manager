@@ -1,6 +1,6 @@
 function deleteButton(event) {
 	$.ajax({
-		url: '../eventsIndex.php',
+		url: 'action_buttons.php',
 		type: 'POST',
 		data: {
 			action: 'DELETE',
@@ -25,7 +25,7 @@ function deleteButton(event) {
 
 function joinButton(event) {
 	$.ajax({
-		url: '../action_buttons.php',
+		url: 'action_buttons.php',
 		type: 'POST',
 		data: {
 			action: 'JOIN',
@@ -51,7 +51,7 @@ function joinButton(event) {
 
 function leaveButton(event) {
 	$.ajax({
-		url: '../action_buttons.php',
+		url: 'action_buttons.php',
 		type: 'POST',
 		data: {
 			action: 'LEAVE',
@@ -76,7 +76,7 @@ function leaveButton(event) {
 
 function removeButton(event) {
 	$.ajax({
-		url: '../action_buttons.php',
+		url: 'action_buttons.php',
 		type: 'POST',
 		data: {
 			action: 'REMOVE',

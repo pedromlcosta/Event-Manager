@@ -9,26 +9,9 @@
 ?>
 
 <script src="scripts/users.js"></script>
-<div id="changeNameForm">
-	<div id="inputFieldOldName">
- 		<input type="text" id="oldUserName"   placeholder="Current UserName">
- 	</div>
- 	<div id="inputFielNewName">
- 		<input type="text" id="newUserName"   placeholder="New UserName">
- 	</div>
-</div>
-<div id="changePassWord">
-	<div id="inputFieldOldPass">
- 		<input type="password" id="oldPass"   placeholder="Current password">
- 	</div>
- 	<div id="inputFielNewPass">
- 		<input type="password" id="newPass"   placeholder="New password">
- 	</div>
- 	<div id="typeAgainNewPass">
- 		<input type="password" id="typeAgainPass"   placeholder="Confirm New password">
- 	</div>
-</div>
+
 <script type="text/javascript">
+	var userID="<?php echo $_GET['userID'];?>";
 	handlers();
 </script>
 
@@ -43,27 +26,10 @@
 			<div id="">
 			</div>
 		</div>
-		<?php
-		if(isLogged()){
-			if($_SESSION['userID'] == $_GET['userID']){?> 
-	 
-		<div id="username_change">
-			<button type="button" id="username_button">Change Username </button>
-		</div>
-		
-		<div id="fullName_change">
-			<button type="button" id="fullName_button">Change Full Name </button>
-		</div>
-		
-		<div id="password_change">
-			<button type="button" id="password_button">Change Password </button>
-		</div>
-		<?php
-				}
-		}?>
+
 		<div id="userEventTabs">
 			<ul id="tabs">
-				<li><a id="link_userHostedPublic" href="#hostedPublic">User's Public Hosted Events ...</a></li>
+				<li><a id="link_userHostedPublic" href="#hostedPublic">User's Upcoming Events ...</a></li>
 			</ul>
 
 			<form>
@@ -80,6 +46,48 @@
 
 			</div>
 
+			<?php
+		if(isLogged()){
+			if($_SESSION['userID'] == $_GET['userID']){?> 
+	 
+		<div id="fullName_change">
+			<button type="button" id="fullName_button">Change Full Name </button>
+		</div>
+		
+		<div id="password_change">
+			<button type="button" id="password_button">Change Password </button>
+		</div>
+				
+		<fieldset  id="changeNameForm">
+			<legend>Personal Info:</legend>
+			<div id="inputFieldOldName">
+		 		<input type="text" id="oldUserName">
+		 	</div>
+		 	<div id="inputFieldNewName">
+		 		<input type="text" id="newUserName">
+		 	</div>
+		 	<button type="submit" id="saveUserNameChanges">Save Changes</button>
+		</fieldset>
+
+		<div id="errorMessage">
+		</div>
+
+		<fieldset id="changePassWord">
+			<div id="inputFieldOldPass">
+			<legend>Security:</legend>
+		 		<input type="password" id="oldPass"   placeholder="Current password">
+		 	</div>
+		 	<div id="inputFielNewPass">
+		 		<input type="password" id="newPass"   placeholder="New password">
+		 	</div>
+		 	<div id="typeAgainNewPass">
+		 		<input type="password" id="typeAgainPass"   placeholder="Confirm New password">
+		 	</div>
+		 		<button type="submit" id="savePasswordChanges">Save Changes</button>
+		</fieldset>
+		<?php
+				}
+		}?>
 
 		</div> <!-- End userEventTabs div  -->
 	</div>	   <!-- End content div  -->
