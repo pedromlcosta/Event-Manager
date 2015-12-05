@@ -194,7 +194,7 @@ var userID = null;
 var selectedTab = null;
 var order = 'Date';
 var typeFilters = [];
-var EVENTS_PER_PAGE = 5;
+var EVENTS_PER_PAGE = 1;
 var currentPage = 1;
 var totalPages = 1;
 var loaded = null;
@@ -379,7 +379,8 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update,tags,data)
 					//IF USER CLICKED ON A NO LONGER EXISTANT PAGE (page 5, but the only event there was deleted meanwhile)
 					if (currentPage > totalPages) {
 						currentPage = totalPages;
-						queryEventForTab(tabID, eventOrder, eventTypeFilters, true);
+						console.log("DERP");
+						queryEventForTab(tabID, eventOrder, eventTypeFilters, true, tags,data);
 					} else {
 						//Else, user clicked on a valid page and updates/shows as it should
 						loadEventPageButtons();
@@ -426,15 +427,13 @@ function eventTabHandler(event, update) {
 		  tags=$('#tagsToSearch').val();
 		  data=$('#dateTag').val();
 		}
-		queryEventForTab(selectedTab, order, typeFilters, eventsUpdate,tags,data);
 
-	/*
-    console.log(selectedTab);
-	console.log(order);
-	console.log(typeFilters);
-	*/
+	console.log("Selected Tab: " + selectedTab);
+	console.log("Order: " + order);
+	console.log("Tags: " + tags);
+	console.log("Filters: " + typeFilters);
 
-	// Querying Database for the tab events and filling 
+	queryEventForTab(selectedTab, order, typeFilters, eventsUpdate,tags,data);
 
 }
 
@@ -459,7 +458,9 @@ function onReadyAddHandlers() {
 
 		$('#customSearchButton').on('click',function(event){
 			event.preventDefault();
-			 eventTabHandler(undefined, true);
+
+			currentPage = 1;
+			eventTabHandler(undefined, true);
 		});
 
 		//REGISTER BUTTON HOVER HANDLER
