@@ -240,7 +240,7 @@ function loadEventPageButtons() {
 }
 
 function respondToInvite(action, events) {
-	console.log(action + " " + events);
+
 	$.ajax({
 		url: 'action_eventInvites.php',
 		type: 'POST',
@@ -428,10 +428,12 @@ function eventTabHandler(event, update) {
 		  data=$('#dateTag').val();
 		}
 
+	/*
 	console.log("Selected Tab: " + selectedTab);
 	console.log("Order: " + order);
 	console.log("Tags: " + tags);
 	console.log("Filters: " + typeFilters);
+	*/
 
 	queryEventForTab(selectedTab, order, typeFilters, eventsUpdate,tags,data);
 

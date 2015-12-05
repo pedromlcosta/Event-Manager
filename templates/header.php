@@ -72,8 +72,6 @@
           <?php } ?>
         </div> <!-- user_fields end div -->
 
-
-
       </div>
     </div>   <!-- header end div -->      
 

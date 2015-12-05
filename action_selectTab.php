@@ -48,7 +48,12 @@
         $result = getAllVisibleEvents($_SESSION['userID'], $order, $eventsPerPage, $page, $typeFilters);
         break;
     case '#customSearch':
-        $result = customSearch($_SESSION['userID'],$userProvidedTags,$dateTag,$typeFilters,$order, $eventsPerPage, $page);
+        if(isLogged()){
+            $user = $_SESSION['userID'];
+        }else{
+            $user = null;
+        }
+        $result = customSearch($user,$userProvidedTags,$dateTag,$typeFilters,$order, $eventsPerPage, $page);
         break;
     case '#hostedPublic':
         if(isLogged()){
