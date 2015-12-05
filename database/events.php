@@ -478,5 +478,3 @@ if (strlen($dateTag)>0) {
       return $searchResults;
   }
 ?>
-
-

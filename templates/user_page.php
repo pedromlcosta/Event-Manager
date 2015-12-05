@@ -50,14 +50,14 @@
 		if(isLogged()){
 			if($_SESSION['userID'] == $_GET['userID']){?> 
 	 
+
+		<div id="errorMessage">
+		</div>
+
 		<div id="fullName_change">
 			<button type="button" id="fullName_button">Change Full Name </button>
 		</div>
-		
-		<div id="password_change">
-			<button type="button" id="password_button">Change Password </button>
-		</div>
-				
+						
 		<fieldset  id="changeNameForm">
 			<legend>Personal Info:</legend>
 			<div id="inputFieldOldName">
@@ -69,7 +69,8 @@
 		 	<button type="submit" id="saveUserNameChanges">Save Changes</button>
 		</fieldset>
 
-		<div id="errorMessage">
+		<div id="password_change">
+			<button type="button" id="password_button">Change Password </button>
 		</div>
 
 		<fieldset id="changePassWord">
@@ -85,6 +86,8 @@
 		 	</div>
 		 		<button type="submit" id="savePasswordChanges">Save Changes</button>
 		</fieldset>
+
+		
 		<?php
 				}
 		}?>

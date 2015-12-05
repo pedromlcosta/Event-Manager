@@ -119,4 +119,4 @@ function updateUser($oldField,$newField,$fieldChange,$fieldCheck,$userID){
 	return $stmt->execute(array($newField,$userID,$oldField));
 
 }
- 
+?>
