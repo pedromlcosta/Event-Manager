@@ -245,9 +245,7 @@ INSERT INTO events_types (event_id, type_id) VALUES (14,1);
 
 INSERT INTO tags (description) VALUES ('concerto');
 INSERT INTO tags (description) VALUES ('live');
-INSERT INTO tags (description) VALUES ('música ao vivo');
 INSERT INTO tags (description) VALUES ('cinema');
-INSERT INTO tags (description) VALUES ('Ao ar livre');
 INSERT INTO tags (description) VALUES ('Coliseu');
 INSERT INTO tags (description) VALUES ('free');
 INSERT INTO tags (description) VALUES ('grátis');
