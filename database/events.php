@@ -391,9 +391,15 @@ function getAllVisibleEvents($userID, $order, $events_per_page, $page, $type_fil
   
 }
 
-function compareEvents($tagEvent, $tagEvent1)
-{
-  return ($tagEvent['id'] == $tagEvent1['id']);
+function compareEvents($event, $event1){
+ 
+  if($event['id'] === $event1['id'])
+    return 0;
+  else
+    if($event['id'] > $event1['id'])
+      return 1;
+
+    return -1;
 }
  
 function customSearch($userID,$userProvidedTags,$dateTag,$typeFilters,$order, $events_per_page, $page){
@@ -432,20 +438,20 @@ function customSearch($userID,$userProvidedTags,$dateTag,$typeFilters,$order, $e
             $tempTag = getTagId($toSearch);
             if ($tempTag) array_push($tagsToSearch, $tempTag);
           }
-          $searchResults = getEventsWithAnd($tagsToSearch,$filtersIDs,$order,$userID);
-          $searchResultsOR = getEventsWithOr($tagsToSearch,$filtersIDs,$order,$userID);
-       
-          if ($searchResultsOR) {
-            if (!empty($searchResults)) $searchResults = array_unique(array_merge($searchResults, $searchResultsOR) , SORT_REGULAR);
-            else $searchResults = $searchResultsOR;
-          }
+          if(!empty($tagsToSearch)){
+                    $searchResults = getEventsWithAnd($tagsToSearch,$filtersIDs,$order,$userID);
+                    $searchResultsOR = getEventsWithOr($tagsToSearch,$filtersIDs,$order,$userID);
+                 
+                    if ($searchResultsOR) {
+                      if (!empty($searchResults)) $searchResults = array_unique(array_merge($searchResults, $searchResultsOR) , SORT_REGULAR);
+                      else $searchResults = $searchResultsOR;
+           }         }
   }
   else
     $noEvents=true;
 
 if (strlen($dateTag)>0) {
         $eventsWithDate = getEventByDateWithInfo($dateTag,$userID);
-
         if ($eventsWithDate){ 
         if (!empty($searchResults))
           $searchResults = array_uintersect($searchResults, $eventsWithDate, 'compareEvents');
@@ -469,7 +475,6 @@ if (strlen($dateTag)>0) {
       $countEvents = array();
       $countEvents[0]['numEvents'] = $nResults;
       $searchResults = array_merge($searchResults, $countEvents);
- 
       return $searchResults;
   }
 ?>
