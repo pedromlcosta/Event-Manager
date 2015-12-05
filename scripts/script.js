@@ -346,8 +346,6 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update,tags,data)
 
 	// Run Handler only if: wants to update info or current tab isn't yet loaded with info
 	if (loaded != tabID || update == true) {
-		console.log(tags);
-		console.log(data);
 
 		//Can only send text, array has to go on JSON format!
 		var tempFilters = JSON.stringify(eventTypeFilters);
@@ -421,8 +419,8 @@ function eventTabHandler(event, update) {
 		return $(this).val();
 	}).get();
 
-	var tags=1;
-	var data=1;
+	var tags='';
+	var data='';
 	
 	if(selectedTab=="#customSearch"){
 		  tags=$('#tagsToSearch').val();

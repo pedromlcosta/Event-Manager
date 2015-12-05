@@ -65,7 +65,7 @@ function getEventByDateWithInfo($date ,$userID )
 {
    global $db;
   $stmt = $db->prepare('SELECT DISTINCT events.*,images.url,users.fullname,types.name as "type" FROM events,events_users,events_images,users,images,types,events_types WHERE
-    data='2015-01-01'  AND events_images.event_id =events.id AND events_images.image_id = images.id AND events_users.visible=1 AND events.visible=1 AND (events_users.user_id=3 OR events.private =0) 
+    data=?  AND events_images.event_id =events.id AND events_images.image_id = images.id AND events_users.visible=1 AND events.visible=1 AND (events_users.user_id=? OR events.private =0) 
   AND events_types.event_id= events.id AND events_types.type_id=types.id  AND events_users.event_id =events.id AND events.id AND users.id=events.user_id');
   $stmt->execute(array($date,$userID));  
   return $stmt->fetchAll();
@@ -399,6 +399,8 @@ function compareEvents($tagEvent, $tagEvent1)
 function customSearch($userID,$userProvidedTags,$dateTag,$typeFilters,$order, $events_per_page, $page){
     global $delimiters;
 
+    if(!isset($userID))
+      $userID=null;
 
      if(count($typeFilters) == 0){
        $countEvents = array();
@@ -442,7 +444,7 @@ function customSearch($userID,$userProvidedTags,$dateTag,$typeFilters,$order, $e
     $noEvents=true;
 
 if (strlen($dateTag)>0) {
-        $eventsWithDate = getEventByDate($dateTag);
+        $eventsWithDate = getEventByDateWithInfo($dateTag,$userID);
 
         if ($eventsWithDate){ 
         if (!empty($searchResults))
