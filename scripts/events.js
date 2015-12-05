@@ -325,6 +325,7 @@ function handleSubmits() {
 
 		$("#addCommentButton").click({action: "addComment"},loadComments);
 		loadComments();
+		hideAll();
 
 	});
 	//hideAll();

@@ -104,3 +104,14 @@ function getUserImageURL($userID){
  		return $result;
 }
 
+function updateUserName($field,$newName,$userID){
+	//security input?
+	$queryPart1='UPDATE users SET'; 
+	$quertPart2=' = ';
+	$quertPart3=' WHERE users.id = ?';
+	$query=$queryPart1.$field.$newName.$quertPart3;
+	$stmt = $db->prepare($query);
+	$stmt->execute(array($userID));
+
+}
+

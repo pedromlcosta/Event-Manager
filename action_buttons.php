@@ -28,6 +28,25 @@ if(isset($_POST) && (!empty($_POST)) && isset($_POST['action']) && isset($_POST[
 
 		echo json_encode(true);
 	}
+	else
+		if ($_POST['action']=='CHANGE_USER_NAME' ) {
+		updateUserName($_POST['newName'],'username',$_POST['userID']);
+
+		echo json_encode(true);
+	}	
+	else
+		if ($_POST['action']=='CHANGE_USER_FULLNAME' ) {
+		updateUserName($_POST['newName'],'fullname',$_POST['userID']);
+
+		echo json_encode(true);
+	}
+		else
+		if ($_POST['action']=='CHANGE_USER_PASSWORD' ) {
+		deleteEvent($_POST['eventID']);
+		//removeTagEventsByEvent($_POST['eventID']);
+
+		echo json_encode(true);
+	}
 
 }
 
