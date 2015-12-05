@@ -226,6 +226,12 @@ INSERT INTO events_users(event_id, user_id, attending_status) VALUES (14, 4, 0);
 
 DELETE FROM events_users WHERE event_id=3 AND user_id=2;
 
+ -- User 3 commenting on his own event 1
+INSERT INTO comments (user_id, event_id, comment) VALUES (3, 1, "Comment 1");
+INSERT INTO comments (user_id, event_id, comment) VALUES (3, 1, "Comment 2");
+INSERT INTO comments (user_id, event_id, comment) VALUES (3, 1, "Comment 3");
+INSERT INTO comments (user_id, event_id, comment) VALUES (3, 1, "Comment 4");
+
 
 INSERT INTO events_types (event_id, type_id) VALUES (1,1);
 INSERT INTO events_types (event_id, type_id) VALUES (2,2);

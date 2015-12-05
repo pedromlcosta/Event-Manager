@@ -6,9 +6,7 @@
   include('genericStart.html');
 ?>
   
-<script src="scripts/searchButtons.js"></script>
 <script src="scripts/events.js"></script>
-
 
 <?php
 
