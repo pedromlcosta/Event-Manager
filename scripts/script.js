@@ -199,7 +199,7 @@ var currentPage = 1;
 var totalPages = 1;
 var loaded = null;
 
-function updatePageButtons() {
+function loadEventPageButtons() {
 	//Number of pages it can go back or forward with the buttons, at once
 	var numberBackForward = 2;
 	numberBackForward = numberBackForward > totalPages - 1 ? totalPages - 1 : numberBackForward;
@@ -382,7 +382,7 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update,tags,data)
 						queryEventForTab(tabID, eventOrder, eventTypeFilters, true);
 					} else {
 						//Else, user clicked on a valid page and updates/shows as it should
-						updatePageButtons();
+						loadEventPageButtons();
 						listEventsUnderTab(data);
 						loaded = tabID;
 					}

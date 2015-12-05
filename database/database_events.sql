@@ -17,6 +17,7 @@ DROP TRIGGER IF EXISTS userNotGoingToEvent;
 DROP TRIGGER IF EXISTS userAddedToEvent;
 DROP TRIGGER IF EXISTS userRemovedFromEvent;
 DROP TRIGGER IF EXISTS creatorAttendsEvent;
+DROP TRIGGER IF EXISTS defaultImageOnRegister;
  
 -- TODO - por os UNIQUE necessarios e/ou os NOT NULL echo .quit|
 CREATE TABLE users (
@@ -63,7 +64,8 @@ CREATE TABLE comments(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	user_id INTEGER,
 	event_id INTEGER,
-	comment TEXT
+	comment TEXT,
+	data	Date
 );
 
 CREATE TABLE users_images (
@@ -158,6 +160,16 @@ BEGIN
 INSERT INTO EVENTS_USERS(event_id, user_id, attending_status)
 VALUES(new.id, new.user_id, 1);
 END;
+
+CREATE TRIGGER defaultImageOnRegister
+AFTER INSERT ON USERS
+BEGIN
+INSERT INTO USERS_IMAGES(user_id, image_id)
+VALUES(new.id ,2);
+END;
+
+
+
 INSERT INTO users(id,username,password,fullname) VALUES (NULL,'admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3','admin'); -- Password is tested hashed with SHA 1
 INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Filipe','2e6f9b0d5885b6010f9167787445617f553a735f','Filipe Moreira');
 INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Pedro','5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8','Pedro Costa');
@@ -172,7 +184,9 @@ INSERT INTO types (name) VALUES ('Birthday');
 INSERT INTO types (name) VALUES ('Fundraising');
 INSERT INTO types (name) VALUES ('Hangout');
 
-INSERT INTO images(title, description, url) VALUES ('hue', 'huehue', 'images/backg.jpg');
+-- VERY IMPORTANT!
+INSERT INTO images(title, description, url) VALUES ('default_event_background', 'default_event_background', 'images/backg.jpg');
+INSERT INTO images(title, description, url) VALUES ('default_profile_background', 'default_profile_background', 'images/default_profile_pic.jpg');
 
 -- User 3 the first 9 events and the 13
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 1', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,'2015-01-01',3,1);
@@ -227,10 +241,10 @@ INSERT INTO events_users(event_id, user_id, attending_status) VALUES (14, 4, 0);
 DELETE FROM events_users WHERE event_id=3 AND user_id=2;
 
  -- User 3 commenting on his own event 1
-INSERT INTO comments (user_id, event_id, comment) VALUES (3, 1, "Comment 1");
-INSERT INTO comments (user_id, event_id, comment) VALUES (3, 1, "Comment 2");
-INSERT INTO comments (user_id, event_id, comment) VALUES (3, 1, "Comment 3");
-INSERT INTO comments (user_id, event_id, comment) VALUES (3, 1, "Comment 4");
+INSERT INTO comments (user_id, event_id, comment, data) VALUES (3, 1, "Comment 1", '2016-01-01');
+INSERT INTO comments (user_id, event_id, comment, data) VALUES (3, 1, "Comment 2", '2014-01-01');
+INSERT INTO comments (user_id, event_id, comment, data) VALUES (3, 1, "Comment 3", '2016-01-01');
+INSERT INTO comments (user_id, event_id, comment, data) VALUES (3, 1, "Comment 4", '2012-01-01');
 
 
 INSERT INTO events_types (event_id, type_id) VALUES (1,1);
