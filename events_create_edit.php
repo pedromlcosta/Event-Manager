@@ -7,7 +7,7 @@
     include_once('templates/header.php');
 ?>
 
-<script src="scripts/searchButtons.js"></script>
+<script src="scripts/script.js"></script>
 <script src="scripts/events.js"></script>
 
 <?php

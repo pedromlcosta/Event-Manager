@@ -25,4 +25,27 @@ function getFilterId($name){
 
 }
 
+function addEventsTypes($eventID,$typeID){
+	print_r($typeID);
+  global $db;
+  $stmt = $db->prepare('INSERT INTO events_types (event_id,type_id) VALUES(?,?)');
+  $res= $stmt->execute(array($eventID,$typeID));
+ if($res)
+ 	return true;
+ else 
+ 	return false;
+}
+
+function updateEventsTypes($eventID,$typeID,$newEventID,$newTypeID){
+  global $db;
+  $stmt = $db->prepare('UPDATE  events_types SET event_id = ?, type_id = ? WHERE event_id = ? AND type_id = ?');
+   $res= $stmt->execute(array($newEventID,$newTypeID,$eventID,$typeID));
+  if($res)
+ 	return true;
+ else 
+ 	return false;
+}
+
+
+
 ?>

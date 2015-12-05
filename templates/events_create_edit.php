@@ -68,12 +68,12 @@ if (isset($_POST['action']) && isLogged()) {
                 ?>
             </div>
             <div id="createSelectType">
-                <select name="Event Type">
+                <select name="Event Type" <?= $required ?>>
                 <?php
                 $types = getTypes();
 
                 for($i = 0; $i < count($types); $i++){
-                    echo ("<option name='type' value=$types[$i] > $types[$i] </option>");
+                    echo ("<option name='type' value=".($i+1)." > $types[$i] </option>");
                 }
                 ?>
 
@@ -82,15 +82,11 @@ if (isset($_POST['action']) && isLogged()) {
             </div>
             <div>
                 <label for="fullText">Text:</label>
-                <textarea name="fullText" id="fullText" required>
-                    <?= $fullText ?>
-               </textarea>
+                <textarea name="fullText" id="fullText" required><?= $fullText ?></textarea>
             </div>
             <div>
                 <label for="eventTags">Tags:</label>
-                <textarea name="eventTags" id="eventTags" required>
-                    <?= $eventTags ?>
-               </textarea>
+                <textarea name="eventTags" id="eventTags" required><?= $eventTags ?></textarea>
             </div>
             <div>
                 <label for="data">Date:</label>

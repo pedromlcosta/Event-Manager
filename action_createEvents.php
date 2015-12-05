@@ -2,16 +2,17 @@
 include_once('genericStart.html');
 include_once('init.php'); // connects to the database
 include_once('database/users.php');
+include_once('database/filters.php');
 include_once('database/events.php');
 include_once('database/tag.php');
 include_once('database/tagEvent.php');
 include_once('database/usersEvent.php');
 
-if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isLogged()) {
+if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['Event_Type']) && isLogged()) {
     
 	$errorMessage = '';
 
-    //print_r($_POST);
+    print_r($_POST);
     $privateValue;
     if (!isset($_POST['private']))
         $privateValue = 0;
@@ -22,14 +23,19 @@ if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullTe
     if (createEvent($_POST['title'], $_POST['fullText'], $privateValue, $_POST['data'], $_SESSION['userID'])) {
         $eventCreatedId = getLastEventId();
         $userId         = $_SESSION['userID'];
-        addUserToEvent($eventCreatedId['id'], $userId);
+        //addUserToEvent($eventCreatedId['id'], $userId);
+        
+        addEventsTypes($eventCreatedId['id'] ,$_POST['Event_Type']);
+
         $tags = preg_split("/" . $delimiters . "+/", $_POST["eventTags"]);
+        print_r($tags);
         foreach ($tags as $tagDesc) {
-            
-            $tagId = createTag($tagDesc);
-            if ($eventCreatedId)
-                createTagEvent($eventCreatedId['id'], $tagId);
-            
+            print_r($tagDesc);
+            if($tagDesc!='' && $tagDesc!=' '){
+                $tagId = createTag($tagDesc);
+                if ($eventCreatedId)
+                    createTagEvent($eventCreatedId['id'], $tagId);
+            }
         }
     }
 
@@ -54,7 +60,10 @@ if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullTe
 			}
 		}
 	}
-
+    if($uploadOk){
+    $target_dir = "database/user_images/";
+   move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+}
     //TODO falta acrescentar as tretas do path e isso
     /*$image=getImageByPath($_POST['image']);
     if(!$image){
