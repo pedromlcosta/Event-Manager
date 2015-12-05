@@ -43,6 +43,7 @@ print_r($_GET);
     <p><?=$event['data']?> </p>
     <p> <?=getUserFullname($event['user_id']);?> </p>
     <?php
+   
 }
 else
 {
@@ -61,6 +62,10 @@ else
                 <button type="submit" id="joinButton">Going</button>
                 <button type="submit" id="leaveButton">Not Going</button>
                 <button type="submit" id="removeButton">Remove From Event</button>
+                <br>
+                 <textarea id="commentTextArea" placeholder="Comment"></textarea>
+                 <br>
+                 <button type="submit" id="addCommentButton">Add Comment</button>
             </form>
 
             <br>
@@ -113,6 +118,14 @@ else
         </div>
         <br>
         <?php  
+          if($isOwner || $isAttending){
+      ?>
+      <script type="text/javascript">
+       showAddCommentButton();
+       showCommentTextAreas();
+       </script>
+      <?php
+    }
 
  }
   }

@@ -108,6 +108,11 @@ function inviteButton(event){
 console.log("inviteButton",userID,eventID);
 }
 
+function addCommentButton(event){
+
+
+}
+
 function showOwnerButtons(){
 	showEditButton();
 	showDeleteButton();
@@ -132,10 +137,14 @@ function showRemoveButton(){
 function showInviteButton(){
 	 $("#inviteButton").show();
 }
-
+function showAddCommentButton(){
+	 $("#addCommentButton").show();
+}
+function showCommentTextAreas(){
+	 $("#commentTextArea").show();
+}
 function hideEditButton(){
 	$("#form #editButton").hide();
-	
 }
 function hideDeleteButton(){
 	$("#deleteButton").hide();
@@ -152,8 +161,12 @@ function hideRemoveButton(){
 function hideInviteButton(){
 	 $("#inviteButton").hide();
 }
-
-
+function hideAddCommentButton(){
+	 $("#addCommentButton").hide();
+}
+function hideCommentTextAreas(){
+	 $("#commentTextArea").hide();
+}
 function hideAll(){
 
 	hideInviteButton();
@@ -162,6 +175,8 @@ function hideAll(){
 	hideJoinButton();
 	hideDeleteButton();
 	hideEditButton();
+	hideAddCommentButton();
+	hideCommentTextAreas();
 }
 function handleSubmits() {
 	//On doc ready, add handlers
@@ -170,7 +185,8 @@ function handleSubmits() {
 	$("#joinButton").on("click",joinButton); 
 	$("#leaveButton").on("click",leaveButton); 
     $("#removeButton").on("click",removeButton); 
-    $("#inviteButton").on("click",inviteButton); 
+    $("#inviteButton").on("click",inviteButton);
+    $("#addCommentButton").on("click",addCommentButton); 
 	});
 	hideAll();
 }
