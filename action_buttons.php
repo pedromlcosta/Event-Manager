@@ -45,7 +45,7 @@ if(isset($_POST) && (!empty($_POST)) && isset($_POST['action']) ) {
 	}
 		else
 		if ($_POST['action']=='CHANGE_USER_PASSWORD' ) {
-	 	$result=	updateUser($_POST['oldPass'],$_POST['newPass'],'password','password',$_POST['userID']);
+	 	$result = updateUser($_POST['oldPass'],$_POST['newPass'],'password','password',$_POST['userID']);
 
 		if($result)
 			$reply= "Success" ;
