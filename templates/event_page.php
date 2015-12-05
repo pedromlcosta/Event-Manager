@@ -62,10 +62,7 @@ else
                 <button type="submit" id="joinButton">Going</button>
                 <button type="submit" id="leaveButton">Not Going</button>
                 <button type="submit" id="removeButton">Remove From Event</button>
-                <br>
-                 <textarea id="commentTextArea" placeholder="Comment"></textarea>
-                 <br>
-                 <button type="submit" id="addCommentButton">Add Comment</button>
+             
             </form>
 
             <br>
@@ -120,10 +117,10 @@ else
         <?php  
           if($isOwner || $isAttending){
       ?>
-      <script type="text/javascript">
-       showAddCommentButton();
-       showCommentTextAreas();
-       </script>
+         <br>
+                 <textarea id="commentTextArea" placeholder="Comment"></textarea>
+                 <br>
+                 <button type="submit" id="addCommentButton">Add Comment</button>
       <?php
     }
 
