@@ -15,7 +15,7 @@ if (isset($_POST['action']) && isLogged()) {
         $eventPrivate = $event['private'];
         $eventTags    = "";
         $tagIDs       = getTagWithEvent($eventID);
-        if($private==1)
+        if($eventPrivate==1)
             $checked="checked";
         else
             $checked="";

@@ -168,12 +168,8 @@ function hideInviteButton() {
 
 function hideAll() {
 
-	hideInviteButton();
-	hideRemoveButton();
 	hideLeaveButton();
 	hideJoinButton();
-	hideDeleteButton();
-	hideEditButton();
 }
 
 var event_id = null;

@@ -24,6 +24,7 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
         $isLogged = true;
         
         if (isOwner($_SESSION['userID'], $_GET['eventID'])) {
+            echo "Is owner";
             $isOwner       = true;
             $hasPermission = true;
         }
@@ -78,9 +79,10 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
         </script>
         <?php
                 if ($isOwner) {
+                    echo "<br> add stuff <br>" ;
         ?>
 
-        <form id="form" action="eventsIndex.php" method="post">
+        <form id="form" action="events_create_edit.php" method="post">
         <input type=hidden id="action" name="action" value="edit" />
         <input type=hidden id="id" name="id" value="<= echo $_GET['eventID']?>" />
         <button type="submit" id="editButton">Edit</button>

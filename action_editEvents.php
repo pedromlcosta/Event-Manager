@@ -4,11 +4,12 @@ print_r($_POST);
 include_once('genericStart.html');	
 include_once('init.php');
 
-if(isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['eventID'])  ){
+if(isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['eventID'] && isset($_POST['Event_Type'])  ){
 
 include_once('database/events.php');
 include_once('database/tag.php');
 include_once('database/tagEvent.php');
+include_once('database/filters.php');
 include_once('auxiliar.php');
 /*
 update ao private -> JS for button
@@ -65,9 +66,11 @@ $tagsAfterEdit=array();
 			}
 			else{
 				//TODO parse para segurança e ignorar casos de erro like so um espaço
+				if($tagDesc!='' && $tagDesc!=' '){
 				createTag($tagDesc);
 				$tagId=getLastTagId();
 				createTagEvent($tagId,$_POST['eventID']); 
+			}
 			}
 			array_push($tagsAfterEdit,$tagId );
 

@@ -4,6 +4,7 @@
     include_once('database/events.php');
     include_once('database/users.php');
     include_once('database/usersEvent.php');
+    include_once('database/tagEvent.php');
     include_once('templates/header.php');
 ?>
 
