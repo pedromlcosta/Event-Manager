@@ -47,15 +47,18 @@ function saveUserNameChangesHandler(event) {
 			newName: $('#newUserName').val(),
 			userID: userID
 		},
-		dataType: 'text'
+		dataType: 'text',
 		success: function(data, textStatus, jqXHR) {
 			//console.log("success");
+			/*
 			if(data == 'Success'){
 				location.reload();
 			}else{
 				$('#errorMessage').empty();
 				$('#errorMessage').append(data);
 			}
+
+			*/
 			//Abandonar Página
 		},
 		error: function(jqXHR, textStatus, errorThrown) {

@@ -4,7 +4,7 @@
 	include_once('database/events.php');
 	include('genericStart.html');
 ?>
-
+<script src="scripts/users.js"></script>
 <?php
 	include('templates/header.php');
  	include('templates/user_page.php');      
