@@ -406,7 +406,7 @@ function queryEventForTab(tabID, eventOrder, eventTypeFilters, update,tags,data)
 // Clicked to refresh tab. Gets query parameters and calls the query and refresh function
 function eventTabHandler(event, update) {
 	var eventsUpdate = null;
- event.preventDefault();
+ 	 
 
 	if (event == undefined || event.data == undefined) {
 		var eventsUpdate = update != undefined ? update : false;
@@ -459,7 +459,10 @@ function onReadyAddHandlers() {
 		$('#login_button').click(clickedLogin);
 
 
-		$('#customSearchButton').on('click',eventTabHandler);
+		$('#customSearchButton').on('click',function(event){
+			event.preventDefault();
+			 eventTabHandler(undefined, true);
+		});
 
 		//REGISTER BUTTON HOVER HANDLER
 		$('#register_button').hover(hoveredRegister, unhoveredRegister);

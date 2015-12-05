@@ -17,20 +17,18 @@
 
     //Arrived in JSON form, turn into array again
     $typeFilters = json_decode($_POST['typeFilters']);
-
-     if(isset($_POST['dateTag']) && !empty($_POST['dateTag'])){
-        $dateTag = json_decode($_POST['dateTag']);
+     $dateTag="";
+     $userProvidedTags ="";
+     if(isset($_POST['dateTag']) ) {
+        $dateTag =$_POST['dateTag'];
     }
-    if(isset($_POST['userProvidedTags']) && !empty($_POST['userProvidedTags']) ){
-        $userProvidedTags = json_decode($_POST['userProvidedTags']);
+    if(isset($_POST['userProvidedTags'] )) {
+        $userProvidedTags = $_POST['userProvidedTags'];
     }
     $eventsPerPage = $_POST['eventsPerPage'];
     $page = $_POST['page'];
     $order = $_POST['order'];
-    echo "<br>";
-    print_r($dateTag);
-    echo "<br>";
-    print_r($userProvidedTags);
+
     
 	switch ($_POST['tab']) {
     case '#hostingEvents':
@@ -50,7 +48,7 @@
         $result = getAllVisibleEvents($_SESSION['userID'], $order, $eventsPerPage, $page, $typeFilters);
         break;
     case '#customSearch':
-       // $result = customSearch($_SESSION['userID'],$userProvidedTags,$dateTag,$typeFilters,$order, $eventsPerPage, $page);
+        $result = customSearch($_SESSION['userID'],$userProvidedTags,$dateTag,$typeFilters,$order, $eventsPerPage, $page);
         break;
     case '#hostedPublic':
         if(isLogged()){
@@ -70,5 +68,5 @@
 		die();
 	}
 
-    echo json_encode($_POST['userProvidedTags']);
+    echo json_encode($result);
 ?>

@@ -53,12 +53,24 @@ function getEventByID($id )
   $stmt->execute(array($id));  
   return $stmt->fetch();
 }
-function getEventByDate($date)
+function getEventByDate($date )
 {
    global $db;
   $stmt = $db->prepare('SELECT  * FROM events WHERE visible=1 AND data=?');
   $stmt->execute(array($date));  
   return $stmt->fetchAll();
+  
+}
+function getEventByDateWithInfo($date ,$userID )
+{
+   global $db;
+  $stmt = $db->prepare('SELECT DISTINCT events.*,images.url,users.fullname,types.name as "type" FROM events,events_users,events_images,users,images,types,events_types WHERE
+    data='2015-01-01'  AND events_images.event_id =events.id AND events_images.image_id = images.id AND events_users.visible=1 AND events.visible=1 AND (events_users.user_id=3 OR events.private =0) 
+  AND events_types.event_id= events.id AND events_types.type_id=types.id  AND events_users.event_id =events.id AND events.id AND users.id=events.user_id');
+  $stmt->execute(array($date,$userID));  
+  return $stmt->fetchAll();
+
+  
 }
 function getEventByTitle($title)
 {
@@ -408,7 +420,7 @@ function customSearch($userID,$userProvidedTags,$dateTag,$typeFilters,$order, $e
     $noData=false;
 
     $searchResults = array();
-  if(count($userProvidedTags)>0){
+  if(strlen($userProvidedTags)>0){
         $tags = preg_split("/" . $delimiters . "+/",$userProvidedTags);
         $tagsToSearch = array();
         //TODO
@@ -418,27 +430,18 @@ function customSearch($userID,$userProvidedTags,$dateTag,$typeFilters,$order, $e
             $tempTag = getTagId($toSearch);
             if ($tempTag) array_push($tagsToSearch, $tempTag);
           }
-          $searchResults = getEventsWithAnd($tagsToSearch,$filtersIDs,$order,$events_per_page,$page);
-          $searchResultsOR = getEventsWithOr($tagsToSearch,$filtersIDs,$order,$events_per_page,$page);
-
-          echo "<br>";
-          print_r($searchResults);
-          echo "<br>";
-          print_r($searchResultsOR);
-          echo "<br>";
+          $searchResults = getEventsWithAnd($tagsToSearch,$filtersIDs,$order,$userID);
+          $searchResultsOR = getEventsWithOr($tagsToSearch,$filtersIDs,$order,$userID);
        
           if ($searchResultsOR) {
             if (!empty($searchResults)) $searchResults = array_unique(array_merge($searchResults, $searchResultsOR) , SORT_REGULAR);
             else $searchResults = $searchResultsOR;
           }
-           echo "<br>";
-          print_r($searchResults);
-          echo "<br>";
   }
   else
     $noEvents=true;
 
-      if (!isset($dateTag)) {
+if (strlen($dateTag)>0) {
         $eventsWithDate = getEventByDate($dateTag);
 
         if ($eventsWithDate){ 
@@ -447,20 +450,23 @@ function customSearch($userID,$userProvidedTags,$dateTag,$typeFilters,$order, $e
         else
           $searchResults = $eventsWithDate;
       }
-        else array_splice($searchResults, 0);
+        else 
+          $searchResults=array();
       }
       else
         $noData=true;
 
+      
       if($noData && $noEvents){
+
         return  getAllVisibleEvents($userID, $order, $events_per_page, $page, $typeFilters);
       }
+
       $nResults=count($searchResults);
       $searchResults=array_slice($searchResults,$events_per_page*($page-1),$events_per_page);
-      $afterSliceSize=count($searchResults);
-      $searchResults[ $afterSliceSize]['numEvents']=$nResults;
-      echo "<br>";
-      echo print_r($searchResults);
+      $countEvents = array();
+      $countEvents[0]['numEvents'] = $nResults;
+      $searchResults = array_merge($searchResults, $countEvents);
  
       return $searchResults;
   }
