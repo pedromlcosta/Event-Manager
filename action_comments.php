@@ -5,7 +5,7 @@
     include_once('database/comments.php');
  
     $result = array();
-
+     $ESAPI = new ESAPI("ESAPI/test/testresources/ESAPI.xml");
     if(isset($_SESSION['currentEventPage'])){
         $eventID = $_SESSION['currentEventPage'];
     }
@@ -14,7 +14,8 @@
 	if(isset($_POST['action'])){
 
         if(isset($_POST['comment'])){
-            $comment = $_POST['comment'];
+              
+             $comment = $ESAPI->getEncoder()->encodeForHTML($_POST['comment']); 
         }
 
         $commentsPerPage = $_POST['commentsPerPage'];
@@ -24,6 +25,7 @@
     case 'addComment':
         // Query the comments here
         if($comment != ''){
+
             addCommentToEvent($eventID, $_SESSION['userID'], $comment);
         }
         $result = getEventComments($eventID, $commentsPerPage, $page);        
