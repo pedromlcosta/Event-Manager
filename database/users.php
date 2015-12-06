@@ -129,7 +129,7 @@ function updateUser($fieldChange,$fieldCheck,$fieldChangeValue,$fieldCheckValue,
 	$stmt->execute(array($userID, ));
 	$result = $stmt->fetch();
 
-	if(password_verify($result['field'],$fieldCheckValue)){
+	if(!password_verify($result['field'],$fieldCheckValue)){
 		return false;
 	}else{
 
