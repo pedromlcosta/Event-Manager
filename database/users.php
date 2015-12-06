@@ -104,19 +104,28 @@ function getUserImageURL($userID){
  		return $result;
 }
 
-function updateUser($oldField,$newField,$fieldChange,$fieldCheck,$userID){
+function updateUser($fieldChange,$fieldCheck,$fieldChangeValue,$fieldCheckValue,$userID){
 	//security input?
 	global $db;
 	
-
-	$queryPart1='UPDATE users SET '; 
-	$quertPart2=' = ? ';
-	$quertPart3=' WHERE users.id = ? AND  ' ;
-	$queryPart4=' = ? AND visible = 1';
-	$query=$queryPart1.$fieldChange.$quertPart2.$quertPart3.$fieldCheck.$queryPart4;
-
+	// Verify Password
+	$fieldCheckValue = sha1($fieldCheckValue);
+	$query = "SELECT * FROM users WHERE id = ? AND $fieldCheck = ? ";
 	$stmt = $db->prepare($query);
-	return $stmt->execute(array($newField,$userID,$oldField));
+	$stmt->execute(array($userID, $fieldCheckValue));
+	$result = $stmt->fetch();
 
-}
-?>
+	if($result === false){
+		return false;
+	}else{
+
+		if($fieldChange == 'password')
+			$fieldChangeValue = sha1($fieldChangeValue);
+
+		$query = "UPDATE users SET $fieldChange = ? WHERE users.id = ? AND visible = 1";
+		$stmt = $db->prepare($query);
+		$result= $stmt->execute(array($fieldChangeValue,$userID));
+
+		return true;
+	}
+}?>
