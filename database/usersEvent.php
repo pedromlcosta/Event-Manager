@@ -66,6 +66,5 @@ function isAttending($eventId,$userId){
   		return true;
   	else
   		return false;
-
 }
 ?>

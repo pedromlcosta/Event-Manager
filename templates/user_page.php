@@ -16,6 +16,7 @@
 </script>
 
 	<div id="content">
+		<div id="userInfo">
 		<div id="photo">
 			<?php
 				$photoURL = getUserImageURL($_GET['userID']);		
@@ -23,10 +24,10 @@
 			<img src="<?= $photoURL ?>" alt="Profile Photo" width="200px" height="200px">
 		</div>
 
-		<div id="userInfo">
-			
+		<div id="user_fullname">
+			<h1><?= getUserFullname($_GET['userID']) ?> </h1>
 		</div>
-
+		</div> <!-- End userInfo div -->
 		<?php
 		if(isLogged()){
 			if($_SESSION['userID'] == $_GET['userID']){?> 
@@ -36,35 +37,44 @@
 			<div id="errorMessage">
 			</div>
 
+			<div id="userImage_change">
+				<button type="button" id="image_button">Change Image </button>
+				<form action="action_buttons.php" method="post" enctype="multipart/form-data">
+				<fieldset  id="changeImageForm">
+					<legend>Image</legend>
+		 			 <input type="file" name="imageToUpload" />
+		 			<button type="submit" id="saveImageChanges">Save Image</button>
+				</fieldset>
+				</form>
+			</div>
+
 			<div id="fullName_change">
 				<button type="button" id="fullName_button">Change Full Name </button>
+									
+				<fieldset  id="changeNameForm">
+					<legend>Personal Info</legend>
+		 			<input type="password" id="currentPassword" placeholder="Current Password">
+		 		
+		 			<input type="text" id="newUserName" placeholder="New Full Name">
+		 		
+		 			<button type="submit" id="saveUserNameChanges">Save Name</button>
+				</fieldset>
 			</div>
-						
-			<fieldset  id="changeNameForm">
-				<legend>Personal Info:</legend>
-				<div id="inputFieldOldName">
-		 			<input type="text" id="oldUserName">
-		 		</div>
-		 		<div id="inputFieldNewName">
-		 			<input type="text" id="newUserName">
-		 		</div>
-		 		<button type="submit" id="saveUserNameChanges">Save Changes</button>
-			</fieldset>
 
 			<div id="password_change">
 				<button type="button" id="password_button">Change Password </button>
-			</div>
-
-			<fieldset id="changePassWord">
-				<legend>Security:</legend>
+			
+			<fieldset id="changePassWord" name="">
+				<legend>Security</legend>
 		 			<input type="password" id="oldPass"   placeholder="Current password">
 		 		
 		 			<input type="password" id="newPass"   placeholder="New password">
 		 		
 		 			<input type="password" id="typeAgainPass"   placeholder="Confirm New password">
 		 		
-		 		<button type="submit" id="savePasswordChanges">Save Changes</button>
+		 		<button type="submit" id="savePasswordChanges">Save Password</button>
 			</fieldset>
+			</div>
 
 		</div> <!-- End editFields div  -->
 		<?php

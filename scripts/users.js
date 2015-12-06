@@ -1,13 +1,8 @@
 var fullNameButtonPressed = false;
 var passwordButtonPressed = false;
-
+var saveImageButtonPressed = false;
 
 function fullNameButtonHandler(event) {
-	$('#oldUserName').attr("placeholder", "Current Full Name");
-	$('#newUserName').attr("placeholder", "New Full Name");
-
-	$('#oldUserName').attr("name", "CHANGE_USER_FULLNAME");
-	$('#newUserName').attr("name", "CHANGE_USER_FULLNAME");
 
 	if (!fullNameButtonPressed) {
 		$('#changeNameForm').show();
@@ -30,36 +25,86 @@ function passwordButtonHandler(event) {
 
 }
 
+function imageButtonHandler(event){
+
+	if(!saveImageButtonPressed){
+		$('#changeImageForm').show();
+		saveImageButtonPressed=true;
+	}
+	else{
+		saveImageButtonPressed=false;
+		$('#changeImageForm').hide();
+	}
+
+}
+
 function hideForms() {
 	$('#changeNameForm').hide();
 	$('#changePassWord').hide();
+	$('#changeImageForm').hide();
+}
+
+function saveImageChangesHandler(event) {
+
+	event.stopPropagation(); // Stop stuff happening
+	event.preventDefault(); // Totally stop stuff happening
+
+	$.ajax({
+		url: 'action_buttons.php',
+		type: 'POST',
+		data: new FormData(this),
+		cache: false,
+		processData: false, // Don't process the files
+		contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+		success: function(data, textStatus, jqXHR) {
+			if (typeof data.error === 'undefined') {
+				console.log(data);
+				// data[0] is true or false for success, data[1] is the message
+				if (data[0]) {
+					location.reload();
+				} else {
+					$("#errorMessage").empty();
+					$("#errorMessage").show();
+					$("#errorMessage").html(data[1]);
+					$("#errorMessage").delay(2000).fadeOut("slow");
+				}
+			} else {
+				// Handle errors here
+				console.log('ERRORS: ' + data.error);
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			// Handle errors here
+			console.log('ERRORS: ' + textStatus);
+			// STOP LOADING SPINNER
+		}
+	});
 }
 
 function saveUserNameChangesHandler(event) {
-	console.log("wrong one?");
+	
 	event.preventDefault();
 	$.ajax({
 		url: 'action_buttons.php',
 		type: 'POST',
 		data: {
-			action: $('#oldUserName').attr("name"),
-			oldName: $('#oldUserName').val(),
+			action: "CHANGE_USER_FULLNAME",
+			password: $('#currentPassword').val(),
 			newName: $('#newUserName').val(),
-			userID: userID
 		},
-		dataType: 'text',
+		dataType: 'json',
 		success: function(data, textStatus, jqXHR) {
-			//console.log("success");
-			/*
-			if(data == 'Success'){
-				location.reload();
-			}else{
-				$('#errorMessage').empty();
-				$('#errorMessage').append(data);
-			}
+				console.log(data);
+				// data[0] is true or false for success, data[1] is the message
+				if (data[0]) {
+					location.reload();
+				} else {
+					$("#errorMessage").empty();
+					$("#errorMessage").show();
+					$("#errorMessage").html(data[1]);
+					$("#errorMessage").delay(2000).fadeOut("slow");
+				}
 
-			*/
-			//Abandonar Página
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 
@@ -88,14 +133,12 @@ function savePasswordChangesHandler(event) {
 			newPass: newPassVal,
 			confirmPass: confirmPassVal,
 		},
-		dataType: 'text',
+		dataType: 'json',
 		success: function(data, textStatus, jqXHR) {
-			if (data != 'Success') {
-				$('#errorMessage').empty();
-				$('#errorMessage').append(data);
-				console.log("Not success");
-			}
-			console.log(data);
+			$("#errorMessage").empty();
+			$("#errorMessage").show();
+			$("#errorMessage").html(data[1]);
+			$("#errorMessage").delay(2000).fadeOut("slow");
 
 			//Abandonar Página
 		},
@@ -114,7 +157,10 @@ function handlers() {
 		hideForms();
 		$('#fullName_button').on('click', fullNameButtonHandler);
 		$('#password_button').on('click', passwordButtonHandler);
+		$('#image_button').on('click', imageButtonHandler);
 		$('#saveUserNameChanges').on('click', saveUserNameChangesHandler);
 		$('#savePasswordChanges').on('click', savePasswordChangesHandler);
+		$('#saveImageChanges').on('click', saveImageChangesHandler);
+
 	});
 }
