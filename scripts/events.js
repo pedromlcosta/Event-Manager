@@ -214,9 +214,8 @@ function hideInviteButton() {
 }
 
  function hideAll(){
- hideEditButton(); 
- hideDeleteButton(); 
- hideInviteButton();
+ hideJoinButton();
+ hideLeaveButton();
  }
 
 var event_id = null;
@@ -364,7 +363,6 @@ function handleSubmits() {
 		$("#leaveButton").on("click", leaveButton);
 		$("#removeButton").on("click", removeButton);
 		$("#inviteButton").on("click", inviteButton);
-
 		$("#addCommentButton").click({action: "addComment"},loadComments);
 		loadComments();
 
