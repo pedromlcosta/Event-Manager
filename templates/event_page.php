@@ -14,7 +14,6 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
     $isPublic                     = false;
     
     if (isPublic($_GET['eventID'])) {
-        echo "is Public";
         $hasPermission = true;
         $isPublic      = true;
     }
@@ -24,7 +23,6 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
         $isLogged = true;
         
         if (isOwner($_SESSION['userID'], $_GET['eventID'])) {
-            echo "Is owner";
             $isOwner       = true;
             $hasPermission = true;
         }
@@ -63,28 +61,27 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
             }
             
         ?>
-        <button type="submit" id="joinButton">Going</button>
-        <button type="submit" id="leaveButton">Not Going</button>
+        
 
         <br>
         <script type="text/javascript">
         handleSubmits();
         </script>
+        <button type="submit" id="joinButton">Join Event</button>
+        <button type="submit" id="leaveButton">Leave Event</button>
         <?php
             if ($isLogged) {
         ?>
         <script type="text/javascript">
-        var userID = parseInt("<= $_SESSION['userID'] ?> ", 10);
-        var eventID = parseInt("<= $_GET['eventID'] ?> ", 10);
+        var userID = parseInt("<?php echo $_SESSION['userID']; ?> ", 10);
+        var eventID = parseInt("<?php echo $_GET['eventID']; ?> ", 10);
         </script>
         <?php
                 if ($isOwner) {
-                    echo "<br> add stuff <br>" ;
         ?>
-
         <form id="form" action="events_create_edit.php" method="post">
         <input type=hidden id="action" name="action" value="edit" />
-        <input type=hidden id="id" name="id" value="<= echo $_GET['eventID']?>" />
+        <input type=hidden id="id" name="id" value="<?php echo $_GET['eventID'];?>" />
         <button type="submit" id="editButton">Edit</button>
         </form>
         <button type="submit" id="deleteButton">Delete</button>

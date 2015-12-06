@@ -1,10 +1,10 @@
 <?php
-print_r($_POST);
+print_r($_POST['eventID']);
 
 include_once('genericStart.html');	
 include_once('init.php');
 
-if(isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['eventID'] && isset($_POST['Event_Type'])  ){
+if ( isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['eventID']) && isset($_POST['Event_Type'])  ) {
 
 include_once('database/events.php');
 include_once('database/tag.php');
@@ -27,7 +27,7 @@ updateEvents('fulltext',$_POST['eventID'],$_POST['fullText']);
 updateEvents('data',$_POST['eventID'],$_POST['data']);
 
 
-	if(isset($_POST['eventImg'])){
+/*	if(isset($_POST['eventImg']) && !empty($_POST['eventImg']) ){
 		$imageExists=getImageByPath($_POST['eventImg']);
 		if($imageExists){
 			$imageId=$imageExists['id'];
@@ -39,7 +39,7 @@ updateEvents('data',$_POST['eventID'],$_POST['data']);
 
 		}
 		createImageEvent($_POST['eventID'],$imageId);
-	}
+	}*/
 
 
   global $delimiters;
@@ -55,13 +55,12 @@ $tagsAfterEdit=array();
 	foreach($tags as $tagDesc){
 
 		$tag=getTag($tagDesc);
-		print_r($tagDesc);
-		echo " 1 ";
+		//print_r($tagDesc);
 			if($tag){
 				 
 					$tagId=$tag['id'];
 					if (!in_array( $tagId, $currentTagsInEventID)) {
-						createTagEvent($tagId,$_POST['eventID']);
+						createTagEvent($_POST['eventID'],$tagId);
 					}
 			}
 			else{
@@ -74,10 +73,8 @@ $tagsAfterEdit=array();
 			}
 			array_push($tagsAfterEdit,$tagId );
 
-	}
-	 
+	} 
 	 $tagsToRemove = array_diff($currentTagsInEventID, $tagsAfterEdit);
-		  
  	foreach($tagsToRemove as $tag){
 		removeTagEvents($tag);
 }
