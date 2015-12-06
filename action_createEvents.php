@@ -8,9 +8,10 @@ include_once('database/tag.php');
 include_once('database/tagEvent.php');
 include_once('database/usersEvent.php');
 
- 
-
-if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['Event_Type']) && isLogged()) {
+ if(isset($_SESSION['errors'])){
+    unset($_SESSION['errors']);
+}
+else if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['Event_Type']) && isLogged()) {
     
 	$errorMessage = '';
 
@@ -74,11 +75,8 @@ if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullTe
         }
     }
     else{
-        $_SESSION['errorMessage'] = $errorMessage;
-        header('Location: '.$_SERVER['PHP_SELF']);
-        die;
-        echo "ERROR IN EVENT INPUT <br>";
-        var_dump($errorMessage);
+       $_SESSION['errors']=$errorMessage;
+ 
     }
 }
 

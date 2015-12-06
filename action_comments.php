@@ -3,16 +3,17 @@
 	include_once('database/users.php');
 	include_once('database/events.php');
     include_once('database/comments.php');
- 
+     require_once("ESAPI/src/ESAPI.php");
+    require_once("ESAPI/src/reference/DefaultEncoder.php");
     $result = array();
-     $ESAPI = new ESAPI("ESAPI/test/testresources/ESAPI.xml");
+     
     if(isset($_SESSION['currentEventPage'])){
         $eventID = $_SESSION['currentEventPage'];
     }
 
 	// REGISTER USER, IF VALID INFO
 	if(isset($_POST['action'])){
-
+        $ESAPI = new ESAPI("ESAPI/test/testresources/ESAPI.xml");
         if(isset($_POST['comment'])){
               
              $comment = $ESAPI->getEncoder()->encodeForHTML($_POST['comment']); 

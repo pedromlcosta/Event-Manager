@@ -4,7 +4,11 @@ print_r($_POST['eventID']);
 include_once('genericStart.html');	
 include_once('init.php');
 
-if ( isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['eventID']) && isset($_POST['Event_Type'])  ) {
+if(isset($_SESSION['errors'])){
+	unset($_SESSION['errors']);
+
+}
+else if ( isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['eventID']) && isset($_POST['Event_Type'])  ) {
 
 include_once('database/events.php');
 include_once('database/tag.php');
@@ -99,7 +103,7 @@ $tagsAfterEdit=array();
 		}
 	}
 	else{
-		print_r($errorMessage);
+		$_SESSION['errors']=$errorMessage;
 	}
 }
 ?>
