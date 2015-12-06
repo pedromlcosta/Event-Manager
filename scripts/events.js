@@ -143,6 +143,8 @@ function inviteButton(event) {
 	el2.style.visibility = "visible";
 	el = document.getElementById("overlay");
 	el.style.visibility = "visible";
+	$('#overlay').focus();
+	$("#overlay .overlayUser").focus();
 	$("#overlay #addUser").click(invite);
 	$("#overlay #overlayClose").click(closeInviting);
 }
