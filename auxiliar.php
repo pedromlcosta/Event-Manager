@@ -55,5 +55,12 @@
  	}
 		return $message;
  }
+ function validateUserInput($input){
+      if ( preg_match ("/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]+$/", $input)) {
+      // ERROR: Name can only contain letters Numbers and spaces
+        return false;
+    }
+    return true;
+}
 
 ?>

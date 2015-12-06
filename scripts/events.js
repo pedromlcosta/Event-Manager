@@ -169,6 +169,7 @@ function showJoinButton() {
 }
 
 function showLeaveButton() {
+	console.log("show leave button");
 	$("#leaveButton").show();
 	hideJoinButton();
 }

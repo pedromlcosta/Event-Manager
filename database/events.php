@@ -148,13 +148,6 @@ function createEvent($title,$fulltext,$private,$data,$user_id){
  else
   return false;
 }
-function validateUserInput($input){
-      if ( preg_match ("/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]+$/", $input)) {
-      // ERROR: Name can only contain letters Numbers and spaces
-        return true;
-    }
-    return false;
-}
 
 function updateEvents($field,$id,$changes){
   
