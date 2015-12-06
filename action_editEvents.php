@@ -12,20 +12,29 @@ include_once('database/tagEvent.php');
 include_once('database/filters.php');
 include_once('auxiliar.php');
 /*
-update ao private -> JS for button
-update à imagem -> outra tabela 1 check if field sent
-
-o que será + efeciente?
-para texto fazer parse e subsituir
-private é só um field
  
 see if os Max(id) estão direito
 check os gets por causa de o facto de o par de ids já existerem?
 */
-updateEvents('title',$_POST['eventID'],$_POST['title']);
-updateEvents('fulltext',$_POST['eventID'],$_POST['fullText']);
-updateEvents('data',$_POST['eventID'],$_POST['data']);
+	$errorMessage = '';
 
+    if(isset($_POST['private']))
+    $privateValue=valiateCheckBox($_POST['private']);
+    else
+    $privateValue=0;
+
+    $dataValid=validateDate($_POST['data']);
+    $typeValid=validateTypes($_POST['Event_Type']);
+
+    
+    $errorMessage= getErrorMessage(array($dataValid,$typeValid));
+    if(strlen($errorMessage)==0){
+
+	updateEvents('title',$_POST['eventID'],$_POST['title']);
+	updateEvents('fulltext',$_POST['eventID'],$_POST['fullText']);
+	updateEvents('data',$_POST['eventID'],$_POST['data']);
+	updateEvents('private',$_POST['eventID'],$privateValue);
+	updateEventsTypes($_POST['eventID'],getFilterId($_POST['Event_Type']));
 
 /*	if(isset($_POST['eventImg']) && !empty($_POST['eventImg']) ){
 		$imageExists=getImageByPath($_POST['eventImg']);
@@ -74,10 +83,13 @@ $tagsAfterEdit=array();
 			array_push($tagsAfterEdit,$tagId );
 
 	} 
-	 $tagsToRemove = array_diff($currentTagsInEventID, $tagsAfterEdit);
- 	foreach($tagsToRemove as $tag){
-		removeTagEvents($tag);
-}
-
+		 $tagsToRemove = array_diff($currentTagsInEventID, $tagsAfterEdit);
+	 	foreach($tagsToRemove as $tag){
+			removeTagEvents($tag);
+		}
+	}
+	else{
+		print_r($errorMessage);
+	}
 }
 ?>

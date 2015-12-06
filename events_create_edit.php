@@ -6,6 +6,7 @@
     include_once('database/usersEvent.php');
     include_once('database/tagEvent.php');
     include_once('database/tag.php');
+    include_once('database/filters.php');
     include_once('templates/header.php');
     //deal with ID>IDsExistentes no print events
 ?>

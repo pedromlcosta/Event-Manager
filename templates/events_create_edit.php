@@ -14,6 +14,11 @@ if (isset($_POST['action']) && isLogged()) {
         $fullText     = $event['fulltext'];
         $data         = $event['data'];
         $eventPrivate = $event['private'];
+        $selectedType = getTypeByEvent($eventID)['name'];
+        var_dump($selectedType);
+        if($selectedType===false)
+          $selectedType="";
+        
         $eventTags    = "";
         $tagIDs       = getTagWithEvent($eventID);
         if($eventPrivate==1)
@@ -32,7 +37,7 @@ if (isset($_POST['action']) && isLogged()) {
         }
     }
     
-    if ($_POST['action'] == 'create') {
+   else if ($_POST['action'] == 'create') {
         $path         = "action_createEvents.php";
         $button       = "Create";
         $title        = "";
@@ -43,6 +48,7 @@ if (isset($_POST['action']) && isLogged()) {
         $eventPrivate = 0;
         $eventID      = "";
         $checked="";
+        $selectedType="";
     }
         
 ?>
@@ -62,8 +68,13 @@ if (isset($_POST['action']) && isLogged()) {
     <select name="Event Type">
       <?php
       $types = getTypes();
+      var_dump($types);
        for($i = 0; $i < count($types); $i++){
-        echo ("<option name='type' value=$types[$i] > $types[$i] </option>");
+        var_dump($types[$i]);
+        if($types[$i]==$selectedType)
+          echo ("<option name='type' value=$types[$i] selected> $types[$i] </option>");
+        else
+          echo ("<option name='type' value=$types[$i] > $types[$i] </option>");
       }
       ?>
     </select>
@@ -71,7 +82,7 @@ if (isset($_POST['action']) && isLogged()) {
   </div>
    <div id="privateCheckbox">
     <label>Private:
-      <input type="checkbox" name="private" id="private"> 
+      <input type="checkbox" name="private" id="private" <?=$checked?> > 
   </label>
    </div>
    <div>

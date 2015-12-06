@@ -13,7 +13,7 @@ function getAllFilters(){
   $stmt = $db->prepare('SELECT name,id FROM types WHERE  visible =1');
   $stmt->execute(array($name));
 
-  return $stmt->All();
+  return $stmt->fetchAll();
 }
 function getFilterId($name){
  $temp=getFilter($name);
@@ -24,9 +24,15 @@ function getFilterId($name){
  	return false;
 
 }
+function getTypeByEvent($eventID){
+    global $db;
+  $stmt = $db->prepare('SELECT *  FROM types WHERE id IN(SELECT type_id FROM events_types WHERE event_id = ? AND visible =1)');
+  $stmt->execute(array($eventID));
 
+  return $stmt->fetch();
+
+}
 function addEventsTypes($eventID,$typeID){
-	print_r($typeID);
   global $db;
   $stmt = $db->prepare('INSERT INTO events_types (event_id,type_id) VALUES(?,?)');
   $res= $stmt->execute(array($eventID,$typeID));
@@ -36,10 +42,10 @@ function addEventsTypes($eventID,$typeID){
  	return false;
 }
 
-function updateEventsTypes($eventID,$typeID,$newEventID,$newTypeID){
+function updateEventsTypes($eventID,$newTypeID){
   global $db;
-  $stmt = $db->prepare('UPDATE  events_types SET event_id = ?, type_id = ? WHERE event_id = ? AND type_id = ?');
-   $res= $stmt->execute(array($newEventID,$newTypeID,$eventID,$typeID));
+  $stmt = $db->prepare('UPDATE  events_types SET  type_id = ? WHERE event_id = ? ');
+   $res= $stmt->execute(array($newTypeID,$eventID));
   if($res)
  	return true;
  else 
