@@ -281,7 +281,7 @@ function listEventsUnderTab(events) {
 		var info = $('<div/>')
 			.addClass('info')
 			.append($('<div/>')
-				.append($('<a href="event'+events[i]['id']+'.php">' + events[i]['title'] +' </a>')))
+				.append($('<a href="event_page.php?eventID='+events[i]['id']+'">' + events[i]['title'] +' </a>')))
 			.append($('<div/>')
 				.append($('<h4/>').text('Type').val('Type'))
 				.append(events[i]['type']))
