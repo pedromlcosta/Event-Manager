@@ -12,6 +12,4 @@
            <button   id="customSearchButton" >Search</button>
         </div>
     </form>
-        
-    <a href="event_page.php?eventID=<?=1?>">Event 1 Test Link</a> 
 </div>
