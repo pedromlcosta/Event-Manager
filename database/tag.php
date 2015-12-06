@@ -40,9 +40,7 @@ function getTagId($desc)
 function getLastTagId(){
 
   global $db;
-  $stmt = $db->prepare('SELECT MAX(id) as id FROM  tags WHERE visible=1');
-  $stmt->execute();  
-  return $stmt->fetch();
+  return $db->lastInsertId() ;
 }
 function updateTags($field,$id,$changes){
   
