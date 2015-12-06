@@ -247,7 +247,7 @@ function listComments(comments) {
 
 		//User image
 		var cont = $('<div/>')
-			.append($('<img src="' + comments[i]['url'] + '" alt="event" width="200" height="120">'))
+			.append($('<img src="' + comments[i]['imageURL'] + '" alt="event" width="200" height="120">'))
 			.append(info);
 
 		li.append(cont);

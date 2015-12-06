@@ -25,14 +25,13 @@ function passwordButtonHandler(event) {
 
 }
 
-function imageButtonHandler(event){
+function imageButtonHandler(event) {
 
-	if(!saveImageButtonPressed){
+	if (!saveImageButtonPressed) {
 		$('#changeImageForm').show();
-		saveImageButtonPressed=true;
-	}
-	else{
-		saveImageButtonPressed=false;
+		saveImageButtonPressed = true;
+	} else {
+		saveImageButtonPressed = false;
 		$('#changeImageForm').hide();
 	}
 
@@ -44,41 +43,59 @@ function hideForms() {
 	$('#changeImageForm').hide();
 }
 
+var imageTooBig = false;
+var MAX_FILE_SIZE = 15 * 1000000;
+
 function saveImageChangesHandler(event) {
 
 	event.stopPropagation(); // Stop stuff happening
 	event.preventDefault(); // Totally stop stuff happening
 
-	// START A LOADING SPINNER HERE
+	if (imageTooBig) {
+		$("#errorMessage").empty();
+		$("#errorMessage").show();
+		$("#errorMessage").html("The file is too big for upload");
+		$("#errorMessage").delay(2000).fadeOut("slow");
+	} else {
 
-	$.ajax({
-		url: 'action_buttons.php',
-		type: 'POST',
-		data: new FormData(this),
-		cache: false,
-		processData: false, // Don't process the files
-		contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-		success: function(data, textStatus, jqXHR) {
-			if (typeof data.error === 'undefined') {
-				// Success so call function to process the form
-				//emptyStatus();
-				//$('#messageStatus').prepend(data);
-				console.log(data);
-			} else {
+		// START A LOADING SPINNER HERE
+		$.ajax({
+			url: 'action_buttons.php',
+			type: 'POST',
+			data: new FormData(this),
+			cache: false,
+			processData: false, // Don't process the files
+			contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+			success: function(data, textStatus, jqXHR) {
+				if (typeof data.error === 'undefined') {
+					var data = JSON.parse(data);
+					console.log(data);
+
+					if (data[0]) {
+						location.reload();
+					} else {
+						$("#errorMessage").empty();
+						$("#errorMessage").show();
+						$("#errorMessage").html(data[1]);
+						$("#errorMessage").delay(2000).fadeOut("slow");
+					}
+
+				} else {
+					// Handle errors here
+					console.log('ERRORS: ' + data.error);
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
 				// Handle errors here
-				console.log('ERRORS: ' + data.error);
+				console.log('ERRORS: ' + textStatus);
+				// STOP LOADING SPINNER
 			}
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			// Handle errors here
-			console.log('ERRORS: ' + textStatus);
-			// STOP LOADING SPINNER
-		}
-	});
+		});
+	}
 }
 
 function saveUserNameChangesHandler(event) {
-	
+
 	event.preventDefault();
 	$.ajax({
 		url: 'action_buttons.php',
@@ -90,16 +107,16 @@ function saveUserNameChangesHandler(event) {
 		},
 		dataType: 'json',
 		success: function(data, textStatus, jqXHR) {
-				console.log(data);
-				// data[0] is true or false for success, data[1] is the message
-				if (data[0]) {
-					location.reload();
-				} else {
-					$("#errorMessage").empty();
-					$("#errorMessage").show();
-					$("#errorMessage").html(data[1]);
-					$("#errorMessage").delay(2000).fadeOut("slow");
-				}
+			console.log(data);
+			// data[0] is true or false for success, data[1] is the message
+			if (data[0]) {
+				//location.reload();
+			} else {
+				$("#errorMessage").empty();
+				$("#errorMessage").show();
+				$("#errorMessage").html(data[1]);
+				$("#errorMessage").delay(2000).fadeOut("slow");
+			}
 
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
@@ -116,7 +133,7 @@ function savePasswordChangesHandler(event) {
 	event.preventDefault();
 	var oldPassVal = $('#oldPass').val();
 	var newPassVal = $('#newPass').val()
-	var confirmPassVal =  $('#typeAgainPass').val();
+	var confirmPassVal = $('#typeAgainPass').val();
 
 	console.log(oldPassVal + " " + newPassVal);
 	$.ajax({
@@ -131,6 +148,7 @@ function savePasswordChangesHandler(event) {
 		},
 		dataType: 'json',
 		success: function(data, textStatus, jqXHR) {
+			console.log(data);
 			$("#errorMessage").empty();
 			$("#errorMessage").show();
 			$("#errorMessage").html(data[1]);
@@ -156,7 +174,17 @@ function handlers() {
 		$('#image_button').on('click', imageButtonHandler);
 		$('#saveUserNameChanges').on('click', saveUserNameChangesHandler);
 		$('#savePasswordChanges').on('click', savePasswordChangesHandler);
-		$('#saveImageChanges').on('click', saveImageChangesHandler);
+		$('#userImage_change form').on('submit', saveImageChangesHandler);
+
+		//binds to onchange event of your input field
+		$('#userImageUpload').bind('change', function() {
+			console.log(this.files[0].size);
+
+			if (this.files[0].size > MAX_FILE_SIZE)
+				imageTooBig = true;
+			else
+				imageTooBig = false;
+		});
 
 	});
 }

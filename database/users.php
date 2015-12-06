@@ -103,10 +103,10 @@ function getUserIDFull($userFullname){
 function getUserImageURL($userID){
 	global $db;
 
-	$stmt = $db->prepare('SELECT DISTINCT images.url FROM users, images, users_images WHERE users_images.user_id = ? AND users_images.image_id = images.id');
+	$stmt = $db->prepare('SELECT * FROM users WHERE users.id = ?');
 	$stmt->execute(array($userID));
  	
- 	$result = $stmt->fetch()['url'];
+ 	$result = $stmt->fetch()['imageURL'];
 
  	if($result === null)
  		return 'images/default_profile_pic.jpg';
@@ -118,60 +118,42 @@ function updateUser($fieldChange,$fieldCheck,$fieldChangeValue,$fieldCheckValue,
 	//TODO: esta funcao devolver algum erro?
 	global $db;
 	
-	// Verify Password
-	$fieldCheckValue = password_hash($fieldCheckValue,PASSWORD_DEFAULT);
-	//ou podemos fazer
-	/*
-		SELECT password e depois usar o boolean password_verify ( string $password , string $hash )
-	*/
-	$query = "SELECT  $fieldCheck AS field FROM users WHERE id = ? ";
+	$query = "SELECT  $fieldCheck FROM users WHERE id = ? ";
 	$stmt = $db->prepare($query);
-	$stmt->execute(array($userID, ));
+	$stmt->execute(array($userID));
 	$result = $stmt->fetch();
 
-	if(!password_verify($result['field'],$fieldCheckValue)){
-		return false;
+	// Verify Password
+	if ($fieldCheck == 'password'){
+
+		if(!password_verify($fieldCheckValue, $result[$fieldCheck])){
+			return false;
+		}else{
+			if($fieldChange == 'password')
+				$fieldChangeValue = password_hash($fieldChangeValue,PASSWORD_DEFAULT);
+		}
+
 	}else{
-
-		if($fieldChange == 'password')
-			$fieldChangeValue = password_hash($fieldChangeValue,PASSWORD_DEFAULT);
-
-		$query = "UPDATE users SET $fieldChange = ? WHERE users.id = ? AND visible = 1";
-		$stmt = $db->prepare($query);
-		$result= $stmt->execute(array($fieldChangeValue,$userID));
-
-		return true;
+		if ($result[$fieldCheck] != $fieldCheckValue)
+			return false;
 	}
+	
+	// If everything is OK
+
+	$query = "UPDATE users SET $fieldChange = ? WHERE users.id = ? AND visible = 1";
+	$stmt = $db->prepare($query);
+	$result= $stmt->execute(array($fieldChangeValue,$userID));
+	//TODO: put return on execute
+	return true;
+	
 }
 
-function changeImage(){
+function changeUserImage($userID, $imageURL){
+	global $db;
 
-	if(isset($_FILES["imageToUpload"])){
-		return array(false, "yey");
-	}
-
-	$uploadOk = false;
-	$target_dir = "database/user_images/";
-	
-	if($_FILES["fileToUpload"]["name"] != ''){
-
-		$imageFileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);
-		$target_file = $target_dir . basename($_POST['username']) . "." . $imageFileType;
-	
-		// Check if image file is a actual image or fake image
-		if(isset($_POST["submit"])) {
-   			$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-   			if($check !== false) {
-        		//echo "File is an image - " . $check["mime"] . ".";
-        		$uploadOk = 1;
-    		}
-		}
-	}
-
-	if($uploadOk){
-			move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
-		}
-
+	$query = 'UPDATE users SET imageURL = ? WHERE users.id = ?';
+	$stmt = $db->prepare($query);
+	$result = $stmt->execute(array($imageURL, $userID));
 }
 
 

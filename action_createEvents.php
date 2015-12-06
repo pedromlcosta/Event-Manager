@@ -15,15 +15,16 @@ if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullTe
 	$errorMessage = '';
 
     if(isset($_POST['private']))
-    $privateValue=valiateCheckBox($_POST['private']);
+    $privateValue=validateCheckBox($_POST['private']);
     else
     $privateValue=0;
 
     $dataValid=validateDate($_POST['data']);
     $typeValid=validateTypes($_POST['Event_Type']);
-
     
     $errorMessage= getErrorMessage(array($dataValid,$typeValid));
+
+
     if(strlen($errorMessage)==0){
         global $delimiters;
         if (createEvent($_POST['title'], $_POST['fullText'], $privateValue, $_POST['data'], $_SESSION['userID'])) {
@@ -69,19 +70,12 @@ if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullTe
         if($uploadOk){
         $target_dir = "database/user_images/";
        move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
-    }
-        //TODO falta acrescentar as tretas do path e isso
-        /*$image=getImageByPath($_POST['image']);
-        if(!$image){
-        createImage($_POST['image']);
-        $imageId=getLastimageId();
-        } 
-        else{
-        $imageId=$image['id'];
         }
-        createImageEvent($eventCreatedId['id'],$imageId);*/
     }
     else{
+        $_SESSION['errorMessage'] = $errorMessage;
+        header('Location: '.$_SERVER['PHP_SELF']);
+        die;
         echo "ERROR IN EVENT INPUT <br>";
         var_dump($errorMessage);
     }
