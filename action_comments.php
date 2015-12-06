@@ -3,8 +3,9 @@
 	include_once('database/users.php');
 	include_once('database/events.php');
     include_once('database/comments.php');
-     require_once("ESAPI/src/ESAPI.php");
+    require_once("ESAPI/src/ESAPI.php");
     require_once("ESAPI/src/reference/DefaultEncoder.php");
+    
     $result = array();
      
     if(isset($_SESSION['currentEventPage'])){

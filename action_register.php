@@ -10,10 +10,13 @@
 
 	// REGISTER USER, IF VALID INFO
 	if(isset($_POST['username'])){
-		if($_POST['username'] == '' OR $_POST['password'] == '' OR $_POST['fullname'] == ''){
+		if($_POST['username'] == '' OR $_POST['password'] == '' OR $_POST['fullname'] == '') {
 			$registerStatus = "EMPTY REGISTER FIELDS";
-			echo $_POST['password'];
-		}else{
+		}	else if(validateUserInput($_POST['username']) OR validateUserInput($_POST['fullname'])){
+			$registerStatus = "PLEASE CHECK NAME FIELDS. REMEMBER:<br> NO SPEACIAL CHARACTERS ARE ALLOWED";
+		}
+
+		else{
 
 		$registerStatus = registerUser($_POST['username'],$_POST['password'],$_POST['fullname']);
 		}
