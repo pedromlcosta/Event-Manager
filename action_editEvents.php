@@ -31,7 +31,7 @@ check os gets por causa de o facto de o par de ids já existerem?
     $typeValid=validateTypes($_POST['Event_Type']);
     $imageValid=array(true);
 
-    if(isset($_POST['eventImg']) && !empty($_POST['eventImg']) ){
+    if(isset($_POST['fileToUpload']) && !empty($_POST['fileToUpload']) ){
 		 $imageValid = validateImageUpload();
 	} 
     
