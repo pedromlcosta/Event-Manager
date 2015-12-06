@@ -88,6 +88,15 @@ function getUserFullname($userID){
   return $stmt->fetch()['fullname'];
 }
 
+function getUserIDFull($userFullname){
+	global $db;
+
+  $stmt = $db->prepare('SELECT id FROM users WHERE fullname= ?');
+  $stmt->execute(array($userFullname));
+
+  return $stmt->fetch()['id'];
+}
+
 // Returns image URL for the user specified
 // If user does not have an image, returns NULL
 function getUserImageURL($userID){
