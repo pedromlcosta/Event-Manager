@@ -36,15 +36,11 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
         }
         
     }
-    var_dump($_SESSION['userID']);
-    var_dump( $isOwner  );
-    var_dump( $hasPermission);
     if ($hasPermission) {
         $event = getEventInfo($_GET['eventID']);
 
                     /* códigp para sanatizar o input fazer o mesmo para os comentários*/
  echo"<br> I should be printing stuff";
-var_dump(getAllEvents());
   $ESAPI = new ESAPI("ESAPI/test/testresources/ESAPI.xml");
   $title = $ESAPI->getEncoder()->encodeForHTML($event['title']); 
   $text =  $ESAPI->getEncoder()->encodeForHTML($event['fulltext']); 
