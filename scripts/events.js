@@ -358,13 +358,11 @@ function loadComments(event, comment_action) {
 function handleSubmits() {
 	//On doc ready, add handlers
 	$(document).ready(function() {
-		hideAll();
 		$("#deleteButton").on("click", deleteButton);
 		$("#joinButton").on("click", joinButton);
 		$("#leaveButton").on("click", leaveButton);
 		$("#removeButton").on("click", removeButton);
 		$("#inviteButton").on("click", inviteButton);
-
 		$("#addCommentButton").click({action: "addComment"},loadComments);
 		loadComments();
 

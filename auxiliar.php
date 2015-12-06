@@ -3,7 +3,7 @@
  $delimiters="[\s,\/,\|]";
  $imageExtension =array('jpg','png','jpeg','gif');
  $maxDistance=2;
-
+ $destEventFolder='"database/event_images/';
   function isLogged(){
     return isset($_SESSION['userID']);
   }
@@ -46,7 +46,6 @@
 	
  function getErrorMessage($array){
  	$message='';
- 	var_dump($array);
  	foreach($array as $errorMessage){
  		if(!$errorMessage[0]){
  			$message=$message.$errorMessage[1].'<br>';

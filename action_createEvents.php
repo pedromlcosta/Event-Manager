@@ -8,12 +8,8 @@ include_once('database/tag.php');
 include_once('database/tagEvent.php');
 include_once('database/usersEvent.php');
 
- if(isset($_SESSION['errors'])){
 
-    unset($_SESSION['errors']);
-}
-else if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['Event_Type']) && isLogged()) {
-    
+  if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['Event_Type'])  && isLogged()) {
 	$errorMessage = '';
 
     if(isset($_POST['private']))
@@ -23,15 +19,22 @@ else if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['f
 
     $dataValid=validateDate($_POST['data']);
     $typeValid=validateTypes($_POST['Event_Type']);
-    
-    $errorMessage= getErrorMessage(array($dataValid,$typeValid));
-
+  
+    $imageValid=validateImageUpload();
+    $errorMessage= getErrorMessage(array($dataValid,$typeValid,$imageValid));
+    var_dump($_FILES);
+    echo "<br>";
+    var_dump($_POST);
 
     if(strlen($errorMessage)==0){
+        echo "NO ERRORS<br>";
         global $delimiters;
-        if (createEvent($_POST['title'], $_POST['fullText'], $privateValue, $_POST['data'], $_SESSION['userID'])) {
+        global $destEventFolder;
+        $imageURL=uploadImageFile($destEventFolder,'event_create',null);
+
+        if (createEvent($_POST['title'], $_POST['fullText'], $privateValue, $_POST['data'], $_SESSION['userID'],$imageURL)) {
             $eventCreatedId = getEventIdByField($_POST['title'],$_POST['data'], $_SESSION['userID']);
-            var_dump($eventCreatedId);
+           //var _dump($eventCreatedId);
             $userId         = $_SESSION['userID'];
             //addUserToEvent($eventCreatedId['id'], $userId);
             
@@ -48,35 +51,10 @@ else if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['f
                 }
             }
         }
-    
-        $uploadOk = 0;
-    
-        if(!isset($_FILES["eventImg"])){
-            $errorMessage .= "Must select an image. ";
-        }else{
-    
-            if($_FILES["eventImg"]["name"] != ''){
-    
-                $imageFileType = pathinfo($_FILES["eventImg"]["name"],PATHINFO_EXTENSION);
-                $target_file = $target_dir . basename($_POST['username']) . "." . $imageFileType;
-        
-                // Check if image file is a actual image or fake image
-                if(isset($_POST["submit"])) {
-                       $check = getimagesize($_FILES["eventImg"]["tmp_name"]);
-                       if($check !== false) {
-                        //echo "File is an image - " . $check["mime"] . ".";
-                        $uploadOk = 1;
-                    }
-                }
-            }
-        }
-        if($uploadOk){
-        $target_dir = "database/user_images/";
-       move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
-        }
+  
     }
     else{
-       $_SESSION['errors']=$errorMessage;
+        echo $errorMessage;
  
     }
 }

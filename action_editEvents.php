@@ -21,7 +21,7 @@ see if os Max(id) estão direito
 check os gets por causa de o facto de o par de ids já existerem?
 */
 	$errorMessage = '';
-
+	global $destEventFolder;
     if(isset($_POST['private']))
     $privateValue=valiateCheckBox($_POST['private']);
     else
@@ -29,9 +29,13 @@ check os gets por causa de o facto de o par de ids já existerem?
 
     $dataValid=validateDate($_POST['data']);
     $typeValid=validateTypes($_POST['Event_Type']);
+    $imageValid=array(true);
 
+    if(isset($_POST['eventImg']) && !empty($_POST['eventImg']) ){
+		 $imageValid = validateImageUpload();
+	} 
     
-    $errorMessage= getErrorMessage(array($dataValid,$typeValid));
+    $errorMessage= getErrorMessage(array($dataValid,$typeValid, $imageValid));
     if(strlen($errorMessage)==0){
 
 	updateEvents('title',$_POST['eventID'],$_POST['title']);
@@ -40,19 +44,9 @@ check os gets por causa de o facto de o par de ids já existerem?
 	updateEvents('private',$_POST['eventID'],$privateValue);
 	updateEventsTypes($_POST['eventID'],getFilterId($_POST['Event_Type']));
 
-/*	if(isset($_POST['eventImg']) && !empty($_POST['eventImg']) ){
-		$imageExists=getImageByPath($_POST['eventImg']);
-		if($imageExists){
-			$imageId=$imageExists['id'];
-
-		}
-		else{
-			createImage($_POST['eventImg']);
-			$imageId=getLastimageId()['id'];
-
-		}
-		createImageEvent($_POST['eventID'],$imageId);
-	}*/
+ 	if($imageValid[0]){
+		 uploadImageFile($destEventFolder, 'edit_event', $_POST['eventID'])
+	} 
 
 
   global $delimiters;
@@ -84,20 +78,14 @@ $tagsAfterEdit=array();
 				createTag($tagDesc);
 				$tagId=getLastTagId();
 				createTagEvent($_POST['eventID'],$tagId); 
-			}
+				}
 			}
 			array_push($tagsAfterEdit,$tagId );
 
 	} 
 
 		 $tagsToRemove = array_diff($currentTagsInEventID, $tagsAfterEdit);
-		 echo "START <br>";
-	var_dump($tagsToRemove);
-	echo "<br>";
-	var_dump($currentTagsInEventID);
-	echo "<br>";
-	var_dump($tagsAfterEdit);
-	echo "<br>";
+ 
 	 	foreach($tagsToRemove as $tag){
 			removeTagEvents($tag);
 		}

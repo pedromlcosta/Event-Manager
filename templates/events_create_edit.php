@@ -33,7 +33,6 @@ if (isset($_POST['action']) && isLogged()) {
             else
                 $eventTags = $eventTags . getTagDesc($tagId['tag_id']);
         }
-        var_dump($eventTags);
     }
     
    else if ($_POST['action'] == 'create') {
@@ -52,9 +51,12 @@ if (isset($_POST['action']) && isLogged()) {
         
 ?>
    
-
- 
-     <form id="eventEditAdd" action="<?php echo $path ?>" method="post">
+<script type="text/javascript">
+    handleSubmits();
+</script>
+ <div id="errorMessageCreateEvent">
+ </div>
+     <form id="eventEditAdd" action="<?php echo $path ?>" method="post" enctype="multipart/form-data" >
   <fieldset>
     <legend>Event</legend>
     <div>
@@ -67,9 +69,7 @@ if (isset($_POST['action']) && isLogged()) {
     <select name="Event Type">
       <?php
       $types = getTypes();
-      var_dump($types);
        for($i = 0; $i < count($types); $i++){
-        var_dump($types[$i]);
         if($types[$i]==$selectedType)
           echo ("<option name='type' value=$types[$i] selected> $types[$i] </option>");
         else
