@@ -4,6 +4,7 @@ if (isset($_POST['action']) && isLogged()) {
     print_r($_POST);
     if ($_POST['action'] == 'edit') {
         
+
         $path         = "action_editEvents.php";
         $button       = "Edit";
         $eventID      = $_POST['id'];
@@ -47,7 +48,7 @@ if (isset($_POST['action']) && isLogged()) {
 ?>
    
 
-    <form action="<?= $path ?>" method="post">
+    <form action="<?= $path ?>" id="inputForm" method="post">
         <fieldset>
             <legend>Event:</legend>
             <div>
@@ -59,23 +60,17 @@ if (isset($_POST['action']) && isLogged()) {
                 <input type="checkbox" name="private" id="private" "<= $checked?>">
             </div>
             <div>
-            <?php
-                $types = getTypes();
-
-                for($i = 0; $i < count($types); $i++){
-                    echo("$types[$i]");
-                }
-                ?>
+         
             </div>
             <div id="createSelectType">
                 <select name="Event Type" <?= $required ?>>
-                <?php
+              <!--  <?php
                 $types = getTypes();
 
                 for($i = 0; $i < count($types); $i++){
                     echo ("<option name='type' value=".($i+1)." > $types[$i] </option>");
                 }
-                ?>
+                ?>-->
 
 
                 </select>

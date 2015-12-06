@@ -6,7 +6,7 @@ function loginAccount($username, $password){
 	try{
 	$query = "SELECT * FROM USERS WHERE username = ? COLLATE NOCASE AND password = ?";
 	$stmt = $db->prepare($query);
-	$stmt->execute(array($username, sha1($password)));
+	$stmt->execute(array($username, password_hash($password,PASSWORD_DEFAULT)));
 	$result = $stmt->fetch();
 
 	// $result !== false means it found the user with the password
@@ -46,7 +46,7 @@ function registerUser($username, $password, $fullname){
 	
 	$query = "INSERT INTO USERS (username, password, fullname) VALUES(?, ?, ?)";
 	$stmt = $db->prepare($query);
-	$stmt->execute(array($username, sha1($password), $fullname));
+	$stmt->execute(array($username, password_hash($password,PASSWORD_DEFAULT), $fullname));
 	
 	//TODO: Change hardcoded returns to numbers. Map numbers to each string
 	return "REGISTERED SUCCESSFULLY.";
@@ -118,7 +118,11 @@ function updateUser($fieldChange,$fieldCheck,$fieldChangeValue,$fieldCheckValue,
 	global $db;
 	
 	// Verify Password
-	$fieldCheckValue = sha1($fieldCheckValue);
+	$fieldCheckValue = password_hash($fieldCheckValue,PASSWORD_DEFAULT);
+	//ou podemos fazer
+	/*
+		SELECT password e depois usar o boolean password_verify ( string $password , string $hash )
+	*/
 	$query = "SELECT * FROM users WHERE id = ? AND $fieldCheck = ? ";
 	$stmt = $db->prepare($query);
 	$stmt->execute(array($userID, $fieldCheckValue));
@@ -129,7 +133,7 @@ function updateUser($fieldChange,$fieldCheck,$fieldChangeValue,$fieldCheckValue,
 	}else{
 
 		if($fieldChange == 'password')
-			$fieldChangeValue = sha1($fieldChangeValue);
+			$fieldChangeValue = password_hash($fieldChangeValue,PASSWORD_DEFAULT);
 
 		$query = "UPDATE users SET $fieldChange = ? WHERE users.id = ? AND visible = 1";
 		$stmt = $db->prepare($query);

@@ -3,6 +3,8 @@
   include_once('database/events.php');
   include_once('database/users.php');
   include_once('database/usersEvent.php');
+  require_once("ESAPI/src/ESAPI.php");
+  require_once("ESAPI/src/reference/DefaultEncoder.php");
   include('genericStart.html');
 ?>
   

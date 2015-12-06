@@ -1,11 +1,13 @@
 <?php
 
 	if(!isset($_GET['userID'])){
-		// On leaving the page, reset this session variable
-		echo "really?";
+		//echo "really?";
 		header('Location:'. 'index.php');
 	}else{
 		$_SESSION['currentUserPage'] = $_GET['userID'];
+
+  $ESAPI = new ESAPI("ESAPI/test/testresources/ESAPI.xml");
+   
 ?>
 
 <script src="scripts/users.js"></script>
@@ -19,13 +21,13 @@
 		<div id="userInfo">
 		<div id="photo">
 			<?php
-				$photoURL = getUserImageURL($_GET['userID']);		
+				$photoURL = $ESAPI->getEncoder()->encodeForHTML(getUserImageURL($_GET['userID']));		
 			?>
 			<img src="<?= $photoURL ?>" alt="Profile Photo" width="200px" height="200px">
 		</div>
 
 		<div id="user_fullname">
-			<h1><?= getUserFullname($_GET['userID']) ?> </h1>
+			<h1><?= $ESAPI->getEncoder()->encodeForHTML(getUserFullname($_GET['userID'])) ?> </h1>
 		</div>
 		</div> <!-- End userInfo div -->
 		<?php

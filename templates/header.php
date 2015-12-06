@@ -11,7 +11,7 @@
         onReadyAddHandlers();
         </script>
 
-        <?php if(!isLogged()){ ?>
+        <?php if(!isLogged()){  ?>
 
         <div id="buttons">
           <button type="button" id="register_button"> REGISTER </button>
@@ -41,13 +41,18 @@
         <div id="messageStatus">
         </div>
 
-        <?php }else{ ?>
+        <?php }else{ 
+            //provalvemente mudar de sitio mas && falta sanatizar o input nos mini templates e nos comentários, ask Costa where is code about that
+            require_once("ESAPI/src/ESAPI.php");
+             require_once("ESAPI/src/reference/DefaultEncoder.php");
+             $ESAPI = new ESAPI("ESAPI/test/testresources/ESAPI.xml");
+          ?>
 
         <div id="logout">
           <form action="action_logout.php" method="post">
             <h3 id="hello">
               <?php
-              $name = getUserFullname($_SESSION['userID']);
+              $name =  $ESAPI->getEncoder()->encodeForHTML(getUserFullname($_SESSION['userID']));
               echo "Hi $name ";  
               ?>
             </h3>
