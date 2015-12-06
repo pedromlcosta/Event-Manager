@@ -75,15 +75,25 @@ $tagsAfterEdit=array();
 			else{
 				//TODO parse para segurança e ignorar casos de erro like so um espaço
 				if($tagDesc!='' && $tagDesc!=' '){
+				echo "MOTHER FUCKER <br>";
+				var_dump($tagDesc);
 				createTag($tagDesc);
 				$tagId=getLastTagId();
-				createTagEvent($tagId,$_POST['eventID']); 
+				createTagEvent($_POST['eventID'],$tagId); 
 			}
 			}
 			array_push($tagsAfterEdit,$tagId );
 
 	} 
+
 		 $tagsToRemove = array_diff($currentTagsInEventID, $tagsAfterEdit);
+		 echo "START <br>";
+	var_dump($tagsToRemove);
+	echo "<br>";
+	var_dump($currentTagsInEventID);
+	echo "<br>";
+	var_dump($tagsAfterEdit);
+	echo "<br>";
 	 	foreach($tagsToRemove as $tag){
 			removeTagEvents($tag);
 		}

@@ -4,7 +4,6 @@ if (isset($_POST['action']) && isLogged()) {
     
     if ($_POST['action'] == 'edit') {
         
-
         $path         = "action_editEvents.php";
         $button       = "Edit";
         $eventID      = $_POST['id'];
@@ -15,7 +14,6 @@ if (isset($_POST['action']) && isLogged()) {
         $data         = $event['data'];
         $eventPrivate = $event['private'];
         $selectedType = getTypeByEvent($eventID)['name'];
-        var_dump($selectedType);
         if($selectedType===false)
           $selectedType="";
         
@@ -35,6 +33,7 @@ if (isset($_POST['action']) && isLogged()) {
             else
                 $eventTags = $eventTags . getTagDesc($tagId['tag_id']);
         }
+        var_dump($eventTags);
     }
     
    else if ($_POST['action'] == 'create') {

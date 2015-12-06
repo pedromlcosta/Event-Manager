@@ -94,9 +94,7 @@ function isOwner($userID,$eventID){
 }
 function getLastEventId(){
   global $db;
-  $stmt = $db->prepare('SELECT MAX(id) as id FROM  events WHERE visible=1');
-  $stmt->execute();  
-  return $stmt->fetch();
+  return $db->lastInsertId() ;
 
 }
 
@@ -141,11 +139,6 @@ function similarEvents($title,$data,$user_id){
 }
 function createEvent($title,$fulltext,$private,$data,$user_id){
 
-//Acrescentar verificações de semelhança com outros eventos do user como nome data e isso 
-//parse do texto, how to prevent scripts?
-//test if image is a valid must end in either .jpg .png .jpeg
-//same for tags, need to also do it in the search
-
  if(!similarEvents($title,$data,$user_id)){
    global $db;
    $stmt = $db->prepare('INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES(?,?,?,?,?,?) ');
@@ -155,9 +148,9 @@ function createEvent($title,$fulltext,$private,$data,$user_id){
  else
   return false;
 }
-function validateInput($input){
-      if ( !preg_match ("/^[a-zA-Z\s]+$/", $input)) {
-      // ERROR: Name can only contain letters and spaces
+function validateUserInput($input){
+      if ( preg_match ("/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]+$/", $input)) {
+      // ERROR: Name can only contain letters Numbers and spaces
         return true;
     }
     return false;

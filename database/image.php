@@ -9,10 +9,7 @@ function getImage($id){
 
 function getLastimageId(){
    global $db;
-  $stmt = $db->prepare('SELECT MAX(id) as id  FROM  images WHERE visible=1 ');
-  $stmt->execute(array());  
-  return $stmt->fetch();
-
+  return $db->lastInsertId() ;
 }
 function createImage($url,$title,$description){
 	 global $db;

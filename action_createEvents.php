@@ -29,10 +29,11 @@ if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullTe
         global $delimiters;
         if (createEvent($_POST['title'], $_POST['fullText'], $privateValue, $_POST['data'], $_SESSION['userID'])) {
             $eventCreatedId = getLastEventId();
+            var_dump($eventCreatedId);
             $userId         = $_SESSION['userID'];
             //addUserToEvent($eventCreatedId['id'], $userId);
             
-            addEventsTypes($eventCreatedId['id'] ,getFilterId($_POST['Event_Type']));
+            addEventsTypes($eventCreatedId ,getFilterId($_POST['Event_Type']));
     
             $tags = preg_split("/" . $delimiters . "+/", $_POST["eventTags"]);
             print_r($tags);
@@ -40,8 +41,8 @@ if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullTe
                 print_r($tagDesc);
                 if($tagDesc!='' && $tagDesc!=' '){
                     $tagId = createTag($tagDesc);
-                    if ($eventCreatedId)
-                        createTagEvent($eventCreatedId['id'], $tagId);
+                    if ($eventCreatedId!==false)
+                        createTagEvent($eventCreatedId, $tagId);
                 }
             }
         }
