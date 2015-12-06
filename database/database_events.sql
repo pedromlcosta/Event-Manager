@@ -3,14 +3,12 @@
 .open web.db*/
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS events;
-DROP TABLE IF EXISTS images;
 DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS types;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS tags_events;
 DROP TABLE IF EXISTS events_types;
 DROP TABLE IF EXISTS events_users;
-DROP TABLE IF EXISTS events_images;
 DROP TRIGGER IF EXISTS userGoingToEvent;
 DROP TRIGGER IF EXISTS userNotGoingToEvent;
 DROP TRIGGER IF EXISTS userAddedToEvent;
@@ -36,6 +34,7 @@ CREATE TABLE events (
 	data	Date,
 	numberUsers INTEGER DEFAULT 0,
 	user_id	INTEGER,
+	url 	TEXT,
 	visible	Boolean DEFAULT 1,
 	FOREIGN KEY(user_id) REFERENCES users ( id ) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -43,14 +42,6 @@ CREATE TABLE events (
 CREATE TABLE types (
 	id	INTEGER PRIMARY KEY AUTOINCREMENT,
 	name VARCHAR,
-	visible	Boolean DEFAULT 1
-);
-
-CREATE TABLE images (
-	id	INTEGER PRIMARY KEY AUTOINCREMENT,
-	title	VARCHAR,
-	description	VARCHAR,
-	url	VARCHAR,
 	visible	Boolean DEFAULT 1
 );
 
@@ -86,15 +77,6 @@ CREATE TABLE events_users (
 	FOREIGN KEY(user_id) REFERENCES users ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(event_id) REFERENCES events ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
 	PRIMARY KEY(event_id,user_id)
-);
-
-CREATE TABLE events_images (
-	event_id	INTEGER,
-	image_id	INTEGER,
-	visible	Boolean DEFAULT 1,
-	FOREIGN KEY(event_id) REFERENCES events ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(image_id) REFERENCES image ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
-	PRIMARY KEY(event_id,image_id)
 );
 
 CREATE TABLE tags_events (
@@ -175,40 +157,23 @@ INSERT INTO types (name) VALUES ('Birthday');
 INSERT INTO types (name) VALUES ('Fundraising');
 INSERT INTO types (name) VALUES ('Hangout');
 
--- VERY IMPORTANT!
-INSERT INTO images(title, description, url) VALUES ('default_event_background', 'default_event_background', 'images/backg.jpg');
--- INSERT INTO images(title, description, url) VALUES ('default_profile_background', 'default_profile_background', 'images/default_profile_pic.jpg');
 
 -- User 3 the first 9 events and the 13
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 1', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,'2015-01-01',3,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 2', 'Sed justo metus, suscipit non fermentum non, sagittis quis arcu. Curabitur tincidunt leo non blandit.',0,'2012-01-01',3,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 3', 'Maecenas ipsum elit, vestibulum id blandit vel, euismod ut urna. Sed nisi lectus.',0,'2013-01-01',3,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 4', 'Maecenas quis felis et tortor adipiscing blandit vel ac sem. Sed venenatis justo.',0,'2014-01-01',3,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 5', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2011-01-01',3,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 6', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2009-01-01',3,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 7', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2008-01-01',3,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 8', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2007-01-01',3,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 9', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2006-01-01',3,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 10', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2006-01-01',2,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 11', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',1,'2006-01-01',1,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 12', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',1,'2006-01-01',1,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 13', 'Passagem de Ano',1,'2016-01-01',3,1);
-INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 14', 'Passagem de Ano 2',1,'2017-01-01',3,1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 1', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,'2015-01-01',3,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 2', 'Sed justo metus, suscipit non fermentum non, sagittis quis arcu. Curabitur tincidunt leo non blandit.',0,'2012-01-01',3,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 3', 'Maecenas ipsum elit, vestibulum id blandit vel, euismod ut urna. Sed nisi lectus.',0,'2013-01-01',3,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 4', 'Maecenas quis felis et tortor adipiscing blandit vel ac sem. Sed venenatis justo.',0,'2014-01-01',3,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 5', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2011-01-01',3,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 6', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2009-01-01',3,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 7', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2008-01-01',3,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 8', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2007-01-01',3,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 9', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2006-01-01',3,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 10', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',0,'2006-01-01',2,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 11', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',1,'2006-01-01',1,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 12', 'In vulputate velit nunc. Duis sollicitudin sapien at nulla pellentesque non consequat.',1,'2006-01-01',1,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 13', 'Passagem de Ano',1,'2016-01-01',3,'images/backg.jpg',1);
+INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES ( 'evento 14', 'Passagem de Ano 2',1,'2017-01-01',3,'images/backg.jpg',1);
 
-INSERT INTO events_images(event_id,image_id) VALUES(1,1);
-INSERT INTO events_images(event_id,image_id) VALUES(2,1);
-INSERT INTO events_images(event_id,image_id) VALUES(3,1);
-INSERT INTO events_images(event_id,image_id) VALUES(4,1);
-INSERT INTO events_images(event_id,image_id) VALUES(5,1);
-INSERT INTO events_images(event_id,image_id) VALUES(6,1);
-INSERT INTO events_images(event_id,image_id) VALUES(7,1);
-INSERT INTO events_images(event_id,image_id) VALUES(8,1);
-INSERT INTO events_images(event_id,image_id) VALUES(9,1);
-INSERT INTO events_images(event_id,image_id) VALUES(10,1);
-INSERT INTO events_images(event_id,image_id) VALUES(11,1);
-INSERT INTO events_images(event_id,image_id) VALUES(12,1);
-INSERT INTO events_images(event_id,image_id) VALUES(13,1);
-INSERT INTO events_images(event_id,image_id) VALUES(14,1);
 
 -- User 1 and 2 were invited to event 3
 INSERT INTO events_users(event_id, user_id, attending_status) VALUES (3, 1, 0);
