@@ -63,6 +63,7 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
   <div id="eventInfo">
    <div class="eventsubTitle">
     <?='Description:'?></div>
+    <pre>
     <?=$text?>
     </pre>
 </div>
