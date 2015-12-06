@@ -133,6 +133,8 @@ textarea {
 	background: #ddd;
 	background-image: linear-gradient(to bottom, #fff, #ddd);
 	border-radius: 10px 10px 0 0;
+	-webkit-border-radius: 10px 10px 0 0;
+	-moz-border-radius: 10px 10px 0 0;
 	color: Grey;
 }
 
@@ -213,7 +215,7 @@ textarea {
 	padding: 0px 0;
 }
 
-.info > div::not(indice){
+.info > div{
 	color:black;
 }
 
@@ -221,10 +223,12 @@ textarea {
 	color:DarkGreen;
 }
 
-.indice{
-	text-align: righ;
-	color:DarkGreen;
-	font-size: 120%;
+form#eventEditAdd{
+	width: 70%;
+}
+
+#eventEditAdd fieldset{
+	display:none;
 }
 
 #overlay {
