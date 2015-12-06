@@ -38,11 +38,10 @@ function isPublic($id){
 }
 function getEventInfo($eventID){
   global $db;
-
   $stmt = $db->prepare('SELECT DISTINCT events.*, images.url, users.fullname, types.name as \'type\' FROM users, events, events_types, types, images, events_images WHERE events.id = ? AND events.user_id=users.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id');
   $stmt->execute(array($eventID));
-
-  return $stmt->fetch();
+  $res=$stmt->fetch();
+  return $res;
 
 }
 

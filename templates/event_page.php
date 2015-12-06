@@ -36,18 +36,22 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
         }
         
     }
+    var_dump($_SESSION['userID']);
+    var_dump( $isOwner  );
+    var_dump( $hasPermission);
     if ($hasPermission) {
         $event = getEventInfo($_GET['eventID']);
 
                     /* códigp para sanatizar o input fazer o mesmo para os comentários*/
- 
-
+ echo"<br> I should be printing stuff";
+var_dump(getAllEvents());
   $ESAPI = new ESAPI("ESAPI/test/testresources/ESAPI.xml");
   $title = $ESAPI->getEncoder()->encodeForHTML($event['title']); 
   $text =  $ESAPI->getEncoder()->encodeForHTML($event['fulltext']); 
   $fullName = $ESAPI->getEncoder()->encodeForHTML(getUserFullname($event['user_id'])); 
   $data = $ESAPI->getEncoder()->encodeForHTML($event['data']); 
   $url =$ESAPI->getEncoder()->encodeForHTML($event[ 'url']); 
+
 ?>
   <h3><?= $title ?> </h3>
   <img src=<?php echo $url; ?> title="evenPicture" />
@@ -65,7 +69,9 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
     } else {
         //does not have permission 
     }
-?>
+?>    <script type="text/javascript">
+      handleSubmits();
+      </script>
     <div class="event">
       <form id="form" action="events_create_edit.php" method="post">
         <input type=hidden id="action" name="action" value="edit" />
@@ -80,9 +86,7 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
       <button type="submit" id="leaveButton">Not Going</button>
       <button type="submit" id="removeButton">Remove From Event</button>
       <br>
-      <script type="text/javascript">
-      handleSubmits();
-      </script>
+   
       <?php
     if ($isLogged) {
 ?>
@@ -121,6 +125,7 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
                 <?php
             $remove = true;
         }
+        
         
         if ($remove) {
 ?>

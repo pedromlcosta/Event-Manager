@@ -4,14 +4,15 @@ function loginAccount($username, $password){
 	global $db;
 
 	try{
-	$query = "SELECT * FROM USERS WHERE username = ? COLLATE NOCASE AND password = ?";
+	$query = 'SELECT * FROM USERS WHERE username = ?  ';//  COLLATE NOCASE AND password = ?";
 	$stmt = $db->prepare($query);
-	$stmt->execute(array($username, password_hash($password,PASSWORD_DEFAULT)));
-	$result = $stmt->fetch();
-
+	$stmt->execute(array($username));
+	$user = $stmt->fetch();
+	$result=password_verify($password,$user['password']);
+ 
 	// $result !== false means it found the user with the password
 	if($result !== false){
-		$_SESSION['userID'] = $result['id'];
+		$_SESSION['userID'] = $user['id'];
 		return true;
 	}else{
 		return false;
@@ -123,12 +124,12 @@ function updateUser($fieldChange,$fieldCheck,$fieldChangeValue,$fieldCheckValue,
 	/*
 		SELECT password e depois usar o boolean password_verify ( string $password , string $hash )
 	*/
-	$query = "SELECT * FROM users WHERE id = ? AND $fieldCheck = ? ";
+	$query = "SELECT  $fieldCheck AS field FROM users WHERE id = ? ";
 	$stmt = $db->prepare($query);
-	$stmt->execute(array($userID, $fieldCheckValue));
+	$stmt->execute(array($userID, ));
 	$result = $stmt->fetch();
 
-	if($result === false){
+	if(password_verify($result['field'],$fieldCheckValue)){
 		return false;
 	}else{
 

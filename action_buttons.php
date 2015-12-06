@@ -12,8 +12,9 @@ if(isset($_POST) && (!empty($_POST)) && isset($_POST['action']) ) {
 	if ( isset($_POST['userID']) && isset($_POST['eventID'])) 
 	{
 		if($_POST['action']=='JOIN' ) {
-			changeAttendingStatus($_POST['eventID'], $_POST['userID'],1);
-
+			$reply=changeAttendingStatus($_POST['eventID'], $_POST['userID'],1);
+			if($reply===false)
+				addUserToEvent($_POST['eventID'],$_POST['userID']);
 			}
 		else if($_POST['action']=='REMOVE' ) {
 			removeUserFromEvent($_POST['eventID'], $_POST['userID']);

@@ -21,15 +21,29 @@ function inviteUserToEvent($eventId,$userId){
   	$stmt->execute(array($userId,$eventId));
 }
 function changeAttendingStatus($eventID, $userID, $status){
+  //ver com rui no que é que esta mudança influencia a parte dele
 
 	global $db;
+  $stmt = $db->prepare('SELECT * FROM events_users WHERE  event_id = ? AND user_id = ? AND visible = \'1\' ');
+  $stmt->execute(array($eventID,$userID));
+ $check =  $stmt->fetch();
+  print_r($userID);
+echo "<br>";
+print_r($eventID);
+echo "<br>";
+print_r($check);
+echo "<br>";
+    if($check == false){
+      return false;
+    }
+ 
 	$stmt = $db->prepare('UPDATE events_users SET attending_status = ? WHERE event_id = ? AND user_id = ?');
-  	$result= $stmt->execute(array($status,$eventID,$userID));
+  $result= $stmt->execute(array($status,$eventID,$userID));
 
 
-  	print_r($eventID);
+  /*	print_r($eventID);
   	print_r($userID);
-  	print_r($result);
+  	print_r($result);*/
   	return $userID;
 }
 

@@ -84,7 +84,8 @@ function removeButton(event) {
 		success: function(data, textStatus, jqXHR) {
 
 			if (typeof data.error === 'undefined') {
-				//console.log(data);
+				hideLeaveButton();
+				showJoinButton();
 			} else {
 				// Handle errors here
 				console.log('ERRORS: ' + data.error);
@@ -205,7 +206,11 @@ function hideInviteButton() {
 	$("#inviteButton").hide();
 }
 
- 
+ function hideAll(){
+ hideEditButton(); 
+ hideDeleteButton(); 
+ hideInviteButton();
+ }
 
 var event_id = null;
 var COMMENTS_PER_PAGE = 2;
@@ -347,7 +352,7 @@ function loadComments(event, comment_action) {
 function handleSubmits() {
 	//On doc ready, add handlers
 	$(document).ready(function() {
-
+		hideAll();
 		$("#deleteButton").on("click", deleteButton);
 		$("#joinButton").on("click", joinButton);
 		$("#leaveButton").on("click", leaveButton);
@@ -356,6 +361,7 @@ function handleSubmits() {
 
 		$("#addCommentButton").click({action: "addComment"},loadComments);
 		loadComments();
+
 
 	});
 
