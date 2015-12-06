@@ -18,6 +18,14 @@ function deleteEvent($id )
   print_r($stmt);
   $stmt->execute(array($id));  
 }
+function getEventIdByField($title,$data,$userID){
+    global $db;
+  $stmt = $db->prepare('SELECT  id FROM events WHERE title = ? AND data = ? AND user_id = ?');
+  $stmt->execute(array($title,$data,$userID));
+
+  return $stmt->fetch()['id'];
+
+}
 function getEvent($id,$memberOfEvent)
 {
    global $db;
