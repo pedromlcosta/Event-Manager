@@ -1,5 +1,4 @@
 <?php
-print_r($_GET);
 
 //TODO check private change url in AJAX
 if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
@@ -49,7 +48,7 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
 
 ?>
   <h3><?= $title ?> </h3>
-  <img src=<?php echo $url; ?> title="evenPicture" />
+  <img src="<?php echo $url; ?>" title="evenPicture"/>
     <pre>
     <?=  $text ?>
     </pre>
@@ -89,8 +88,8 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
 ?>
 
         <form id="form" action="events_create_edit.php" method="post">
-          <input type=hidden id="action" name="action" value="edit" />
-          <input type=hidden id="id" name="id" value="<?php echo $_GET['eventID'];?>" />
+          <input type="hidden" id="action" name="action" value="edit" />
+          <input type="hidden" id="id" name="id" value="<?php echo $_GET['eventID'];?>" />
           <button type="submit" id="editButton">Edit</button>
         </form>
         <button type="submit" id="deleteButton">Delete</button>
