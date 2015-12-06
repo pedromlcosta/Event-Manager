@@ -9,6 +9,7 @@ include_once('database/tagEvent.php');
 include_once('database/usersEvent.php');
 
  if(isset($_SESSION['errors'])){
+    
     unset($_SESSION['errors']);
 }
 else if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['Event_Type']) && isLogged()) {
