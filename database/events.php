@@ -46,7 +46,7 @@ function isPublic($id){
 }
 function getEventInfo($eventID){
   global $db;
-  $stmt = $db->prepare('SELECT DISTINCT events.*, images.url, users.fullname, types.name as \'type\' FROM users, events, events_types, types, images, events_images WHERE events.id = ? AND events.user_id=users.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id');
+  $stmt = $db->prepare('SELECT DISTINCT events.*, users.fullname, types.name as \'type\' FROM users, events, events_types, types WHERE events.id = ? AND events.user_id=users.id AND events_types.event_id= events.id AND events_types.type_id=types.id');
   $stmt->execute(array($eventID));
   $res=$stmt->fetch();
   return $res;
@@ -71,8 +71,8 @@ function getEventByDate($date )
 function getEventByDateWithInfo($date ,$userID )
 {
    global $db;
-  $stmt = $db->prepare('SELECT DISTINCT events.*,images.url,users.fullname,types.name as "type" FROM events,events_users,events_images,users,images,types,events_types WHERE
-    data=?  AND events_images.event_id =events.id AND events_images.image_id = images.id AND events_users.visible=1 AND events.visible=1 AND (events_users.user_id=? OR events.private =0) 
+  $stmt = $db->prepare('SELECT DISTINCT events.*,users.fullname,types.name as "type" FROM events,events_users,users,types,events_types WHERE
+    data=?  AND events_users.visible=1 AND events.visible=1 AND (events_users.user_id=? OR events.private =0) 
   AND events_types.event_id= events.id AND events_types.type_id=types.id  AND events_users.event_id =events.id AND events.id AND users.id=events.user_id');
   $stmt->execute(array($date,$userID));  
   return $stmt->fetchAll();
@@ -86,13 +86,7 @@ function getEventByTitle($title)
   $stmt->execute(array($title));  
   return $stmt->fetchAll();
 }
- function eventGetImage($id)
-{
-   global $db;
-  $image=getImageFromEvent($id);
-  $value= getImage($image['image']);
-  return $value;
-}
+
 function isOwner($userID,$eventID){
   
   global $db;
@@ -145,12 +139,12 @@ function similarEvents($title,$data,$user_id){
   }
   return false;
 }
-function createEvent($title,$fulltext,$private,$data,$user_id){
+function createEvent($title,$fulltext,$private,$data,$user_id, $imageURL){
 
  if(!similarEvents($title,$data,$user_id)){
    global $db;
-   $stmt = $db->prepare('INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES(?,?,?,?,?,?) ');
-   $stmt->execute(array($title,$fulltext,$private,$data,$user_id,1));
+   $stmt = $db->prepare('INSERT INTO events(title,fulltext,private,data,user_id,url,visible) VALUES(?,?,?,?,?,?,?) ');
+   $stmt->execute(array($title,$fulltext,$private,$data,$user_id,$imageURL,1));
    return true;  
  }
  else
@@ -190,7 +184,7 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
   $queryLimit =  ' LIMIT ? OFFSET ?';
   
   if($attending_status == 1){
-    $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname, types.name as \'type\', events_users.attending_status FROM users, events, events_users, events_types, types, images, events_images WHERE date("now")<events.data AND events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events_users.attending_status=? AND events.user_id=users.id';
+    $querySelect = 'SELECT DISTINCT events.*, users.fullname, types.name as \'type\', events_users.attending_status FROM users, events, events_users, events_types, types WHERE date("now")<events.data AND events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_users.attending_status=? AND events.user_id=users.id';
     $executeArray = array_merge(array($userID), array($attending_status), $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
 
     $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE date("now")<events.data AND events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_users.attending_status=? AND events.user_id = users.id';
@@ -198,7 +192,7 @@ function getEventsUserAttending($userID, $order, $events_per_page, $page, $type_
    }else{
     // If we want the invitations: can't get events the owner is hosting - HE CANT INVITE HIMSELF!
     // Therefore: events.user_id != $userID
-    $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname, types.name as \'type\', events_users.attending_status FROM users, events, events_users, events_types, types, images, events_images WHERE date("now")<events.data AND events.user_id != ? AND events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events_users.attending_status=? AND events.user_id=users.id';
+    $querySelect = 'SELECT DISTINCT events.*, users.fullname, types.name as \'type\', events_users.attending_status FROM users, events, events_users, events_types, types WHERE date("now")<events.data AND events.user_id != ? AND events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_users.attending_status=? AND events.user_id=users.id';
     $executeArray = array_merge(array($userID, $userID), array($attending_status), $type_filters, array($events_per_page,  ($page-1) * $events_per_page));
 
     $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE date("now")<events.data AND events.user_id != ? AND events_users.user_id = ? AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_users.attending_status=? AND events.user_id = users.id';
@@ -269,7 +263,7 @@ global $db;
 
   if($permissionLevel == 0){
 
-    $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname, types.name as "type", events_users.attending_status FROM users, events, events_users, events_types, types, images, events_images WHERE  date("now")<events.data AND  events.user_id = ? AND events_users.user_id = users.id AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events.user_id=users.id';
+    $querySelect = 'SELECT DISTINCT events.*, users.fullname, types.name as "type", events_users.attending_status FROM users, events, events_users, events_types, types WHERE  date("now")<events.data AND  events.user_id = ? AND events_users.user_id = users.id AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id=users.id';
 
     $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE date("now")<events.data AND events.user_id = ? AND events_users.user_id = users.id AND events_users.event_id = events.id AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id = users.id';
 
@@ -279,7 +273,7 @@ global $db;
   }else if ($permissionLevel == 1){
     //falta este
 
-     $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname, types.name as "type" FROM users, events, events_users, events_types, types, images, events_images WHERE date("now")<events.data AND events.user_id = ? AND (events.private=0 OR (events_users.user_id = ? AND events_users.event_id = events.id)) AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events.user_id=users.id';
+     $querySelect = 'SELECT DISTINCT events.*, users.fullname, types.name as "type" FROM users, events, events_users, events_types, types WHERE date("now")<events.data AND events.user_id = ? AND (events.private=0 OR (events_users.user_id = ? AND events_users.event_id = events.id)) AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id=users.id';
 
     $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE date("now")<events.data AND events.user_id = ? AND (events.private=0 OR (events_users.user_id = ? AND events_users.event_id = events.id)) AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id=users.id';
 
@@ -287,7 +281,7 @@ global $db;
     $executeCountArray = array_merge(array($hostID, $userID), $type_filters);
   }else if ($permissionLevel == 2){
 
-    $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname, types.name as "type" FROM users, events, events_types, types, images, events_images WHERE date("now")<events.data AND events.private = 0 AND events.user_id = ? AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events.user_id=users.id';
+    $querySelect = 'SELECT DISTINCT events.*, users.fullname, types.name as "type" FROM users, events, events_types, types WHERE date("now")<events.data AND events.private = 0 AND events.user_id = ? AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id=users.id';
 
     $queryCount = 'SELECT count(DISTINCT events.id) as \'numEvents\' FROM users, events, events_users, events_types, types WHERE date("now")<events.data AND events.private = 0 AND events.user_id = ? AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id = users.id';
 
@@ -345,7 +339,7 @@ function getAllVisibleEvents($userID, $order, $events_per_page, $page, $type_fil
 
   $queryLimit =  ' LIMIT ? OFFSET ?';
 
-  $querySelect = 'SELECT DISTINCT events.*, images.url, users.fullname, types.name as "type" FROM users, events, events_users, events_types, types, images, events_images WHERE (events.private=0 OR (events_users.user_id = ? AND events_users.event_id = events.id)) AND events_types.event_id= events.id AND events_types.type_id=types.id AND events_images.event_id=events.id AND events_images.image_id=images.id AND events.user_id=users.id';
+  $querySelect = 'SELECT DISTINCT events.*, users.fullname, types.name as "type" FROM users, events, events_users, events_types, types WHERE (events.private=0 OR (events_users.user_id = ? AND events_users.event_id = events.id)) AND events_types.event_id= events.id AND events_types.type_id=types.id AND events.user_id=users.id';
    $nr_filters = count($type_filters);
   
   if($nr_filters > 0){
@@ -469,5 +463,30 @@ if (strlen($dateTag)>0) {
       $countEvents[0]['numEvents'] = $nResults;
       $searchResults = array_merge($searchResults, $countEvents);
       return $searchResults;
-  }
+}
+
+
+function updateEventImage($eventID, $imageURL){
+  global $db;
+
+  $query = 'UPDATE events SET url = ? WHERE id = ?';
+  $stmt = $db->prepare($query);
+  $result = $stmt->execute(array($imageURL, $eventID));
+
+  return $result;
+}
+
+function deleteEventImage($rowID){
+  global $db;
+
+  $query = 'SELECT * FROM events WHERE id = ?';
+  $stmt = $db->prepare($query);
+  $stmt->execute(array($rowID));
+
+  $result = $stmt->fetch();
+  $url = $result['url'];
+
+  if($url != 'images/backg.jpg')
+    unlink($url);
+}
 ?>

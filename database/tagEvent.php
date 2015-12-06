@@ -24,7 +24,7 @@ $nr_filters=count($types);
   else if ($order == 'Popularity')
     $queryOrder = ' ORDER BY numberUsers DESC';
 
-$queryPart0 = 'SELECT DISTINCT events.*,images.url,users.fullname,types.name as "type" FROM events,events_users,events_images,users,images,types,events_types WHERE events.user_id=users.id AND users.visible=1   AND events_images.event_id =events.id AND events_images.image_id = images.id AND events_users.visible=1 AND events.visible=1 
+$queryPart0 = 'SELECT DISTINCT events.*,users.fullname,types.name as "type" FROM events,events_users,users,types,events_types WHERE events.user_id=users.id AND users.visible=1 AND events_users.visible=1 AND events.visible=1 
 AND (events_users.user_id = ? OR events.private = 0)   AND events_types.event_id= events.id AND events_types.type_id=types.id  AND events_users.event_id =events.id 
 AND events.id IN   (SELECT DISTINCT event_id FROM events_types WHERE visible=1 AND type_id IN ( ';
   $queryPart1='';
@@ -64,8 +64,8 @@ if($order == 'Date')
 
 
 //check queries they seem to work
-  $queryPart0 = 'SELECT DISTINCT events.*,images.url,users.fullname,types.name as "type" FROM events,events_users,events_images,users,images,types,events_types WHERE events.user_id=users.id AND users.visible=1 
-  AND events_images.event_id =events.id AND events_images.image_id = images.id AND events_users.visible=1 AND events.visible=1 AND (events_users.user_id=? OR events.private =0)
+  $queryPart0 = 'SELECT DISTINCT events.*,users.fullname,types.name as "type" FROM events,events_users,users,types,events_types WHERE events.user_id=users.id AND users.visible=1 
+   AND events_users.visible=1 AND events.visible=1 AND (events_users.user_id=? OR events.private =0)
    AND events_types.event_id= events.id AND events_types.type_id=types.id
    AND events_users.event_id =events.id AND events.id IN (SELECT DISTINCT event_id FROM events_types WHERE visible=1 and type_id IN ( ';
   $queryPart1= '';//add types IDs
