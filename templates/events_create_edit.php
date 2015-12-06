@@ -58,13 +58,13 @@ if (isset($_POST['action']) && isLogged()) {
    <div id="createSelectType">
     <label>Type:
     <select name="Event Type">
-      <?php
+   <!--   <?php
       $types = getTypes();
 
       for($i = 0; $i < count($types); $i++){
         echo ("<option name='type' value=$types[$i] > $types[$i] </option>");
       }
-      ?>
+      ?>-->
     </select>
     <label>
   </div>

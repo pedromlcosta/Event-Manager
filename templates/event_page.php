@@ -1,4 +1,5 @@
 <?php
+print_r($_GET);
 
 //TODO check private change url in AJAX
 if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
@@ -37,17 +38,27 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
     }
     if ($hasPermission) {
         $event = getEventInfo($_GET['eventID']);
+
+                    /* códigp para sanatizar o input fazer o mesmo para os comentários*/
+ 
+
+  $ESAPI = new ESAPI("ESAPI/test/testresources/ESAPI.xml");
+  $title = $ESAPI->getEncoder()->encodeForHTML($event['title']); 
+  $text =  $ESAPI->getEncoder()->encodeForHTML($event['fulltext']); 
+  $fullName = $ESAPI->getEncoder()->encodeForHTML(getUserFullname($event['user_id'])); 
+  $data = $ESAPI->getEncoder()->encodeForHTML($event['data']); 
+  $url =$ESAPI->getEncoder()->encodeForHTML($event[ 'url']); 
 ?>
-  <h3><?= $event['title'] ?> </h3>
-  <img src=<?php echo $event[ 'url']; ?> title="evenPicture" />
-  <p>
-    <?= $event['fulltext'] ?>
-  </p>
+  <h3><?= $title ?> </h3>
+  <img src=<?php echo $url; ?> title="evenPicture" />
+    <pre>
+    <?=  $text ?>
+    </pre>
   <p>
     <?= $event['data'] ?>
   </p>
   <p>
-    <?= getUserFullname($event['user_id']); ?>
+    <?= $fullName; ?>
   </p>
   <?php
         
@@ -56,7 +67,7 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
     }
 ?>
     <div class="event">
-      <form id="form" action="eventsIndex.php" method="post">
+      <form id="form" action="events_create_edit.php" method="post">
         <input type=hidden id="action" name="action" value="edit" />
         <input type=hidden id="id" name="id" value="<?php
     echo $_GET['eventID'];
