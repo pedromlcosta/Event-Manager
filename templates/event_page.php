@@ -47,17 +47,26 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
   $url =$ESAPI->getEncoder()->encodeForHTML($event[ 'url']); 
 
 ?>
-  <h3><?= $title ?> </h3>
+  <h3 id="eventTitle"><?= $title ?> </h3>
+  <div id="eventContainer">
   <img src="<?php echo $url; ?>" title="evenPicture"/>
-    <pre>
-    <?=  $text ?>
-    </pre>
-  <p>
+  <div>
+     <div class="eventsubTitle">
+    <?='Date:'?></div>
     <?= $event['data'] ?>
-  </p>
-  <p>
+  </div>
+  <div>
+    <div class="eventsubTitle">
+    <?='Author:'?></div>
     <?= $fullName; ?>
-  </p>
+  </div>
+  <div id="eventInfo">
+   <div class="eventsubTitle">
+    <?='Description:'?></div>
+    <?=$text?>
+    </pre>
+</div>
+</div>
   <?php
         
     } else {

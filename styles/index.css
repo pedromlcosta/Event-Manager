@@ -130,7 +130,6 @@ textarea {
 	border-bottom: 0 none;
 	text-align: center;
 	text-decoration: none;
-	background: #ddd;
 	background-image: -webkit-linear-gradient(top, #fff, #ddd);
 	background-image: -moz-linear-gradient(top, #fff, #ddd);
 	background-image: -ms-linear-gradient(top, #fff, #ddd);
@@ -143,7 +142,7 @@ textarea {
 }
 
 #tabs li a:hover {
-	background-color: #ffff80;
+	color:red;
 }
 
 .tab-section {
@@ -179,7 +178,6 @@ textarea {
 }
 
 .event_item{
-	color:black;
 	display: inline-block;
 	width: 33%;
 	border: 1px Moccasin solid;
@@ -205,7 +203,7 @@ textarea {
 	padding: 0 2px;
 }
 
-.event_item div img{
+.event_item img{
 	padding-top: 8%;
 	max-width: 100%;
 	height: 150px;
@@ -225,6 +223,19 @@ textarea {
 
 .info > div h4{
 	color:DarkGreen;
+}
+
+.info > div a{
+	color:#5D1F00;
+	text-decoration: none;
+	font-size: 150%;
+	font-weight: bold;
+
+}
+
+.info > div a:hover{
+	color: #3A2C2C;
+	text-decoration: underline;
 }
 
 form#eventEditAdd{
@@ -297,4 +308,57 @@ form#eventEditAdd{
 
 #overlay input{
 	display: block;
+}
+
+#eventTitle{
+	font-size: 180%;
+	font-weight: bold;
+	padding: 1%;
+	padding-bottom: 0;
+}
+
+#eventContainer img{
+	max-width: 30%;
+	float:left;
+	padding: 1%;
+}
+
+#eventContainer > div{
+
+	vertical-align: middle;
+	padding: 0% 5%;
+	margin: 2% 0;
+}
+
+.eventsubTitle{
+	font-size: 120%;
+	font-weight: bold;
+	color: Darkgreen;
+}
+
+#eventInfo pre{
+ white-space: pre-wrap;       /* css-3 */
+ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+ white-space: -pre-wrap;      /* Opera 4-6 */
+ white-space: -o-pre-wrap;    /* Opera 7 */
+ word-wrap: break-word;       /* Internet Explorer 5.5+ */
+ padding: 1%;
+}
+
+#comment_section{
+	padding: 1%;
+}
+
+.event{
+	padding: 1%;
+}
+
+.event button, #comment_section button{
+	padding: 0.5%;
+	margin: 0.2%;
+}
+
+.event button:hover, #comment_section button:hover{
+	background: orange;
+	color: white;
 }
