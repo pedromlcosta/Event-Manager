@@ -13,7 +13,7 @@
 		if($_POST['username'] == '' OR $_POST['password'] == '' OR $_POST['fullname'] == '') {
 			$registerStatus = "EMPTY REGISTER FIELDS";
 		}	else if(validateUserInput($_POST['username']) OR validateUserInput($_POST['fullname'])){
-			$registerStatus = "PLEASE CHECK NAME FIELDS. REMEMBER:<br> NO SPEACIAL CHARACTERS ARE ALLOWED";
+			$registerStatus = "PLEASE CHECK NAME FIELDS. REMEMBER:<br> NO SPEACIAL CHARACTERS ARE ALLOWED <br> AND NAME LENGTH >=2 ";
 		}
 
 		else{
