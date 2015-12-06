@@ -1,7 +1,7 @@
 <?php
 
 if (isset($_POST['action']) && isLogged()) {
-    print_r($_POST);
+    
     if ($_POST['action'] == 'edit') {
         
         $path         = "action_editEvents.php";

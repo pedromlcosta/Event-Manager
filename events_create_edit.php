@@ -6,7 +6,6 @@
     include_once('database/usersEvent.php');
     include_once('database/tagEvent.php');
     include_once('database/tag.php');
-    include_once('templates/header.php');
 ?>
 
 <script src="scripts/script.js"></script>

@@ -1,5 +1,4 @@
 <?php
-print_r($_GET);
 
 //TODO check private change url in AJAX
 if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
