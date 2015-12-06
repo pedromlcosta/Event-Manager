@@ -114,8 +114,8 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
               </script>
               <?php
             $remove = true;
-        } 
-         if ($isAttending) {
+        }
+        if ($isAttending) {
 ?>
                 <script type="text/javascript">
                 showLeaveButton();
@@ -143,6 +143,7 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
           <div id="page_buttons">
           </div>
         </div>
+        <div id="mask" role="dialog"></div>
         <div id="overlay">
          <div id="overlayTitle">
           <p>Write the name of the user to invite</p>
