@@ -110,17 +110,14 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
         if ($isInvited || $isPublic) {
 ?>
               <script type="text/javascript">
-              console.log("Add Join");
-              //aqui tambem!! pleaaaaseee
               showJoinButton();
               </script>
               <?php
             $remove = true;
-        } else if ($isAttending) {
+        }
+        if ($isAttending) {
 ?>
                 <script type="text/javascript">
-                console.log("Add Leave");
-                // e outra vez xD oh, deixa la
                 showLeaveButton();
                 </script>
                 <?php
@@ -146,6 +143,7 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
           <div id="page_buttons">
           </div>
         </div>
+        <div id="mask" role="dialog"></div>
         <div id="overlay">
          <div id="overlayTitle">
           <p>Write the name of the user to invite</p>
