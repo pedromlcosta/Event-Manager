@@ -148,12 +148,28 @@ function updateUser($fieldChange,$fieldCheck,$fieldChangeValue,$fieldCheckValue,
 	
 }
 
-function changeUserImage($userID, $imageURL){
+function updateUserImage($userID, $imageURL){
 	global $db;
 
 	$query = 'UPDATE users SET imageURL = ? WHERE users.id = ?';
 	$stmt = $db->prepare($query);
 	$result = $stmt->execute(array($imageURL, $userID));
+
+	return $result;
+}
+
+function deleteUserImage($rowID){
+	global $db;
+
+	$query = 'SELECT * FROM users WHERE id = ?';
+	$stmt = $db->prepare($query);
+	$stmt->execute(array($rowID));
+
+	$result = $stmt->fetch();
+	$url = $result['imageURL'];
+
+	if($url != 'images/default_profile_pic.jpg')
+		unlink($url);
 }
 
 

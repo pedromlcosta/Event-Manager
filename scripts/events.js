@@ -130,6 +130,8 @@ function displayData(myData){
 }
 
 function closeInviting(){
+	el2 = document.getElementById("mask");
+	el2.style.visibility = "hidden";
 	el = document.getElementById("overlay");
 	el.style.visibility = "hidden";
 	$("#overlay #errorFeedback").text('');
@@ -137,8 +139,12 @@ function closeInviting(){
 }
 
 function inviteButton(event) {
+	el2 = document.getElementById("mask");
+	el2.style.visibility = "visible";
 	el = document.getElementById("overlay");
 	el.style.visibility = "visible";
+	$('#overlay').focus();
+	$("#overlay .overlayUser").focus();
 	$("#overlay #addUser").click(invite);
 	$("#overlay #overlayClose").click(closeInviting);
 }

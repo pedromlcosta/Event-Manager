@@ -44,7 +44,7 @@ function hideForms() {
 }
 
 var imageTooBig = false;
-var MAX_FILE_SIZE = 15 * 1000000;
+var MAX_FILE_SIZE = 8000000;
 
 function saveImageChangesHandler(event) {
 
@@ -57,7 +57,6 @@ function saveImageChangesHandler(event) {
 		$("#errorMessage").html("The file is too big for upload");
 		$("#errorMessage").delay(2000).fadeOut("slow");
 	} else {
-
 		// START A LOADING SPINNER HERE
 		$.ajax({
 			url: 'action_buttons.php',
@@ -68,8 +67,8 @@ function saveImageChangesHandler(event) {
 			contentType: false, // Set content type to false as jQuery will tell the server its a query string request
 			success: function(data, textStatus, jqXHR) {
 				if (typeof data.error === 'undefined') {
-					var data = JSON.parse(data);
 					console.log(data);
+					var data = JSON.parse(data);
 
 					if (data[0]) {
 						location.reload();
