@@ -8,7 +8,6 @@ DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS types;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS tags_events;
-DROP TABLE IF EXISTS users_images;
 DROP TABLE IF EXISTS events_types;
 DROP TABLE IF EXISTS events_users;
 DROP TABLE IF EXISTS events_images;
@@ -25,6 +24,7 @@ CREATE TABLE users (
 	username	VARCHAR UNIQUE,
 	password	VARCHAR,
 	fullname	TEXT,
+	imageURL	TEXT,
 	visible	Boolean DEFAULT 1
 );
 
@@ -66,15 +66,6 @@ CREATE TABLE comments(
 	event_id INTEGER,
 	comment TEXT,
 	data	Date
-);
-
-CREATE TABLE users_images (
-	user_id	INTEGER,
-	image_id	INTEGER,
-	visible	Boolean DEFAULT 1,
-	FOREIGN KEY(user_id) REFERENCES users ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(image_id) REFERENCES images ( id ) ON UPDATE CASCADE ON DELETE CASCADE,
-	PRIMARY KEY(user_id,image_id)
 );
 
 CREATE TABLE events_types (
@@ -164,14 +155,14 @@ END;
 CREATE TRIGGER defaultImageOnRegister
 AFTER INSERT ON USERS
 BEGIN
-INSERT INTO USERS_IMAGES(user_id, image_id)
-VALUES(new.id ,2);
+UPDATE USERS 
+SET imageURL = 'images/default_profile_pic.jpg'
+WHERE users.id = new.id;
 END;
 
-
-
-INSERT INTO users(id,username,password,fullname) VALUES (NULL,'admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3','admin'); -- Password is tested hashed with SHA 1
-INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Filipe','2e6f9b0d5885b6010f9167787445617f553a735f','Filipe Moreira');
+-- Passwords are "password"
+INSERT INTO users(id,username,password,fullname) VALUES (NULL,'admin', '$2y$10$hnBwkELw6HM45h52jkutYOcRRQfzFJ5q7yUrksEtE1eAkkmAqNHkC','admin'); -- Password is tested hashed with SHA 1
+INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Filipe','$2y$10$hnBwkELw6HM45h52jkutYOcRRQfzFJ5q7yUrksEtE1eAkkmAqNHkC','Filipe Moreira');
 INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Pedro','$2y$10$hnBwkELw6HM45h52jkutYOcRRQfzFJ5q7yUrksEtE1eAkkmAqNHkC','Pedro Costa');
 INSERT INTO users(username, password, fullname) VALUES('Mysterion', '$2y$10$hnBwkELw6HM45h52jkutYOcRRQfzFJ5q7yUrksEtE1eAkkmAqNHkC', 'Mysterion' );
 
@@ -186,7 +177,7 @@ INSERT INTO types (name) VALUES ('Hangout');
 
 -- VERY IMPORTANT!
 INSERT INTO images(title, description, url) VALUES ('default_event_background', 'default_event_background', 'images/backg.jpg');
-INSERT INTO images(title, description, url) VALUES ('default_profile_background', 'default_profile_background', 'images/default_profile_pic.jpg');
+-- INSERT INTO images(title, description, url) VALUES ('default_profile_background', 'default_profile_background', 'images/default_profile_pic.jpg');
 
 -- User 3 the first 9 events and the 13
 INSERT INTO events(title,fulltext,private,data,user_id,visible) VALUES ( 'evento 1', 'Sed nibh arcu, euismod elementum commodo ut, auctor id quam. Ut imperdiet diam.',0,'2015-01-01',3,1);

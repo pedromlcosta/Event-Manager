@@ -45,7 +45,7 @@
 				<fieldset  id="changeImageForm">
 					<legend>Image</legend>
 					 <input type="hidden" name="action" value="CHANGE_USER_IMAGE" />
-		 			 <input type="file" name="imageToUpload" />
+		 			 <input type="file" id="userImageUpload" name="fileToUpload" />
 		 			<button type="submit" id="saveImageChanges">Save Image</button>
 				</fieldset>
 				</form>

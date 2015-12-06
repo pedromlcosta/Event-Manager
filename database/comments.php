@@ -11,7 +11,7 @@ function getEventComments($eventID, $comments_per_page, $page){
    
  // QUERY EVENT COMMENTS
 
-  $querySelect = 'SELECT DISTINCT comments.*, images.url, users.fullname FROM comments, users, events, images, users_images WHERE users.id = comments.user_id AND comments.event_id = ? AND users.id = users_images.user_id AND users_images.image_id = images.id ';
+  $querySelect = 'SELECT DISTINCT comments.*, users.imageURL, users.fullname FROM comments, users, events WHERE users.id = comments.user_id AND comments.event_id = ?';
   $executeArray = array($eventID, $comments_per_page,  ($page-1) * $comments_per_page);
 
   $query = $querySelect . $queryOrder . $queryLimit;
