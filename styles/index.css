@@ -386,3 +386,8 @@ form#eventEditAdd{
 	background: orange;
 	color: white;
 }
+
+#footer{
+	padding: 1%;
+	margin-left:0.2%;
+}
