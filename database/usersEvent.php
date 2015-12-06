@@ -27,12 +27,7 @@ function changeAttendingStatus($eventID, $userID, $status){
   $stmt = $db->prepare('SELECT * FROM events_users WHERE  event_id = ? AND user_id = ? AND visible = \'1\' ');
   $stmt->execute(array($eventID,$userID));
  $check =  $stmt->fetch();
-  print_r($userID);
-echo "<br>";
-print_r($eventID);
-echo "<br>";
-print_r($check);
-echo "<br>";
+ 
     if($check == false){
       return false;
     }

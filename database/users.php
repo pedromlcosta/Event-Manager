@@ -92,7 +92,7 @@ function getUserFullname($userID){
 function getUserIDFull($userFullname){
 	global $db;
 
-  $stmt = $db->prepare('SELECT id FROM users WHERE fullname= ?');
+  $stmt = $db->prepare('SELECT id FROM users WHERE fullname= ? COLLATE NOCASE');
   $stmt->execute(array($userFullname));
 
   return $stmt->fetch()['id'];

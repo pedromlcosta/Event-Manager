@@ -22,6 +22,7 @@ if(isset($_POST['user']) && isset($_POST['eventID'])){
 			}
 			else{
 				inviteUserToEvent($event,$userId);
+				$user = getUserFullname($userId);
 				$rep = array('val' => 'Valid', 'user' => $user);
 			}
 		}

@@ -36,15 +36,10 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
         }
         
     }
-    var_dump($_SESSION['userID']);
-    var_dump( $isOwner  );
-    var_dump( $hasPermission);
     if ($hasPermission) {
         $event = getEventInfo($_GET['eventID']);
 
                     /* códigp para sanatizar o input fazer o mesmo para os comentários*/
- echo"<br> I should be printing stuff";
-var_dump(getAllEvents());
   $ESAPI = new ESAPI("ESAPI/test/testresources/ESAPI.xml");
   $title = $ESAPI->getEncoder()->encodeForHTML($event['title']); 
   $text =  $ESAPI->getEncoder()->encodeForHTML($event['fulltext']); 
@@ -69,22 +64,15 @@ var_dump(getAllEvents());
     } else {
         //does not have permission 
     }
-?>    <script type="text/javascript">
+?>    
+    <div class="event">
+      <script type="text/javascript">
       handleSubmits();
       </script>
-    <div class="event">
-      <form id="form" action="events_create_edit.php" method="post">
-        <input type=hidden id="action" name="action" value="edit" />
-        <input type=hidden id="id" name="id" value="<?php
-    echo $_GET['eventID'];
-?>" />
-        <button type="submit" id="editButton">Edit</button>
-      </form>
-      <button type="submit" id="deleteButton">Delete</button>
-      <button type="submit" id="inviteButton">Invite</button>
-      <button type="submit" id="joinButton">Going</button>
-      <button type="submit" id="leaveButton">Not Going</button>
-      <button type="submit" id="removeButton">Remove From Event</button>
+     
+      <button type="submit" id="joinButton">Join Event</button>
+      <button type="submit" id="leaveButton">Leave Event</button>
+      
       <br>
    
       <?php
@@ -99,11 +87,15 @@ var_dump(getAllEvents());
         <?php
         if ($isOwner) {
 ?>
-          <div id="buttons">
-            <script type="text/javascript">
-            //nao e  assim... e literalmente por um botao, ffs filipe 
-            showOwnerButtons();
-            </script>
+
+        <form id="form" action="events_create_edit.php" method="post">
+          <input type=hidden id="action" name="action" value="edit" />
+          <input type=hidden id="id" name="id" value="<?php echo $_GET['eventID'];?>" />
+          <button type="submit" id="editButton">Edit</button>
+        </form>
+        <button type="submit" id="deleteButton">Delete</button>
+        <button type="submit" id="inviteButton">Invite</button>
+             
             <?php
         }
         if ($isInvited || $isPublic) {
@@ -129,13 +121,10 @@ var_dump(getAllEvents());
         
         if ($remove) {
 ?>
-                  <script type="text/javascript">
-                  showRemoveButton();
-                  </script>
+                  <button type="submit" id="removeButton">Remove From Event</button>
                   <?php
         }
 ?>
-          </div>
     </div>
     <br>
     <div id="comment_section">
