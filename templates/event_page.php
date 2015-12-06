@@ -66,10 +66,12 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
     }
 ?>    
     <div class="event">
-      
+      <script type="text/javascript">
+      handleSubmits();
+      </script>
      
-      <button type="submit" id="joinButton">Going</button>
-      <button type="submit" id="leaveButton">Not Going</button>
+      <button type="submit" id="joinButton">Join Event</button>
+      <button type="submit" id="leaveButton">Leave Event</button>
       
       <br>
    
