@@ -78,7 +78,7 @@ function uploadImageFile($validateOnly, $destinationFolder, $user_or_event, $row
 	}else{
 		// CHECK POSSIBLE ERRORS
 		$error = $_FILES["fileToUpload"]['error'];
-		
+
 			switch ($error) {
    		case 0:
         	// OK: do Nothing
@@ -115,34 +115,36 @@ function uploadImageFile($validateOnly, $destinationFolder, $user_or_event, $row
    		if($check === false) {
         	return array(false, "The uploaded file is not an image");
     	}
-
+    	//TODO: uppercase or lowercase
     	$imageFileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);
+    	/*
     	if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
     		return array(false, "Only Valid image types are allowed");
 		}
-
+		*/
     	 // CHECKING FILE SIZE
-		if ($_FILES["fileToUpload"]["size"] > 64000000) {
+		if ($_FILES["fileToUpload"]["size"] > 1000000) {
     		return array(false, "Max File Size exceeded");
 		}
 	}
-
+	
 	if(!$validateOnly){
 
 		$target_dir = $destinationFolder;
 
 		// CREATING PSEUDO-RANDOM NAME FOR FILE
-		$imageFileName = bin2hex(openssl_random_pseudo_bytes(32));
+		$imageFileName = bin2hex(openssl_random_pseudo_bytes(8));
 		$target_file = $target_dir . $imageFileName . "." . $imageFileType;
 	
 		while(file_exists($target_file)){
-			$imageFileName = bin2hex(openssl_random_pseudo_bytes(32));
+			$imageFileName = bin2hex(openssl_random_pseudo_bytes(8));
 			$target_file = $target_dir . $imageFileName . "." . $imageFileType;
 		}
 		
 		// Save on DB
 		if($user_or_event == 'user'){
-			changeUserImage($rowID, $target_file);
+			deleteUserImage($rowID);
+			updateUserImage($rowID, $target_file);
 		}else{
 
 		}
