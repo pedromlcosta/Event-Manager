@@ -44,6 +44,7 @@
 				<form action="action_buttons.php" method="post" enctype="multipart/form-data">
 				<fieldset  id="changeImageForm">
 					<legend>Image</legend>
+					 <input type="hidden" name="action" value="CHANGE_USER_IMAGE" />
 		 			 <input type="file" name="imageToUpload" />
 		 			<button type="submit" id="saveImageChanges">Save Image</button>
 				</fieldset>

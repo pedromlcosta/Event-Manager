@@ -172,8 +172,8 @@ END;
 
 INSERT INTO users(id,username,password,fullname) VALUES (NULL,'admin', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3','admin'); -- Password is tested hashed with SHA 1
 INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Filipe','2e6f9b0d5885b6010f9167787445617f553a735f','Filipe Moreira');
-INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Pedro','5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8','Pedro Costa');
-INSERT INTO users(username, password, fullname) VALUES('Mysterion', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'Mysterion' );
+INSERT INTO users(id,username,password,fullname) VALUES(NULL,'Pedro','$2y$10$hnBwkELw6HM45h52jkutYOcRRQfzFJ5q7yUrksEtE1eAkkmAqNHkC','Pedro Costa');
+INSERT INTO users(username, password, fullname) VALUES('Mysterion', '$2y$10$hnBwkELw6HM45h52jkutYOcRRQfzFJ5q7yUrksEtE1eAkkmAqNHkC', 'Mysterion' );
 
 INSERT INTO types (name) VALUES ('Party');
 INSERT INTO types (name) VALUES ('Concert');

@@ -4,7 +4,7 @@ function loginAccount($username, $password){
 	global $db;
 
 	try{
-	$query = 'SELECT * FROM USERS WHERE username = ?  ';//  COLLATE NOCASE AND password = ?";
+	$query = 'SELECT * FROM USERS WHERE username = ?  COLLATE NOCASE';//   AND password = ?";
 	$stmt = $db->prepare($query);
 	$stmt->execute(array($username));
 	$user = $stmt->fetch();
@@ -115,7 +115,7 @@ function getUserImageURL($userID){
 }
 
 function updateUser($fieldChange,$fieldCheck,$fieldChangeValue,$fieldCheckValue,$userID){
-	//security input?
+	//TODO: esta funcao devolver algum erro?
 	global $db;
 	
 	// Verify Password
@@ -142,4 +142,37 @@ function updateUser($fieldChange,$fieldCheck,$fieldChangeValue,$fieldCheckValue,
 
 		return true;
 	}
-}?>
+}
+
+function changeImage(){
+
+	if(isset($_FILES["imageToUpload"])){
+		return array(false, "yey");
+	}
+
+	$uploadOk = false;
+	$target_dir = "database/user_images/";
+	
+	if($_FILES["fileToUpload"]["name"] != ''){
+
+		$imageFileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);
+		$target_file = $target_dir . basename($_POST['username']) . "." . $imageFileType;
+	
+		// Check if image file is a actual image or fake image
+		if(isset($_POST["submit"])) {
+   			$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+   			if($check !== false) {
+        		//echo "File is an image - " . $check["mime"] . ".";
+        		$uploadOk = 1;
+    		}
+		}
+	}
+
+	if($uploadOk){
+			move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+		}
+
+}
+
+
+?>

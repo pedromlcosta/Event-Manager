@@ -5,6 +5,13 @@ include_once('database/events.php');
 include_once('database/tagEvent.php');
 include_once('database/users.php');
 
+
+if(isset($_POST['action'])){
+	echo "kk";
+}else{
+	echo "not kk...";
+}
+
 if(isset($_POST) && (!empty($_POST)) && isset($_POST['action']) ) {
 
 	$reply = array(true, "Success");
@@ -29,8 +36,16 @@ if(isset($_POST) && (!empty($_POST)) && isset($_POST['action']) ) {
 		}
 	}
 	 
-	 // CHANGE FULLNAME
-	if ($_POST['action']=='CHANGE_USER_FULLNAME' ) {
+	// USER PAGE ACTIONS
+
+	 	// CHANGE FULLNAME
+	if ($_POST['action']=='CHANGE_USER_IMAGE' ) {
+
+		$result=changeImage('fullname','password',$_POST['newName'],$_POST['password'],$_SESSION['userID']);
+
+		//Change images already returns the array with false/true and error message
+		$reply = $result;
+	}else if ($_POST['action']=='CHANGE_USER_FULLNAME' ) {
 
 		$result=updateUser('fullname','password',$_POST['newName'],$_POST['password'],$_SESSION['userID']);
 
@@ -38,7 +53,7 @@ if(isset($_POST) && (!empty($_POST)) && isset($_POST['action']) ) {
 			$reply = array(false, 'Wrong Password');
 
 		$reply[0] = $result;
-
+		// CHANGE PASSWORD
 	}else if ($_POST['action']=='CHANGE_USER_PASSWORD' ) {
 
 		if($_POST['confirmPass'] != $_POST['newPass']){
@@ -53,8 +68,7 @@ if(isset($_POST) && (!empty($_POST)) && isset($_POST['action']) ) {
 			$reply =  array(false, "Wrong Password");
 		}
 	}	
-
-	echo json_encode($reply);
+	$reply = array(true, "ok");
 
 }
 ?>

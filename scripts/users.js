@@ -49,6 +49,8 @@ function saveImageChangesHandler(event) {
 	event.stopPropagation(); // Stop stuff happening
 	event.preventDefault(); // Totally stop stuff happening
 
+	// START A LOADING SPINNER HERE
+
 	$.ajax({
 		url: 'action_buttons.php',
 		type: 'POST',
@@ -58,16 +60,10 @@ function saveImageChangesHandler(event) {
 		contentType: false, // Set content type to false as jQuery will tell the server its a query string request
 		success: function(data, textStatus, jqXHR) {
 			if (typeof data.error === 'undefined') {
+				// Success so call function to process the form
+				//emptyStatus();
+				//$('#messageStatus').prepend(data);
 				console.log(data);
-				// data[0] is true or false for success, data[1] is the message
-				if (data[0]) {
-					location.reload();
-				} else {
-					$("#errorMessage").empty();
-					$("#errorMessage").show();
-					$("#errorMessage").html(data[1]);
-					$("#errorMessage").delay(2000).fadeOut("slow");
-				}
 			} else {
 				// Handle errors here
 				console.log('ERRORS: ' + data.error);

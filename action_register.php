@@ -5,7 +5,7 @@
 	//TODO: Make safer
 
 	$registerStatus = '';
-	$target_dir = "database/user_images/";
+	
 
 
 	// REGISTER USER, IF VALID INFO
@@ -24,7 +24,8 @@
 
 	// CHECK IF IMAGE IS VALID
 	$uploadOk = 0;
-
+	$target_dir = "database/user_images/";
+	
 	if($_FILES["fileToUpload"]["name"] != ''){
 
 		$imageFileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);
