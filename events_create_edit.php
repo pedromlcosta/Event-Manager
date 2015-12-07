@@ -11,13 +11,10 @@
     //deal with ID>IDsExistentes no print events
 ?>
 
-<script src="scripts/script.js"></script>
-<script src="scripts/events.js"></script>
 <script src="scripts/eventCreate.js"></script>
  
 <?php
 
-    include_once('templates/header.php');
     include_once('templates/events_create_edit.php');
     include_once('templates/footer.php');
 ?>

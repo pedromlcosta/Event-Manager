@@ -3,7 +3,7 @@
  $delimiters="[\s,\/,\|]";
  $imageExtension =array('jpg','png','jpeg','gif');
  $maxDistance=2;
- $destEventFolder='"database/event_images/';
+ $destEventFolder='database/event_images/';
   function isLogged(){
     return isset($_SESSION['userID']);
   }
@@ -27,7 +27,7 @@
     	return array(true,'Invalid Date');
 }
 
-  function valiateCheckBox($checkBox){
+  function validateCheckBox($checkBox){
   	 if (!isset($checkBox))
         $privateValue = 0;
     else
@@ -144,12 +144,13 @@ function uploadImageFile($destinationFolder, $action, $rowID){
       deleteUserImage($rowID);
       updateUserImage($rowID, $target_file);
     }else if ($action == 'edit_event'){
-      deleteEventImage($rowID);
-      updateEventImage($rowID);
+      //deleteEventImage($rowID);
+      //updateEventImage($rowID);
     }
   
     // Move to folder
     move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+
     return $target_file;
 }
 
