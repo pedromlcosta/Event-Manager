@@ -2,6 +2,9 @@
 
 //TODO check private change url in AJAX
 if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
+  $event = getEventInfo($_GET['eventID']);
+  if($event===false)
+    header('Location: ' . 'index.php');
 
     // Very Important!
     $_SESSION['currentEventPage'] = $_GET['eventID'];
@@ -125,7 +128,7 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
         }
         
         
-        if ($remove) {
+        if ($remove && !$isOwner) {
 ?>
                   <button type="submit" id="removeButton">Remove From Event</button>
                   <?php

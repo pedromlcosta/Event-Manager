@@ -3,7 +3,7 @@
  $delimiters="[\s,\/,\|]";
  $imageExtension =array('jpg','png','jpeg','gif');
  $maxDistance=2;
- $destEventFolder='"database/event_images/';
+ $destEventFolder='database/event_images/';
   function isLogged(){
     return isset($_SESSION['userID']);
   }
@@ -150,6 +150,7 @@ function uploadImageFile($destinationFolder, $action, $rowID){
   
     // Move to folder
     move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+
     return $target_file;
 }
 

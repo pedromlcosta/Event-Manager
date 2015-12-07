@@ -99,7 +99,7 @@ if (isset($_POST['action']) && isLogged()) {
    </div>
    <div>
     <label>Photo:
-     <input type="file" name="eventImg" id="eventImg" <?php echo $required?> >
+     <input type="file" name="fileToUpload" id="eventImg" <?php echo $required?> >
    </label>
    </div>
    <div id="hidden">
