@@ -221,6 +221,19 @@ textarea {
 	color:black;
 }
 
+#tagsToSearch{
+	width: 50%;
+}
+
+#fullText{
+	width: 70%;
+	height:60px;
+}
+
+#eventTags{
+	width: 40%;
+}
+
 .info > div h4{
 	color:DarkGreen;
 }
