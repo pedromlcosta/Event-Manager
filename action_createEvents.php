@@ -10,6 +10,8 @@ include_once('database/usersEvent.php');
     
   if (isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['Event_Type'])  && isLogged()) {
 	$errorMessage = '';
+    $eventCreatedId = -1;
+    $createOK = false;
     
     if(isset($_POST['private']))
     $privateValue=validateCheckBox($_POST['private']);
@@ -31,8 +33,9 @@ include_once('database/usersEvent.php');
 
         
         if (createEvent($_POST['title'], $_POST['fullText'], $privateValue, $_POST['data'], $_SESSION['userID'],$imageURL)) {
-            
+
             $eventCreatedId = getEventIdByField($_POST['title'],$_POST['data'], $_SESSION['userID']);
+            $createOK = true;
 
             $userId = $_SESSION['userID'];
              
@@ -53,7 +56,8 @@ include_once('database/usersEvent.php');
   
     }
 
-    echo json_encode(array($errorMessage));
+
+    echo json_encode(array($createOK, $errorMessage, $eventCreatedId));
      
 }
     

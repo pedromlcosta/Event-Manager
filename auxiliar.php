@@ -27,7 +27,7 @@
     	return array(true,'Invalid Date');
 }
 
-  function valiateCheckBox($checkBox){
+  function validateCheckBox($checkBox){
   	 if (!isset($checkBox))
         $privateValue = 0;
     else
@@ -144,8 +144,8 @@ function uploadImageFile($destinationFolder, $action, $rowID){
       deleteUserImage($rowID);
       updateUserImage($rowID, $target_file);
     }else if ($action == 'edit_event'){
-      deleteEventImage($rowID);
-      updateEventImage($rowID);
+      //deleteEventImage($rowID);
+      //updateEventImage($rowID);
     }
   
     // Move to folder

@@ -1,97 +1,99 @@
 <?php
-print_r($_POST['eventID']);
-
-include_once('genericStart.html');	
 include_once('init.php');
-
-if(isset($_SESSION['errors'])){
-	unset($_SESSION['errors']);
-
-}
-else if ( isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['eventID']) && isset($_POST['Event_Type'])  ) {
-
 include_once('database/events.php');
 include_once('database/tag.php');
 include_once('database/tagEvent.php');
 include_once('database/filters.php');
 include_once('auxiliar.php');
-/*
- 
-see if os Max(id) estão direito
-check os gets por causa de o facto de o par de ids já existerem?
-*/
+
+if ( isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullText']) && isset($_POST['data']) && isset($_POST['eventID']) && isset($_POST['Event_Type'])  ) {
+
+	global $delimiters;
+
 	$errorMessage = '';
-	global $destEventFolder;
+    $eventCreatedId = $_POST['eventID'];
+    $createOK = false;
+
+
     if(isset($_POST['private']))
-    $privateValue=valiateCheckBox($_POST['private']);
+    	$privateValue=validateCheckBox($_POST['private']);
     else
-    $privateValue=0;
+    	$privateValue=0;
 
     $dataValid=validateDate($_POST['data']);
     $typeValid=validateTypes($_POST['Event_Type']);
     $imageValid=array(true);
 
-    if(isset($_POST['fileToUpload']) && !empty($_POST['fileToUpload']) ){
+    // Checks validity of file uploaded, if any
+    if(isset($_FILES['fileToUpload']) && !empty($_FILES['fileToUpload']) ){
 		 $imageValid = validateImageUpload();
 	} 
     
-    $errorMessage= getErrorMessage(array($dataValid,$typeValid, $imageValid));
-    if(strlen($errorMessage)==0){
+	// Creates error message. If no file was selected, ignores any file errors
+	// Only appends image error if validation went wrong and an error ocurred
+	$errorMessage= getErrorMessage(array($dataValid,$typeValid));
+    if($_FILES["fileToUpload"]['error'] != 4 && !$imageValid[0] ){
+    	$errorMessage=$errorMessage.$imageValid[1]. "<br>";
+    }
+    	
 
-	updateEvents('title',$_POST['eventID'],$_POST['title']);
-	updateEvents('fulltext',$_POST['eventID'],$_POST['fullText']);
-	updateEvents('data',$_POST['eventID'],$_POST['data']);
-	updateEvents('private',$_POST['eventID'],$privateValue);
-	updateEventsTypes($_POST['eventID'],getFilterId($_POST['Event_Type']));
+    if(strlen($errorMessage) == 0){
 
- 	if($imageValid[0]){
-		 uploadImageFile($destEventFolder, 'edit_event', $_POST['eventID'])
-	} 
+		updateEvents('title',$_POST['eventID'],$_POST['title']);
+		updateEvents('fulltext',$_POST['eventID'],$_POST['fullText']);
+		updateEvents('data',$_POST['eventID'],$_POST['data']);
+		updateEvents('private',$_POST['eventID'],$privateValue);
+		updateEventsTypes($_POST['eventID'],getFilterId($_POST['Event_Type']));
 
+		$errorMessage = $_FILES["fileToUpload"]['error'];
 
-  global $delimiters;
+ 		if($_FILES["fileToUpload"]['error'] != 4 && $imageValid[0]){
+ 			//uploadImageFile("images/", 'edit_event', $_POST['eventID'])
+		} 
+    
   
-$tags=preg_split( "/".$delimiters."+/",$_POST["eventTags"] ); 
-$tagsInEvent=getTagWithEvent($_POST['eventID']);
- $currentTagsInEventID=array();
- foreach($tagsInEvent as $tagInEvent){
-		array_push( $currentTagsInEventID, $tagInEvent['tag_id']);
- }
-$tagsAfterEdit=array();
- 
-	foreach($tags as $tagDesc){
+		$tags=preg_split( "/".$delimiters."+/",$_POST["eventTags"] ); 
+		$tagsInEvent=getTagWithEvent($_POST['eventID']);
+		$currentTagsInEventID=array();
+	
+		foreach($tagsInEvent as $tagInEvent){
+			array_push( $currentTagsInEventID, $tagInEvent['tag_id']);
+		}
 
-		$tag=getTag($tagDesc);
-		//print_r($tagDesc);
+		$tagsAfterEdit=array();
+ 
+		foreach($tags as $tagDesc){
+
+			$tag=getTag($tagDesc);
+			
 			if($tag){
 				 
 					$tagId=$tag['id'];
+					
 					if (!in_array( $tagId, $currentTagsInEventID)) {
 						createTagEvent($_POST['eventID'],$tagId);
 					}
 			}
 			else{
-				//TODO parse para segurança e ignorar casos de erro like so um espaço
+				
 				if($tagDesc!='' && $tagDesc!=' '){
-				echo "MOTHER FUCKER <br>";
-				var_dump($tagDesc);
 				createTag($tagDesc);
 				$tagId=getLastTagId();
 				createTagEvent($_POST['eventID'],$tagId); 
 				}
 			}
+			
 			array_push($tagsAfterEdit,$tagId );
+		} 
 
-	} 
-
-		 $tagsToRemove = array_diff($currentTagsInEventID, $tagsAfterEdit);
+		$tagsToRemove = array_diff($currentTagsInEventID, $tagsAfterEdit);
  
-	 	foreach($tagsToRemove as $tag){
+		foreach($tagsToRemove as $tag){
 			removeTagEvents($tag);
 		}
+		
 	}
-	else{
-		$_SESSION['errors']=$errorMessage;
-	}
+
+	echo json_encode(array($createOK, $errorMessage, $eventCreatedId));
 }
 ?>
