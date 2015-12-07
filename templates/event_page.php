@@ -71,7 +71,7 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
   <?php
         
     } else {
-        //does not have permission 
+        header("Location:" . "índex.php")
     }
 ?>    
     <div class="event">
@@ -166,6 +166,13 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
     <?php
         
         
+    }
+    else{?>
+       <script type="text/javascript">
+          hideLeaveButton();
+          hideJoingButton();
+        </script>
+        <?php
     }
 }
 
