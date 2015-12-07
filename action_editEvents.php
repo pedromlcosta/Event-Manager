@@ -14,11 +14,11 @@ if ( isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullT
     $eventCreatedId = $_POST['eventID'];
     $createOK = false;
 
-
     if(isset($_POST['private']))
     	$privateValue=validateCheckBox($_POST['private']);
     else
     	$privateValue=0;
+
 
     $dataValid=validateDate($_POST['data']);
     $typeValid=validateTypes($_POST['Event_Type']);
@@ -35,8 +35,8 @@ if ( isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullT
     if($_FILES["fileToUpload"]['error'] != 4 && !$imageValid[0] ){
     	$errorMessage=$errorMessage.$imageValid[1]. "<br>";
     }
-    	
-
+    
+ 
     if(strlen($errorMessage) == 0){
 
 		updateEvents('title',$_POST['eventID'],$_POST['title']);
@@ -44,11 +44,10 @@ if ( isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullT
 		updateEvents('data',$_POST['eventID'],$_POST['data']);
 		updateEvents('private',$_POST['eventID'],$privateValue);
 		updateEventsTypes($_POST['eventID'],getFilterId($_POST['Event_Type']));
-
-		$errorMessage = $_FILES["fileToUpload"]['error'];
+		$createOk = true;
 
  		if($_FILES["fileToUpload"]['error'] != 4 && $imageValid[0]){
- 			//uploadImageFile("images/", 'edit_event', $_POST['eventID'])
+ 			uploadImageFile("images/", 'edit_event', $_POST['eventID']);
 		} 
     
   
@@ -91,7 +90,8 @@ if ( isset($_SESSION['userID']) && isset($_POST['title']) && isset($_POST['fullT
 		foreach($tagsToRemove as $tag){
 			removeTagEvents($tag);
 		}
-		
+
+		$createOK = true;	
 	}
 
 	echo json_encode(array($createOK, $errorMessage, $eventCreatedId));

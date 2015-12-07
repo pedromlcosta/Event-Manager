@@ -74,7 +74,7 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
   <?php
         
     } else {
-        header("Location:" . "índex.php")
+        header("Location:" . "index.php");
     }
 ?>    
     <div class="event">
@@ -173,7 +173,7 @@ if (isset($_GET['eventID']) && !empty($_GET['eventID'])) {
     else{?>
        <script type="text/javascript">
           hideLeaveButton();
-          hideJoingButton();
+          hideJoinButton();
         </script>
         <?php
     }

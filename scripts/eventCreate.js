@@ -1,4 +1,5 @@
 var imageTooBig = false;
+var MAX_FILE_SIZE_EDIT = 8000000;
 
 function showMessage() {
 	$('#errorMessageCreateEvent').show();
@@ -16,11 +17,11 @@ function eventFormHandler(event) {
 	event.preventDefault(); // Totally stop stuff happening
 
 	if (imageTooBig) {
-		console.log("mmkk");
 		$("#errorMessageCreateEvent").empty();
 		$("#errorMessageCreateEvent").show();
 		$("#errorMessageCreateEvent").html("The file is too big for upload");
-		$("#errorMessageCreateEvent").delay(2000).fadeOut("slow");
+		$('#errorMessageCreateEvent').css({"text-align":"center", "font-weight":"bold", "font-size":"20px"});
+		$("#errorMessageCreateEvent").delay(3000).fadeOut("slow");
 	} else {
 		// START A LOADING SPINNER HERE
 		$.ajax({
@@ -35,12 +36,12 @@ function eventFormHandler(event) {
 					var data = JSON.parse(data);
 					
 					if(data[0] == true){
-						//window.location.href = "event_page.php?eventID=" + data[2];
+						window.location.href = "event_page.php?eventID=" + data[2];
 					}else{
 						$("#errorMessageCreateEvent").empty();
 						$("#errorMessageCreateEvent").show();
 						$("#errorMessageCreateEvent").html(data[1]);
-						$("#errorMessageCreateEvent").delay(2000).fadeOut("slow");
+						$("#errorMessageCreateEvent").delay(3000).fadeOut("slow");
 					}
 					
 					console.log(data);
@@ -64,6 +65,15 @@ function handleSubmits() {
 	//On doc ready, add handlers
 	$(document).ready(function() {
 		$("#eventEditAdd").on("submit", eventFormHandler);
+
+
+		$('#eventImg').bind('change', function() {
+			
+			if (this.files[0].size > MAX_FILE_SIZE_EDIT)
+				imageTooBig = true;
+			else
+				imageTooBig = false;
+		});
 
 
 	});

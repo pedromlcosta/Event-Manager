@@ -63,7 +63,7 @@
 }
 
 function validateImageUpload(){
-
+  
   if(!isset($_FILES["fileToUpload"])){
 
     return array(false, "No Image Input Found");
@@ -91,7 +91,7 @@ function validateImageUpload(){
         case 7:
           return array(false, "Error Uploading: Server failed to upload");
           break;
-        case 7:
+        case 8:
           return array(false, "Error Uploading: An extension stopped the upload");
           break;
         default:
@@ -110,11 +110,11 @@ function validateImageUpload(){
       }
       //TODO: uppercase or lowercase
       $imageFileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);
-      /*
+      
       if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
         return array(false, "Only Valid image types are allowed");
     }
-    */
+    
        // CHECKING FILE SIZE
     if ($_FILES["fileToUpload"]["size"] > 3000000) {
         return array(false, "Max File Size exceeded");
@@ -122,7 +122,7 @@ function validateImageUpload(){
   }
 
   return array(true, "Success");
-
+  
 }
 
 function uploadImageFile($destinationFolder, $action, $rowID){
@@ -144,8 +144,8 @@ function uploadImageFile($destinationFolder, $action, $rowID){
       deleteUserImage($rowID);
       updateUserImage($rowID, $target_file);
     }else if ($action == 'edit_event'){
-      //deleteEventImage($rowID);
-      //updateEventImage($rowID);
+      deleteEventImage($rowID);
+      updateEventImage($rowID, $target_file);
     }
   
     // Move to folder
