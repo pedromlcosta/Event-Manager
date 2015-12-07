@@ -24,7 +24,7 @@ function eventFormHandler(event) {
 	} else {
 		// START A LOADING SPINNER HERE
 		$.ajax({
-			url: 'action_createEvents.php',
+			url: $("#eventEditAdd").attr('action'),
 			type: 'POST',
 			data: new FormData(this),
 			cache: false,
@@ -33,15 +33,18 @@ function eventFormHandler(event) {
 			success: function(data, textStatus, jqXHR) {
 				if (typeof data.error === 'undefined') {
 					var data = JSON.parse(data);
-
-					console.log(data);
-					/*
+					
+					if(data[0] == true){
+						//window.location.href = "event_page.php?eventID=" + data[2];
+					}else{
 						$("#errorMessageCreateEvent").empty();
 						$("#errorMessageCreateEvent").show();
-						$("#errorMessageCreateEvent").html(data);
+						$("#errorMessageCreateEvent").html(data[1]);
 						$("#errorMessageCreateEvent").delay(2000).fadeOut("slow");
-					 
-						*/
+					}
+					
+					console.log(data);
+					
 				} else {
 					// Handle errors here
 					console.log('ERRORS: ' + data.error);

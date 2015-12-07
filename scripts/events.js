@@ -10,7 +10,7 @@ function deleteButton(event) {
 		dataType: 'json', // -> automatically parses response data!
 		success: function(data, textStatus, jqXHR) {
 			console.log("success");
-
+			location.reload();
 			//Abandonar Página
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
