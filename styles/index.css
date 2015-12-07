@@ -221,7 +221,7 @@ textarea {
 	color:black;
 }
 
-#tagsToSearch{
+#tagsToSearch, #commentTextArea{
 	width: 50%;
 }
 
@@ -230,7 +230,7 @@ textarea {
 	height:60px;
 }
 
-#eventTags{
+#eventTags, #title{
 	width: 40%;
 }
 
