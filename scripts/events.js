@@ -219,7 +219,7 @@ function hideInviteButton() {
  }
 
 var event_id = null;
-var COMMENTS_PER_PAGE = 2;
+var COMMENTS_PER_PAGE = 6;
 var currentPage = 1;
 var totalPages = 1;
 var loaded = null;
